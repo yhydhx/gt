@@ -1,0 +1,1124 @@
+{% load staticfiles %}
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <!-- disable zooming -->
+  <meta name="viewport" content="width=device-width,initial-scale=1.0, user-scalable=0" />
+  <style>
+@font-face {
+	font-family: 'syslab_main_fonts';
+	src: url(../static/game/woff/syslab_main_fonts.woff) format('woff'),url(../static/game/ttf/syslab_main_fonts.ttf) format('truetype');
+}
+html,body,input,textarea{
+		font-family:"syslab_main_fonts","微软雅黑";
+		color: #fff;
+		text-shadow: 0px 0px 20px #000;
+}
+textarea{
+	resize:vertical;
+}
+
+@font-face {
+	font-family: 'SYSLAB_icon_Fonts';
+	src: url(../static/game/woff/SYSLAB_icon_Fonts.woff) format('woff'),url(../static/game/ttf/SYSLAB_icon_Fonts.ttf) format('truetype');
+}
+@font-face {
+	font-family: 'SYSLAB_logo_Fonts';
+	src: url(../static/game/woff/SYSLAB_logo_Fonts.woff) format('woff'),url(../static/game/ttf/SYSLAB_logo_Fonts.ttf) format('truetype');
+}
+@keyframes icon_rotate_ani{
+		0%{
+			transform:rotate(0deg);
+			-o-transform:rotate(0deg);
+			-ms-transform:rotate(0deg);
+			-moz-transform:rotate(0deg);
+			-webkit-transform:rotate(0deg);
+		}
+		100%{
+			transform:rotate(360deg);
+			-o-transform:rotate(360deg);
+			-ms-transform:rotate(360deg);
+			-moz-transform:rotate(360deg);
+			-webkit-transform:rotate(360deg);
+		}
+	}
+	@-webkit-keyframes icon_rotate_ani{
+		0%{
+			transform:rotate(0deg);
+			-webkit-transform:rotate(0deg);
+		}
+		100%{
+			transform:rotate(360deg);
+			-webkit-transform:rotate(360deg);
+		}
+	}
+	@-moz-keyframes icon_rotate_ani{
+		0%{
+			transform:rotate(0deg);
+			-moz-transform:rotate(0deg);
+		}
+		100%{
+			transform:rotate(360deg);
+			-webkit-transform:rotate(360deg);
+		}
+	}
+	@-ms-keyframes icon_rotate_ani{
+		0%{
+			transform:rotate(0deg);
+			-ms-transform:rotate(0deg);
+		}
+		100%{
+			transform:rotate(360deg);
+			-ms-transform:rotate(360deg);
+		}
+	}
+	@-o-keyframes icon_rotate_ani{
+		0%{
+			transform:rotate(0deg);
+			-o-transform:rotate(0deg);
+		}
+		100%{
+			transform:rotate(360deg);
+			-o-transform:rotate(360deg);
+		}
+	}
+	.loading_rotate{
+		-webkit-animation: icon_rotate_ani .5s linear infinite;
+		-moz-animation: icon_rotate_ani .5s linear infinite;
+		-ms-animation: icon_rotate_ani .5s linear infinite;
+		-o-animation: icon_rotate_ani .5s linear infinite;
+		animation: icon_rotate_ani .5s linear infinite;
+		margin-right:0px;
+	}
+body{
+	overflow:hidden;
+}
+.ani,#SYS_bg{
+		-webkit-transition:all .6s ease-in-out;
+		-moz-transition:all .6s ease-in-out;
+		-ms-transition:all .6s ease-in-out;
+		-o-transition:all .6s ease-in-out;
+		transition:all .6s ease-in-out;
+}
+#SYS_bg{
+opacity:0;
+}
+#SYS_hire_main{
+	position:absolute;
+	top:0px;
+	left:0px;
+	right:0px;
+	bottom:0px;
+}
+#SYS_hire_main_fp,#SYS_hire_main_you,#SYS_hire_main_skill,#SYS_hire_main_more,#SYS_hire_main_con{
+	position:absolute;
+	top:0px;
+	left:0px;
+}
+#SYS_hire_main_fp_logo {
+font-family: 'SYSLAB_logo_Fonts';
+font-size: 220px;
+-webkit-transform: rotate(-5deg);
+-moz-transform: rotate(-5deg);
+-ms-transform: rotate(-5deg);
+-o-transform: rotate(-5deg);
+transform: rotate(-5deg);
+width:750px;
+cursor:default;
+text-shadow:0px 0px 20px #444;
+}
+#SYS_hire_main_fp_logo:hover{
+	-webkit-transform:scale(1.2,1.2);
+	-moz-transform:scale(1.2,1.2);
+	-ms-transform:scale(1.2,1.2);
+	-o-transform:scale(1.2,1.2);
+	transform:scale(1.2,1.2);
+}
+#SYS_hire_main_fp_us {
+	font-size: 36px;
+	margin-top:60px;
+}
+#SYS_hire_main_fp_about {
+font-size: 24px;
+margin-top: 30px;
+}
+#SYS_hire_main_fp_main{
+	position: absolute;
+	top: 10%;
+	width:100%;
+}
+[type="SYS_hire_next"] {
+	position: absolute;
+	right: 20px;
+	top: 45%;
+	font-family: 'SYSLAB_icon_Fonts';
+	font-size: 48px;
+	cursor:pointer;
+}
+[type="SYS_hire_next"]:hover{
+	color:#ddd;
+}
+#SYS_hire_main_you,#SYS_hire_main_skill,#SYS_hire_main_more,#SYS_hire_main_con{
+	display:none;
+	margin-left:100px;
+	opacity:0;
+}
+[type="SYS_hire_gen"]{
+	font-family: 'SYSLAB_icon_Fonts';
+	display: inline-block;
+	margin: 0 100px;
+	cursor:pointer;
+}
+#SYS_hire_main_skill_icon {
+font-family: 'SYSLAB_icon_Fonts';
+display: inline-block;
+cursor: default;
+-webkit-transform: rotate(-6deg);
+-moz-transform: rotate(-6deg);
+-ms-transform: rotate(-6deg);
+-o-transform: rotate(-6deg);
+transform: rotate(-3deg);
+font-size: 400px;
+text-shadow: none;
+color: rgba(99, 167, 240, 0.7);
+position: absolute;
+left: 100px;
+top: 20%;
+width: 500px;
+}
+[type="SYS_hire_gen"]:hover{
+	text-shadow: 0px 0px 50px #63A7F0;
+}
+#SYS_hire_main_you_title,#SYS_hire_main_skill_title {
+	position: absolute;
+	top: 20px;
+	left: 50px;
+	font-size: 48px;
+}
+
+
+#SYS_Button {
+	position: absolute;
+	top: 90%;
+	left: 33%;
+	font-size: 48px;
+}
+
+#SYS_LeftTop {
+	position: absolute;
+	top: 20px;
+	left: 81%;
+	font-size: 48px;
+}
+
+#SYS_hire_main_you_choose {
+	position: absolute;
+	top: 30%;
+	font-size: 200px;
+	text-align: center;
+	width: 100%;
+}
+#SYS_hire_main_you_infos {
+	position: absolute;
+	top: 10%;
+	display:none;
+	opacity:0;
+}
+
+[type="SYS_hire_form"] {
+	margin: 5px 0;
+	text-align:left;
+}
+[type="SYS_hire_form_t"] {
+	font-size: 16px;
+	font-weight: bold;
+}
+.SYS_hire_form_ipt {
+	outline: none;
+	border: solid 1px #bbb;
+	border-radius: 3px;
+	font-size: 22px;
+	padding: 2px 5px;
+	color: #888;
+	margin-left: 50px;
+	margin-top: 10px;
+	-webkit-transition:all .3s ease-in-out;
+	-moz-transition:all .3s ease-in-out;
+	-ms-transition:all .3s ease-in-out;
+	-o-transition:all .3s ease-in-out;
+	transition:all .3s ease-in-out;
+	transition:all .3s ease-in-out;
+}
+.SYS_hire_form_ipt:focus{
+	box-shadow:0px 0px 20px #63A7F0;
+}
+.ipterr{
+	border: solid 1px rgba(255,0,0,1) !important;
+	color: #f00 !important;
+	text-shadow: 0px 0px 20px #f00 !important;
+}
+.SYS_hire_bar_b{
+	width:300px;
+	overflow:hidden;
+	height:30px;
+	text-align: left;
+	display:inline-block;
+	cursor:pointer;
+}
+.SYS_hire_bar_left{
+	width:150px;
+	height:30px;
+	display:inline-block;
+	background-color: #63A7F0;
+	border-radius:3px 0 0 3px;
+}
+.SYS_hire_bar_h{
+	width:30px;
+	height:30px;
+	border-radius:30px;
+	float:left;
+	margin-left:135px;
+	background-color:#eee;
+	position: relative;
+	top: -68px;
+}
+.SYS_hire_bar_right{
+	width:150px;
+	height:30px;
+	display:inline-block;
+	background-color: #cfcfcf;
+	top: -34px;
+	position: relative;
+	border-radius:0 3px 3px 0;
+}
+#SYS_hire_main_skill_bars {
+	position: absolute;
+	text-align: center;
+	right:200px;
+	top:50%;
+	margin-top:-260px;
+}
+.SYS_hire_bar_l{
+position: relative;
+top: -7px;
+left: -10px;
+display: inline-block;
+font-size: 24px;
+}
+
+.SYS_hire_bar_r{
+position: relative;
+top: -7px;
+left: 15px;
+display: inline-block;
+font-size: 24px;
+}
+.SYS_hire_bar_t{
+	font-size:24px;
+	margin-bottom:10px;
+}
+.SYS_hire_bar{
+	margin:10px;
+	width: 450px;
+
+}
+#SYS_hire_main_skill_des {
+	position: absolute;
+	top: 50%;
+	right: 207px;
+	outline: none;
+	padding:10px;
+}
+#SYS_hire_main_skill_des [type="SYS_hire_form_t"] {
+	font-size:24px;
+	font-weight:normal;
+}
+#SYS_hire_main_skill_des #SYS_hire_form_experience{
+	border: solid 1px #ccc;
+	border-radius: 3px;
+	width:415px;
+	margin:10px 0;
+	height:200px;
+	font-size:20px;
+}
+
+#SYS_hire_main_con_sending_icon{
+	font-family: 'SYSLAB_icon_Fonts';
+	font-size:72px;
+}
+#SYS_hire_main_con_sending{
+	position:absolute;
+	top:35%;
+	width:100%;
+}
+#SYS_hire_main_con_sending_words{
+	font-size:36px;
+	margin-top:20px;
+}
+#SYS_hire_main_con_sending_words b{
+	cursor:pointer;
+}
+#i_am_code_2{
+	display:none;
+	font-size:24px;
+}
+#SYS_bg{
+	position:absolute;
+	top:0px;
+	left:0px;
+	right:0px;
+	bottom:0px;
+	background-color:#ddd;
+}
+#SYS_fps{
+	position:fixed;
+	bottom:2px;
+	right:2px;
+	font-size:8px;
+	color:#444;
+	text-shadow:none;
+}
+  </style>
+</head>
+<body>
+<canvas id="SYS_bg"></canvas>
+<div id="SYS_loading_statue" onselectstart="return false;"></div>
+<div id="i_am_code_2" onclick="i_am_code_2();"></div>
+<div id="SYS_fps"></div>
+<div id="SYS_hire_main">
+	<div id="SYS_hire_main_fp" onselectstart="return false;">
+    	<center id="SYS_hire_main_fp_main">
+        	<div id="SYS_hire_main_fp_logo" class="ani">Small Game</div>
+            <div id="SYS_hire_main_fp_us">Hey, Guy, Let's play a game</div>
+            <div id="SYS_hire_main_fp_about">
+            	The rules U already Knows<br/>
+               
+            </div>
+        </center>
+        <div id="SYS_hire_main_fp_next" type="SYS_hire_next" class="loading_rotate">&#xe096;</div>
+    </div>
+    <div id="SYS_hire_main_you">
+    	<div id="SYS_hire_main_you_title"  onselectstart="return false;">Do you want cooperate?</div>
+    	<div id="SYS_Button" >Money </div>
+    	<div id="SYS_LeftTop"> Round </div>
+        <div id="SYS_hire_main_you_choose"  onselectstart="return false;">
+        	<div id="SYS_hire_main_you_choose_male"  class="ani" type="SYS_hire_gen">✔</div>
+            <div id="SYS_hire_main_you_choose_female"  class="ani" type="SYS_hire_gen">✖</div>
+        </div>
+        <div id="SYS_hire_main_you_infos" class="ani">
+        	<div type="SYS_hire_form">
+            	<div type="SYS_hire_form_t"  onselectstart="return false;"></div>
+            	<input type="text" class="SYS_hire_form_ipt" id="SYS_hire_form_name">
+            </div>
+	    	<div type="SYS_hire_form">
+            	<div type="SYS_hire_form_t"  onselectstart="return false;"></div>
+            	<input type="text" class="SYS_hire_form_ipt" id="SYS_hire_form_college">
+            </div>
+            <div type="SYS_hire_form">
+            	<div type="SYS_hire_form_t"  onselectstart="return false;"></div>
+            	<input type="text" class="SYS_hire_form_ipt" id="SYS_hire_form_grade">
+            </div>
+            <div type="SYS_hire_form">
+            	<div type="SYS_hire_form_t"  onselectstart="return false;"> </div>
+            	<input type="text" class="SYS_hire_form_ipt" id="SYS_hire_form_mobile">
+            </div>
+            <div type="SYS_hire_form">
+            	<div type="SYS_hire_form_t"  onselectstart="return false;"></div>
+            	<input type="text" class="SYS_hire_form_ipt" id="SYS_hire_form_email">
+            </div>
+            <div type="SYS_hire_form">
+            	<div type="SYS_hire_form_t"  onselectstart="return false;"></div>
+            	<textarea class="SYS_hire_form_ipt" id="SYS_hire_form_intro"></textarea>
+            </div>
+        </div>
+        <div id="SYS_hire_main_you_next" type="SYS_hire_next"  onselectstart="return false;">&#x3d;</div>
+    </div>
+    <div id="SYS_hire_main_skill">
+    	<div id="SYS_hire_main_skill_title"  onselectstart="return false;"></div>
+	    <center>
+			<div id="SYS_hire_main_skill_icon" onselectstart="return false;">&#xf27e;</div>
+			<div id="SYS_hire_main_skill_bars" onselectstart="return false;">
+	        	<div class="SYS_hire_bar">
+	            	<div class="SYS_hire_bar_t"> </div>
+	                <div class="SYS_hire_bar_l"></div>
+	                <div class="SYS_hire_bar_b" id="SYS_hire_bar_0">
+	                	<div class="SYS_hire_bar_left" id="SYS_hire_bar_0_left"></div>
+	                    <div class="SYS_hire_bar_right" id="SYS_hire_bar_0_right"></div>
+	                    <div class="SYS_hire_bar_h"  id="SYS_hire_bar_0_h"></div>
+	                </div>
+	                <div class="SYS_hire_bar_r"></div>
+	            </div>
+	            <div class="SYS_hire_bar">
+	            	<div class="SYS_hire_bar_t"> </div>
+	                <div class="SYS_hire_bar_l"></div>
+	                <div class="SYS_hire_bar_b" id="SYS_hire_bar_1">
+	                	<div class="SYS_hire_bar_left" id="SYS_hire_bar_1_left"></div>
+	                    <div class="SYS_hire_bar_right" id="SYS_hire_bar_1_right"></div>
+	                    <div class="SYS_hire_bar_h"  id="SYS_hire_bar_1_h"></div>
+	                </div>
+	                <div class="SYS_hire_bar_r"></div>
+	            </div>
+	            <div class="SYS_hire_bar">
+	            	<div class="SYS_hire_bar_t"> </div>
+	                <div class="SYS_hire_bar_l"></div>
+	                <div class="SYS_hire_bar_b" id="SYS_hire_bar_2">
+	                	<div class="SYS_hire_bar_left" id="SYS_hire_bar_2_left"></div>
+	                    <div class="SYS_hire_bar_right" id="SYS_hire_bar_2_right"></div>
+	                    <div class="SYS_hire_bar_h"  id="SYS_hire_bar_2_h"></div>
+	                </div>
+	                <div class="SYS_hire_bar_r"></div>
+	            </div>
+	    	</div>
+
+             <div type="SYS_hire_form" id="SYS_hire_main_skill_des">
+                    <div type="SYS_hire_form_t"  onselectstart="return false;"></div>
+                    <textarea class="SYS_hire_form_ipt" id="SYS_hire_form_experience"></textarea>
+            </div>
+		</center>
+		<div id="SYS_hire_main_skill_next" type="SYS_hire_next"  onselectstart="return false;">&#x3d;</div>
+    </div>
+</div>
+<div id="SYS_hire_main_con"  onselectstart="return false;">
+	<center id="SYS_hire_main_con_sending">
+		{% csrf_token %} 
+    	<div id="SYS_hire_main_con_sending_icon" class="loading_rotate">&#xe096;</div>
+        <div id="SYS_hire_main_con_sending_words">正在通信...</div>
+    </center>
+</div>
+</body>
+<script type="text/JavaScript" src="{% static 'game/js/jsDraw2DX.js' %}"></script>
+<script type="text/JavaScript" src="{% static 'game/js/jquery.ajax.min.js' %}"></script>
+<script src="{% static 'game/js/filer.min.js' %}"></script>
+<script src="{% static 'game/js/socket.io.min.js' %}"></script> 
+<script src="{% static 'game/js/sjcl.js' %}"></script>
+<script src="{% static 'game/js/microjs.min.js' %}"></script>
+<script src="{% static 'game/js/base.full.js' %}"></script>
+<script type="text/javascript">
+	var money = 0
+	var times = 0
+	var maxTimes = 30
+	var exitFlag = false
+	var coMethod = 1
+	var robotMoney = 0
+	function getP(coMethod){
+		switch(coMethod){
+			case 1:
+				return 0.7;
+			case 2:
+				return 0.4;
+			case 3:
+				return 0.6;
+			case 4:
+				return 0.1;
+
+		}
+	}
+	function restoreData(times,coMethod,addMoney,money,addRobotMoney,robotMoney){
+		SUBMIT_FORM['times'] = times;
+		SUBMIT_FORM['coMethod'] = coMethod;
+		SUBMIT_FORM['addMoney'] = addMoney;
+		SUBMIT_FORM['money'] = money;
+		SUBMIT_FORM['addRobotMoney'] = addRobotMoney;
+		SUBMIT_FORM['robotMoney'] = robotMoney;
+		switch(coMethod){
+			case 1:
+				SUBMIT_FORM['humanChoose'] = 1;
+				SUBMIT_FORM['robotChoose'] = 1;
+				break;
+			case 2:
+				SUBMIT_FORM['humanChoose'] = 1;
+				SUBMIT_FORM['robotChoose'] = 0;
+				break;
+			case 3:
+				SUBMIT_FORM['humanChoose'] = 0;
+				SUBMIT_FORM['robotChoose'] = 1;
+				break;
+			case 4:
+				SUBMIT_FORM['humanChoose'] = 0;
+				SUBMIT_FORM['robotChoose'] = 0;
+				break;
+
+		}
+	}
+	function check_canvas(){
+		var elem = document.createElement('canvas');
+  		return !!(elem.getContext && elem.getContext('2d'));
+	}
+	if(!check_canvas()){
+		alert("请使用现代浏览器!  例如Chrome,Firefox等");
+		window.open('', '_self', '');
+		window.close();
+	}	
+	$SYSVARS="";
+	SUBMIT_FORM={
+		times:0,
+		coMethod:0,
+		addMoney:0,
+		money:0,
+		addRobotMoney:0,
+		robotMoney:0,
+		humanChoose:0,
+		robotChoose:0,
+		csrfmiddlewaretoken: 0 ,
+	}
+	HIRE_FORM={
+		name:0,
+		gender:0,
+		college:0,
+		grade:0,
+		mobile:0,
+		email:0,
+		introduce:"",
+		experience:"",
+		product_or_dev:0,
+		art_or_code:0,
+		front_or_back:0
+	}
+	_f("#SYS_hire_main_fp").style.width=(window.innerWidth)+"px";
+	_f("#SYS_hire_main_fp").style.height=(window.innerHeight)+"px";
+	_f("#SYS_hire_main_you").style.width=(window.innerWidth)+"px";
+	_f("#SYS_hire_main_you").style.height=(window.innerHeight)+"px";
+	_f("#SYS_hire_main_skill").style.width=(window.innerWidth)+"px";
+	_f("#SYS_hire_main_skill").style.height=(window.innerHeight)+"px";
+	_f("#SYS_hire_main_con").style.width=(window.innerWidth)+"px";
+	_f("#SYS_hire_main_con").style.height=(window.innerHeight)+"px";
+	var i_am_code_2=function(){
+		console.log("")
+	}
+	var hookbar=function(id){
+		var bar_b=_f("#"+id);
+		var bar_l=_f("#"+id+"_left");
+		var bar_h=_f("#"+id+"_h");
+		var bar_r=_f("#"+id+"_right");
+		
+		var dragstart=function(e){
+			bar_b.addEventListener("mousemove",draggo,false);
+			bar_b.addEventListener("mouseout",dragover,false);
+		}
+		var gopos=function(pos){
+			bar_l.style.width=pos+"px";
+			bar_h.style.marginLeft=(pos-15)+"px";
+			bar_r.style.marginLeft=(pos)+"px";
+			bar_r.style.width=(300-pos)+"px";
+		}
+		var draggo=function(e){
+			var nnode=SYSLIB_style.globalposition(bar_b);
+			var pos=e.clientX-nnode.x;
+			if(pos>=300||pos<0){
+				return;
+			}
+			gopos(pos);
+		}
+		var dragover=function(e){
+			if(SYSLIB_dom.checkFather(this,e)){
+				draggo(e);
+				bar_b.removeEventListener("mousemove",draggo,false);
+				bar_b.removeEventListener("mouseout",dragover,false);
+			}
+		}
+		bar_b.addEventListener("click",dragover,false);
+		bar_b.addEventListener("mouseup",draggo,false);
+		
+		bar_b.addEventListener("mousedown",dragstart,false);
+		gopos(150);
+	}
+	hookbar("SYS_hire_bar_0");
+	hookbar("SYS_hire_bar_1");
+	hookbar("SYS_hire_bar_2");
+	_f("#SYS_hire_main_fp_next").addEventListener("click",function(){
+		
+
+		_f("#SYS_hire_main_fp").style.marginLeft="-100px";
+		_f("#SYS_hire_main_fp").style.opacity=0;
+		_f("#SYS_hire_main_you").style.display="block";
+		setTimeout(function(){
+			_f("#SYS_hire_main_fp").style.display="none";
+			_f("#SYS_hire_main_you").style.marginLeft="0px";
+			_f("#SYS_hire_main_you").style.opacity=1;
+			_f("#SYS_hire_main_you_next").style.opacity=0;
+		},600);
+	},false);
+	_f("#SYS_hire_main_you_next").addEventListener("click",function(){
+		if(!_f("#SYS_hire_form_name").value){
+			_c(_f("#SYS_hire_form_name")).add("ipterr");
+			return;
+		}
+		HIRE_FORM.name=_f("#SYS_hire_form_name").value;
+		if(!_f("#SYS_hire_form_college").value){
+			_c(_f("#SYS_hire_form_college")).add("ipterr");
+			return;
+		}
+		HIRE_FORM.college=_f("#SYS_hire_form_college").value;
+		
+		if(!_f("#SYS_hire_form_grade").value){
+			_c(_f("#SYS_hire_form_grade")).add("ipterr");
+			return;
+		}
+		HIRE_FORM.grade=_f("#SYS_hire_form_grade").value;
+
+
+		if(!_f("#SYS_hire_form_mobile").value||!_is(_f("#SYS_hire_form_mobile").value,"chinesemobile")){
+			_c(_f("#SYS_hire_form_mobile")).add("ipterr");
+			return;
+		}
+		HIRE_FORM.mobile=_f("#SYS_hire_form_mobile").value;
+
+		if(!_f("#SYS_hire_form_email").value||!_is(_f("#SYS_hire_form_email").value,"email")){
+			_c(_f("#SYS_hire_form_email")).add("ipterr");
+			return;
+		}
+		HIRE_FORM.email=_f("#SYS_hire_form_email").value;
+		
+		if(!_f("#SYS_hire_form_intro").value){
+			_c(_f("#SYS_hire_form_intro")).add("ipterr");
+			return;
+		}
+		HIRE_FORM.introduce=_f("#SYS_hire_form_intro").value;
+		
+		_f("#SYS_hire_main_you").style.marginLeft="-100px";
+		_f("#SYS_hire_main_you").style.opacity=0;
+		_f("#SYS_hire_main_skill").style.display="block";
+		setTimeout(function(){
+			_f("#SYS_hire_main_you").style.display="none";
+			_f("#SYS_hire_main_skill").style.marginLeft="0px";
+			_f("#SYS_hire_main_skill").style.opacity=1;
+		},600);
+	},false);
+	_f("#SYS_hire_main_skill_next").addEventListener("click",function(){
+		HIRE_FORM.product_or_dev=parseInt(_f("#SYS_hire_bar_0_left").style.width)/3;
+		HIRE_FORM.art_or_code=parseInt(_f("#SYS_hire_bar_1_left").style.width)/3;
+		HIRE_FORM.front_or_back=parseInt(_f("#SYS_hire_bar_2_left").style.width)/3;
+		HIRE_FORM.experience=_f("#SYS_hire_form_experience").value;
+		
+		_f("#SYS_hire_main_skill").style.marginLeft="-100px";
+		_f("#SYS_hire_main_skill").style.opacity=0;
+		_f("#SYS_hire_main_con").style.display="block";
+		setTimeout(function(){
+			_f("#SYS_hire_main_skill").style.display="none";
+			_f("#SYS_hire_main_con").style.marginLeft="0px";
+			_f("#SYS_hire_main_con").style.opacity=1;
+			start_send();
+		},600);
+	},false);
+	function rmThisErr(){
+		_c(this).remove("ipterr");
+	}
+	_f("#SYS_hire_form_name").addEventListener("keypress",rmThisErr,false);
+	_f("#SYS_hire_form_college").addEventListener("keypress",rmThisErr,false);
+	_f("#SYS_hire_form_grade").addEventListener("keypress",rmThisErr,false);
+	
+	_f("#SYS_hire_form_intro").addEventListener("keypress",rmThisErr,false);
+	_f("#SYS_hire_form_mobile").addEventListener("keypress",rmThisErr,false);
+	_f("#SYS_hire_form_email").addEventListener("keypress",rmThisErr,false);
+
+	_f("#SYS_hire_main_you_choose_male").addEventListener("click",function(){
+		//if(HIRE_FORM.gender){return;}
+		HIRE_FORM.gender=-1;
+
+		var exitNum = Math.random()
+		if (exitNum < 0.05){
+			exitFlag = true;
+		}
+		if (times > maxTimes || exitFlag){
+			alert("Game Over!");
+			return
+		}
+		property = getP(coMethod);
+		var t = Math.random();
+		if (t > property){
+			alert("You loss $-100");
+			addMoney = -100;
+			addRobotMoney = 300;
+			coMethod = 2;
+		}else{
+			alert("You got $200");
+			addMoney = 200;
+			addRobotMoney = 200;
+			coMethod = 1;
+		}
+		money = money + addMoney;
+		robotMoney = robotMoney + addRobotMoney;
+		restoreData(times,coMethod,addMoney,money,addRobotMoney,robotMoney)
+		times = times + 1;
+		var r = document.getElementById("SYS_LeftTop");
+		roundValue = "Round : "+times;
+		r.innerHTML = roundValue;
+		var title = document.getElementById("SYS_Button");
+		titleValue  = " You Money: "+money+"\t\t\tRobotMoney: $"+robotMoney;
+		title.innerHTML = titleValue;
+
+		start_send()
+		setTimeout(function(){
+			_f("#SYS_hire_main_you_infos").style.marginLeft="0px";
+			_f("#SYS_hire_main_you_infos").style.opacity=1;
+			_f("#SYS_hire_main_you_next").style.opacity=1;
+		},600);
+	},false);
+	_f("#SYS_hire_main_you_choose_female").addEventListener("click",function(){
+		//if(HIRE_FORM.gender){return;}
+		HIRE_FORM.gender=1;
+		//_f("#SYS_hire_main_you_choose_male").style.opacity=0;	
+		//_f("#SYS_hire_main_you_choose_female").style.textShadow='0px 0px 50px #63A7F0';
+		//_f("#SYS_hire_main_you_choose_female").style.cursor='default';
+		var exitNum = Math.random()
+		if (exitNum < 0.05){
+			exitFlag = true;
+		}
+		if (times > maxTimes || exitFlag){
+			alert("Game Over!");
+			return
+		}
+		property = getP(coMethod);
+		var t = Math.random();
+		if (t > property){
+			alert("You got $0");
+			addMoney = 0 ;
+			addRobotMoney = 0;
+			coMethod = 4;
+		}else{
+			alert("You got $300");
+			addMoney = 300;
+			addRobotMoney = -100;
+			coMethod = 3;
+		}
+		money = money + addMoney;
+		robotMoney = robotMoney + addRobotMoney;
+		restoreData(times,coMethod,addMoney,money,addRobotMoney,robotMoney)
+		times = times + 1
+		var r = document.getElementById("SYS_LeftTop");
+		roundValue = "Round : "+times;
+		r.innerHTML = roundValue;
+		var title = document.getElementById("SYS_Button");
+		titleValue  = " You Money: "+money+"&nbsp;&nbsp;&nbsp;&nbsp;RobotMoney: $"+robotMoney;
+		title.innerHTML = titleValue;
+
+		start_send()
+
+		setTimeout(function(){
+			_f("#SYS_hire_main_you_infos").style.marginRight="0px";
+			_f("#SYS_hire_main_you_infos").style.opacity=1;
+			_f("#SYS_hire_main_you_next").style.opacity=1;
+		},600);
+	},false);
+	function start_send(){
+		var csf = document.getElementsByName("csrfmiddlewaretoken")[0].value
+		SUBMIT_FORM["csrfmiddlewaretoken"] = csf;
+		_f("#SYS_hire_main_con_sending_words").innerHTML="正在发送...";
+		_f("#SYS_hire_main_con_sending_icon").innerHTML="&#xe096;";
+		_c(_f("#SYS_hire_main_con_sending_icon")).add("loading_rotate");
+
+		$.ajax({
+		   url: "getData",
+		   type: "POST",
+		   dataType: 'jsonp',
+		   data: SUBMIT_FORM,
+		   success: function (data) {
+		   		if (data.status===success) {
+		   			alert(data)
+				
+		   		}else{
+		   			alert("fdasjdklf");
+		   		}
+		   },
+		   error:function(){
+		   		alert("dfad");
+		   }
+		});
+
+	}
+	var err=function(){
+			_f("#SYS_hire_main_con_sending_words").innerHTML="报名出错了,请<b onclick='start_send()'>点击重试</b>";
+			_f("#SYS_hire_main_con_sending_icon").innerHTML="&#xe047;";
+			_c(_f("#SYS_hire_main_con_sending_icon")).remove("loading_rotate");
+	}
+	
+	///bg
+	if (!window.requestAnimationFrame) {
+	  window.requestAnimationFrame = (window.webkitRequestAnimationFrame ||
+									  window.mozRequestAnimationFrame ||
+									  window.msRequestAnimationFrame ||
+									  window.oRequestAnimationFrame ||
+									  function (callback) {
+										return window.setTimeout(callback, 17 /*~ 1000/60*/);
+									  });
+	}
+	if (!window.cancelAnimationFrame) {
+	  window.cancelAnimationFrame = (window.cancelRequestAnimationFrame ||
+									 window.webkitCancelAnimationFrame || window.webkitCancelRequestAnimationFrame ||
+									 window.mozCancelAnimationFrame || window.mozCancelRequestAnimationFrame ||
+									 window.msCancelAnimationFrame || window.msCancelRequestAnimationFrame ||
+									 window.oCancelAnimationFrame || window.oCancelRequestAnimationFrame ||
+									 window.clearTimeout);
+	}
+	window.utils = {};
+	window.utils.captureMouse = function (element) {
+		  var mouse = {x: 0, y: 0, event: null},
+			  body_scrollLeft = document.body.scrollLeft,
+			  element_scrollLeft = document.documentElement.scrollLeft,
+			  body_scrollTop = document.body.scrollTop,
+			  element_scrollTop = document.documentElement.scrollTop,
+			  offsetLeft = element.offsetLeft,
+			  offsetTop = element.offsetTop;
+		  
+		  element.addEventListener('mousemove', function (event) {
+			var x, y;
+			
+			if (event.pageX || event.pageY) {
+			  x = event.pageX;
+			  y = event.pageY;
+			} else {
+			  x = event.clientX + body_scrollLeft + element_scrollLeft;
+			  y = event.clientY + body_scrollTop + element_scrollTop;
+			}
+			x -= offsetLeft;
+			y -= offsetTop;
+			
+			mouse.x = x;
+			mouse.y = y;
+			mouse.event = event;
+		  }, false);
+		  
+		  return mouse;
+	};
+	window.utils.captureTouch = function (element) {
+		  var touch = {x: null, y: null, isPressed: false, event: null},
+			  body_scrollLeft = document.body.scrollLeft,
+			  element_scrollLeft = document.documentElement.scrollLeft,
+			  body_scrollTop = document.body.scrollTop,
+			  element_scrollTop = document.documentElement.scrollTop,
+			  offsetLeft = element.offsetLeft,
+			  offsetTop = element.offsetTop;
+		
+		  element.addEventListener('touchstart', function (event) {
+			touch.isPressed = true;
+			touch.event = event;
+		  }, false);
+		
+		  element.addEventListener('touchend', function (event) {
+			touch.isPressed = false;
+			touch.x = null;
+			touch.y = null;
+			touch.event = event;
+		  }, false);
+		  
+		  element.addEventListener('touchmove', function (event) {
+			var x, y,
+				touch_event = event.touches[0]; //first touch
+			
+			if (touch_event.pageX || touch_event.pageY) {
+			  x = touch_event.pageX;
+			  y = touch_event.pageY;
+			} else {
+			  x = touch_event.clientX + body_scrollLeft + element_scrollLeft;
+			  y = touch_event.clientY + body_scrollTop + element_scrollTop;
+			}
+			x -= offsetLeft;
+			y -= offsetTop;
+			
+			touch.x = x;
+			touch.y = y;
+			touch.event = event;
+		  }, false);
+		  
+		  return touch;
+	};
+
+	// filled color
+	window.utils.parseColor = function (color, toNumber) {
+		  if (toNumber === true) {
+			if (typeof color === 'number') {
+			  return (color | 0); //chop off decimal
+			}
+			if (typeof color === 'string' && color[0] === '#') {
+			  color = color.slice(1);
+			}
+			return window.parseInt(color, 16);
+		  } else {
+			if (typeof color === 'number') {
+			  color = '#' + ('00000' + (color | 0).toString(16)).substr(-6); //pad
+			}
+			return color;
+		  }
+	};
+	window.utils.colorToRGB = function (color, alpha) {
+		  //number in octal format or string prefixed with #
+		  if (typeof color === 'string' && color[0] === '#') {
+			color = window.parseInt(color.slice(1), 16);
+		  }
+		  alpha = (alpha === undefined) ? 1 : alpha;
+		  //parse hex values
+		  var r = color >> 16 & 0xff,
+			  g = color >> 8 & 0xff,
+			  b = color & 0xff,
+			  a = (alpha < 0) ? 0 : ((alpha > 1) ? 1 : alpha);
+		  //only use 'rgba' if needed
+		  if (a === 1) {
+			return "rgb("+ r +","+ g +","+ b +")";
+		  } else {
+			return "rgba("+ r +","+ g +","+ b +","+ a +")";
+		  }
+	};
+	window.utils.containsPoint = function (rect, x, y) {
+  		  return !(x < rect.x ||
+			   x > rect.x + rect.width ||
+			   y < rect.y ||
+			   y > rect.y + rect.height);
+	};
+	window.utils.intersects = function (rectA, rectB) {
+		  return !(rectA.x + rectA.width < rectB.x ||
+				   rectB.x + rectB.width < rectA.x ||
+				   rectA.y + rectA.height < rectB.y ||
+				   rectB.y + rectB.height < rectA.y);
+	};
+	function Ball (radius, color) {
+		  if (radius === undefined) { radius = 40; }
+		  if (color === undefined) { color = "#ff0000"; }
+		  this.x = 0;
+		  this.y = 0;
+		  this.radius = radius;
+		  this.vx = 0;
+		  this.vy = 0;
+		  this.mass = 1;
+		  this.rotation = 0;
+		  this.scaleX = 1;
+		  this.scaleY = 1;
+		  this.color = utils.parseColor(color);
+		  this.lineWidth = 1;
+	}
+	
+	Ball.prototype.draw = function (context) {
+		  context.save();
+		  context.translate(this.x, this.y);
+		  context.rotate(this.rotation);
+		  context.scale(this.scaleX, this.scaleY);
+		  
+		  context.lineWidth = this.lineWidth;
+		  context.fillStyle = this.color;
+		  context.beginPath();
+		  //x, y, radius, start_angle, end_angle, anti-clockwise
+		  context.arc(0, 0, this.radius, 0, (Math.PI * 2), true);
+		  context.closePath();
+		  context.fill();
+		  if (this.lineWidth > 0) {
+			context.stroke();
+		  }
+		  context.restore();
+	};
+	
+	Ball.prototype.getBounds = function () {
+		  return {
+			x: this.x - this.radius,
+			y: this.y - this.radius,
+			width: this.radius * 2,
+			height: this.radius * 2
+		  };
+	};
+	function draw_bg(){
+		var canvas = document.getElementById('SYS_bg'),
+          context = canvas.getContext('2d'),
+          particles = [],
+          numParticles = 50,
+          minDist = 100,
+          springAmount = 0.0005;
+		canvas.width=window.innerWidth;
+		canvas.height=window.innerHeight;
+      for (var size, particle, i = 0; i < numParticles; i++) {
+        size = Math.random() * 10 + 2;
+        particle = new Ball(size, "#404040");
+        particle.x = Math.random() * canvas.width;
+        particle.y = Math.random() * canvas.height;
+        particle.vx = Math.random() * 0.5 - 0.25;
+        particle.vy = Math.random() * 0.5 - 0.25;
+        particle.mass = size*20;
+        particles.push(particle);
+      }
+
+	numParticles2=20;
+ 	for (var size, particle, i = 0; i < numParticles2; i++) {
+        size = Math.random() * 10 + 2;
+        particle = new Ball(size, "#63A7F0");
+        particle.x = Math.random() * canvas.width;
+        particle.y = Math.random() * canvas.height;
+        particle.vx = Math.random() * 0.5 - 0.25;
+        particle.vy = Math.random() * 0.5 - 0.25;
+        particle.mass = size*20;
+        particles.push(particle);
+      }
+
+
+
+      
+      function spring (partA, partB) {
+        var dx = partB.x - partA.x,
+            dy = partB.y - partA.y,
+            dist = Math.sqrt(dx * dx + dy * dy);
+        
+        if (dist < minDist) {
+          var alpha = 1 - dist / minDist;
+          context.strokeStyle = utils.colorToRGB("#404040", alpha);
+          context.beginPath();
+          context.moveTo(partA.x, partA.y);
+          context.lineTo(partB.x, partB.y);
+          context.stroke();
+          
+          var ax = dx * springAmount,
+              ay = dy * springAmount;
+          partA.vx += ax / partA.mass;
+          partA.vy += ay / partA.mass;
+          partB.vx -= ax / partB.mass;
+          partB.vy -= ay / partB.mass;
+        }
+      }
+
+      function move (partA, i) {
+        partA.x += partA.vx;
+        partA.y += partA.vy;
+        if (partA.x > canvas.width) {
+          partA.x = 0;
+        } else if (partA.x < 0) {
+          partA.x = canvas.width;
+        }
+        if (partA.y > canvas.height) {
+          partA.y = 0;
+        } else if (partA.y < 0) {
+          partA.y = canvas.height;
+        }
+        for (var partB, j = i + 1; j < numParticles+numParticles2; j++) {
+          partB = particles[j];
+          spring(partA, partB);
+        }
+      }
+      function draw (particle) {
+        particle.draw(context);
+      }
+	  var then = Date.now();
+	  var first = then;
+	  var counter = 0;
+	  var fps = 0;
+      (function drawFrame () {
+        window.requestAnimationFrame(drawFrame, canvas);
+		now = Date.now();
+		delta = now - then;
+		then = now;
+		var time_el = (now-first)/1000;
+		counter++;
+		fps=Math.floor((counter/time_el));
+		_f("#SYS_fps").innerHTML=fps+" fps";
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        
+        particles.forEach(move);
+        particles.forEach(draw);
+      }());
+	}
+
+	
+		_f("#SYS_hire_main_fp_next").innerHTML='&#x3d;';
+		_c(_f("#SYS_hire_main_fp_next")).remove("loading_rotate");
+		
+	window.onload=function(){_c(_f("#SYS_hire_main_fp")).add("ani"),_c(_f("#SYS_hire_main_you")).add("ani"),_c(_f("#SYS_hire_main_skill")).add("ani"),_c(_f("#SYS_hire_main_con")).add("ani"),draw_bg(),_f("#SYS_bg").style.opacity=1}
+	
+	</script>
+</html>
+
+
