@@ -30,13 +30,3 @@ class Player(models.Model):
     finalRobotScore = models.IntegerField(null=True )
     def date_format(self):
         self.uploadTime = self.uploadTime.strftime("%Y-%m-%d")
-
-
-class PersonInfo(models.Model):
-    userID = models.CharField(max_length = 100),
-    """trueName = models.CharField(max_length = 100),
-                isTrueName = models.IntegerField(),
-                uploadTime = models.DateTimeField(),
-                finalScore = models.IntegerField(null=True ),
-                finalRobotScore = models.IntegerField(null=True )"""
-

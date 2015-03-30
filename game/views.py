@@ -115,3 +115,17 @@ def sInfo(request):
 
 def rule(request):
 	return render(request,"rule.html")
+
+def sName(request):
+	try:
+		Uid = request.session['Uid']
+		singlePlayer = Player.objects.get(Uid=Uid)
+	except:
+		return HttpResponse("No user")
+	singlePlayer.isTrueName = 1
+	singlePlayer.trueName = request.POST.get("username")
+	singlePlayer.save()
+	return HttpResponseRedirect("top")
+
+def top(request):
+	return render(request,"top.html")

@@ -16,6 +16,13 @@
 	<h1>Game Over</h1>
 	<h4>The average points: {{averagePoint}}</h4>
 	<h4>The rank of U is {{abovePersonNum}}</h4>
+	<form method="post" action="sName">
+		{% csrf_token %}
+		<h4>Would U like save Ur Name?</h4> 
+		<input name="username" >
+		<input type="submit" value="submit">
+	</form>
+	
 	<div class='table' id="graph">Loading...</div>
 
 
