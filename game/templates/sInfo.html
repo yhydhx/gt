@@ -17,6 +17,7 @@
 	var b = {{robotData}}
 	var maxX = {{maxX}}
 	var maxY = {{maxY}}
+	var minY = {{minY}}
 	var myChart = new JSChart('graph', 'line');
 	myChart.setTitle("Result");
 	myChart.setDataArray({{humanData}}, 'blue');
@@ -24,7 +25,7 @@
 	//myChart.setDataArray([[1, 150],[2, 25],[3, 100],[4, 80],[5, 20],[6, 65],[7, 0],[8, 155],[9, 190],[10, 200]], 'gray');
 	myChart.setSize(960, 400);
 	myChart.setAxisValuesNumberY(5);
-	myChart.setIntervalStartY(0);
+	myChart.setIntervalStartY(minY);
 	myChart.setIntervalEndY(maxY);
 	for(var i = 0; i < 5; i++){
 		tmpNum = maxX / 5 * (i +1);

@@ -76,4 +76,4 @@ def sInfo(request):
 			minY = element.robotMoney
 
 	maxX = element.times
-	return render(request,'sInfo.html',{"humanData":humanData,"robotData":robotData,'maxY':maxY,'maxX':maxX})
+	return render(request,'sInfo.html',{"humanData":humanData,"robotData":robotData,'maxY':maxY,'maxX':maxX,'minY':minY})
