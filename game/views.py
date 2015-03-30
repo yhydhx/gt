@@ -44,3 +44,36 @@ def getData(request):
 		return HttpResponse("success!")
 	else:
 		return HttpResponse("failed!")
+
+def sInfo(request):
+	"""
+		Drow the picture of the process
+	"""
+	try:
+		Uid = request.session['Uid']
+		process = Process.objects.filter(Uid=Uid)
+	except:
+		return HttpResponse("Please Play the Game first!!~")
+	humanData = [[0,0]]
+	robotData = [[0,0]]
+	maxY = 0
+	minY = 0
+	maxX = 0
+
+	for element in process:
+		tmpArr = [element.times,element.money]
+		humanData.append(tmpArr)
+		tmpArr = [element.times,element.robotMoney]
+		robotData.append(tmpArr)
+		'''find the maxY and minY'''
+		if element.money > maxY:
+			maxY = element.money
+		if element.money < minY:
+			minY = element.money
+		if element.robotMoney > maxY:
+			maxY = element.robotMoney
+		if element.robotMoney < minY:
+			minY = element.robotMoney
+
+	maxX = element.times
+	return render(request,'sInfo.html',{"humanData":humanData,"robotData":robotData,'maxY':maxY,'maxX':maxX})

@@ -496,7 +496,7 @@ font-size: 24px;
 <script src="{% static 'game/js/base.full.js' %}"></script>
 <script type="text/javascript">
 	var money = 0
-	var times = 0
+	var times = 1
 	var maxTimes = 30
 	var exitFlag = false
 	var coMethod = 1
@@ -722,6 +722,7 @@ font-size: 24px;
 		}
 		if (times > maxTimes || exitFlag){
 			alert("Game Over!");
+			window.location.href = "sInfo";
 			return
 		}
 		property = getP(coMethod);
@@ -767,6 +768,7 @@ font-size: 24px;
 		}
 		if (times > maxTimes || exitFlag){
 			alert("Game Over!");
+			window.location.href = "sInfo";
 			return
 		}
 		property = getP(coMethod);
