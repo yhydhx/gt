@@ -1137,8 +1137,8 @@ SYSLIB_error.getstring=function(errcode,$erript){
 		return $tys;
 	}
 }
-SYSLIB.includePath="assert/js/base/";
-SYSLIB.include("error.code.js");
+//SYSLIB.includePath="js/js/base/";
+//SYSLIB.include("error.code.js");
 //DOM
 var SYSLIB_vilade=SYSLIB.namespace("syslib.vilade");
 SYSLIB_vilade.viladelist={
