@@ -12,8 +12,20 @@ import hashlib, time, random
 
 
 def index(request):
+	#regist a user automatically 
+
 	Uid = time.time()
 	request.session['Uid'] = Uid
+	#get the user IP
+	try:
+	    real_ip = request.META['HTTP_X_FORWARDED_FOR']
+	    regip = real_ip.split(",")[0]
+	except:
+	    try:
+	        regip = request.META['REMOTE_ADDR']
+	    except:
+	        regip = ""
+	request.session['clientIP'] = regip
 	return render(request, 'index.html')
 
 def getData(request):
@@ -28,6 +40,7 @@ def getData(request):
 		humanChoose = request.POST.get("humanChoose")
 		robotChoose = request.POST.get("robotChoose")
 		processDate = datetime.datetime.now()
+		clientIP = request.session['clientIP']
 		process = Process(
 			Uid = Uid,
 			times = times,
@@ -39,6 +52,7 @@ def getData(request):
 			humanChoose = humanChoose,
 			robotChoose = robotChoose,
 			processDate = processDate,
+			clientIP = clientIP,
 		)
 		process.save()
 		return HttpResponse("success!")
@@ -76,4 +90,26 @@ def sInfo(request):
 			minY = element.robotMoney
 
 	maxX = element.times
-	return render(request,'sInfo.html',{"humanData":humanData,"robotData":robotData,'maxY':maxY,'maxX':maxX,'minY':minY})
+	'''
+	 Show the result of the game
+	'''
+	#save the player info
+	singlePlayer = Player.objects.get(Uid=Uid)
+	if singlePlayer is None:
+		singlePlayer = Player(
+			Uid = Uid,
+			trueName = "",
+		    isTrueName = 0,
+		    finalScore = humanData[-1][1],
+		    finalRobotScore = robotData[-1][1],
+		    uploadTime = datetime.datetime.now()
+		)
+		singlePlayer.save()
+
+
+	abovePerson = Player.objects.filter(finalScore__gt=singlePlayer.finalScore)
+	abovePersonNum = len(abovePerson)+1
+	return render(request,'sInfo.html',{"humanData":humanData,"robotData":robotData,'maxY':maxY,'maxX':maxX,'minY':minY,'abovePersonNum':abovePersonNum})
+
+def rule(request):
+	return render(request,"rule.html")
