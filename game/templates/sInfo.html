@@ -5,11 +5,20 @@
 <title>Result</title>
 
 <script type="text/javascript" src="{%  static  'game/js/jscharts.js' %}"></script>
+<style>
 
+
+.table{text-align:center}
+</style>
 </head>
 <body>
 
-<div id="graph">Loading...</div>
+	<h1>Game Over</h1>
+	<h4>The average points: {{averagePoint}}</h4>
+	<h4>The rank of U is {{abovePersonNum}}</h4>
+	<div class='table' id="graph">Loading...</div>
+
+
 
 
 <script type="text/javascript">
@@ -60,3 +69,4 @@
 
 </body>
 </html>
+

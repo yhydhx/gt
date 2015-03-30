@@ -94,8 +94,9 @@ def sInfo(request):
 	 Show the result of the game
 	'''
 	#save the player info
-	singlePlayer = Player.objects.get(Uid=Uid)
-	if singlePlayer is None:
+	try:
+		singlePlayer = Player.objects.get(Uid=Uid)
+	except:
 		singlePlayer = Player(
 			Uid = Uid,
 			trueName = "",
@@ -109,7 +110,8 @@ def sInfo(request):
 
 	abovePerson = Player.objects.filter(finalScore__gt=singlePlayer.finalScore)
 	abovePersonNum = len(abovePerson)+1
-	return render(request,'sInfo.html',{"humanData":humanData,"robotData":robotData,'maxY':maxY,'maxX':maxX,'minY':minY,'abovePersonNum':abovePersonNum})
+	averagePoint = singlePlayer.finalScore / maxX 
+	return render(request,'sInfo.html',{"humanData":humanData,"robotData":robotData,'maxY':maxY,'maxX':maxX,'minY':minY,'abovePersonNum':abovePersonNum,"averagePoint":averagePoint})
 
 def rule(request):
 	return render(request,"rule.html")
