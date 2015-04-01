@@ -147,5 +147,6 @@ def top(request):
 		else:
 			singleData['trueName'] = "NoName"
 		data.append(singleData)
-		
+		rankNum += 1
+
 	return render(request,"top.html",{"data":data})
