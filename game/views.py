@@ -103,7 +103,8 @@ def sInfo(request):
 		    isTrueName = 0,
 		    finalScore = humanData[-1][1],
 		    finalRobotScore = robotData[-1][1],
-		    uploadTime = datetime.datetime.now()
+		    uploadTime = datetime.datetime.now(),
+		    rounds = maxX,
 		)
 		singlePlayer.save()
 
@@ -128,4 +129,23 @@ def sName(request):
 	return HttpResponseRedirect("top")
 
 def top(request):
-	return render(request,"top.html")
+	data = []
+	allPlayer = Player.objects.all()
+	rankNum = 1
+	for element in allPlayer:
+		singleData = {}
+		singleData['rank'] = rankNum
+		if element.rounds == None:
+			singleProcss = Process.objects.filter(Uid = element.Uid)
+			singleData['rounds'] = len(singleProcss)
+		else:
+			singleData['rounds'] = element.rounds
+		singleData['averageMoney'] = element.finalScore
+		singleData['averageRobotMoney'] = element.finalRobotScore
+		if element.isTrueName == 1:
+			singleData['trueName'] = element.trueName
+		else:
+			singleData['trueName'] = "NoName"
+		data.append(singleData)
+		
+	return render(request,"top.html",{"data":data})

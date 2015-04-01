@@ -28,6 +28,7 @@ class Player(models.Model):
     uploadTime = models.DateTimeField()
     finalScore = models.IntegerField(null=True )
     finalRobotScore = models.IntegerField(null=True )
+    rounds = models.IntegerField(null=True)
     def date_format(self):
         self.uploadTime = self.uploadTime.strftime("%Y-%m-%d")
 
