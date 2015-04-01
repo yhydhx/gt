@@ -140,8 +140,8 @@ def top(request):
 			singleData['rounds'] = len(singleProcss)
 		else:
 			singleData['rounds'] = element.rounds
-		singleData['averageMoney'] = element.finalScore
-		singleData['averageRobotMoney'] = element.finalRobotScore
+		singleData['averageMoney'] = element.finalScore / singleData['rounds']
+		singleData['averageRobotMoney'] = element.finalRobotScore / singleData['rounds']
 		if element.isTrueName == 1:
 			singleData['trueName'] = element.trueName
 		else:
