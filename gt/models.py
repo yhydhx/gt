@@ -30,3 +30,13 @@ class Player(models.Model):
     finalRobotScore = models.IntegerField(null=True )
     def date_format(self):
         self.uploadTime = self.uploadTime.strftime("%Y-%m-%d")
+
+class Rule(models.Model):
+    ruleName = models.CharField(max_length = 100)
+    p1 = models.FloatField()
+    p2 = models.FloatField()
+    p3 = models.FloatField()
+    p4 = models.FloatField()
+    maxRound = models.IntegerField()
+    minRound = models.IntegerField()
+    w = models.FloatField()
