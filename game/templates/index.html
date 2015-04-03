@@ -200,7 +200,7 @@ width: 500px;
 
 #SYS_Button {
 	position: absolute;
-	top: 90%;
+	top: 65%;
 	left: 33%;
 	font-size: 48px;
 }
@@ -390,8 +390,7 @@ font-size: 24px;
 	<div id="SYS_hire_main_fp" onselectstart="return false;">
     	<center id="SYS_hire_main_fp_main">
         	<div id="SYS_hire_main_fp_logo" class="ani">欢迎参加</br>囚徒困境游戏！</div>
-            <div id="SYS_hire_main_fp_us">每一次游戏正式开始前，您会被随机匹配到我们团队某一名老师/同学的电脑上，</br>与对方进行囚徒困境的博弈游戏。系统将通过每一轮中您们各自</br>的策略选择，来决定您们获得的分数。
-游戏规则：</div>
+            <div id="SYS_hire_main_fp_us">每一次游戏正式开始前，您会被匹配到一个计算机程序策略，</br>与对方进行囚徒困境的博弈游戏。系统将通过每一轮中您们各自</br>的策略选择，来决定您们获得的分数。</div>
             <div id="SYS_hire_main_fp_about">
             	<a href="rule" target="_blank" >游戏规则</a><br/>
                
@@ -401,7 +400,7 @@ font-size: 24px;
     </div>
     <div id="SYS_hire_main_you">
     	<div id="SYS_hire_main_you_title"  onselectstart="return false;">Do you want cooperate?</div>
-    	<div id="SYS_Button" >Money </div>
+    	<div id="SYS_Button" > </div>
     	<div id="SYS_LeftTop"> Round </div>
         <div id="SYS_hire_main_you_choose"  onselectstart="return false;">
         	<div id="SYS_hire_main_you_choose_male"  class="ani" type="SYS_hire_gen">✔</div>
@@ -718,7 +717,7 @@ font-size: 24px;
 		HIRE_FORM.gender=-1;
 
 		var exitNum = Math.random()
-		if (exitNum < 0.02){
+		if (exitNum < 0){
 			exitFlag = true;
 		}
 		if (times > maxTimes || exitFlag){
@@ -729,12 +728,12 @@ font-size: 24px;
 		property = getP(coMethod);
 		var t = Math.random();
 		if (t > property){
-			alert("You loss $-100");
+			
 			addMoney = -100;
 			addRobotMoney = 300;
 			coMethod = 3;
 		}else{
-			alert("You got $200");
+			
 			addMoney = 200;
 			addRobotMoney = 200;
 			coMethod = 1;
@@ -742,14 +741,15 @@ font-size: 24px;
 		money = money + addMoney;
 		robotMoney = robotMoney + addRobotMoney;
 		restoreData(times,coMethod,addMoney,money,addRobotMoney,robotMoney)
-		times = times + 1;
+
 		var r = document.getElementById("SYS_LeftTop");
 		roundValue = "Round : "+times;
 		r.innerHTML = roundValue;
 		var title = document.getElementById("SYS_Button");
-		titleValue  = " You Money: "+money+"\t\t\tRobotMoney: $"+robotMoney;
-		title.innerHTML = titleValue;
 
+		titleValue  = '<table><tbody style="margin: 0 auto" align="center" >	<thead>		<tr>			<th></th>			<th><a title="Team ame" >This Round</a></th>			<th><span title="Games Played">&nbsp;&nbsp;&nbsp;Average</span></th>		</tr>	</thead></br>	        <tr>				<td>Your Money</td>				<td>'+(addMoney).toFixed(2)+'</td>				<td>&nbsp;&nbsp;&nbsp;'+(money/times).toFixed(2)+'</td>			</tr>			<tr>			<td>RobotsMoney</td>				<td>'+(addRobotMoney).toFixed(2)+'</td>				<td>&nbsp;&nbsp;&nbsp;'+(robotMoney/times).toFixed(2)+'</td>			</tr></tbody></table>';
+		title.innerHTML = titleValue;
+		times = times + 1;
 		start_send()
 		setTimeout(function(){
 			_f("#SYS_hire_main_you_infos").style.marginLeft="0px";
@@ -764,7 +764,7 @@ font-size: 24px;
 		//_f("#SYS_hire_main_you_choose_female").style.textShadow='0px 0px 50px #63A7F0';
 		//_f("#SYS_hire_main_you_choose_female").style.cursor='default';
 		var exitNum = Math.random()
-		if (exitNum < 0.05){
+		if (exitNum < 0){
 			exitFlag = true;
 		}
 		if (times > maxTimes || exitFlag){
@@ -775,12 +775,12 @@ font-size: 24px;
 		property = getP(coMethod);
 		var t = Math.random();
 		if (t > property){
-			alert("You got $0");
+		
 			addMoney = 0 ;
 			addRobotMoney = 0;
 			coMethod = 4;
 		}else{
-			alert("You got $300");
+	
 			addMoney = 300;
 			addRobotMoney = -100;
 			coMethod = 2;
@@ -788,14 +788,14 @@ font-size: 24px;
 		money = money + addMoney;
 		robotMoney = robotMoney + addRobotMoney;
 		restoreData(times,coMethod,addMoney,money,addRobotMoney,robotMoney)
-		times = times + 1
+
 		var r = document.getElementById("SYS_LeftTop");
 		roundValue = "Round : "+times;
 		r.innerHTML = roundValue;
 		var title = document.getElementById("SYS_Button");
-		titleValue  = " You Money: "+money+"&nbsp;&nbsp;&nbsp;&nbsp;RobotMoney: $"+robotMoney;
+		titleValue  = '<table><tbody style="margin: 0 auto" align="center" >	<thead>		<tr>			<th></th>			<th><a title="Team ame" >This Round</a></th>			<th><span title="Games Played">&nbsp;&nbsp;&nbsp;Average</span></th>		</tr>	</thead></br>	        <tr>				<td>Your Money</td>				<td>'+(addMoney).toFixed(2)+'</td>				<td>&nbsp;&nbsp;&nbsp;'+(money/times).toFixed(2)+'</td>			</tr>			<tr>			<td>RobotsMoney</td>				<td>'+(addRobotMoney).toFixed(2)+'</td>				<td>&nbsp;&nbsp;&nbsp;'+(robotMoney/times).toFixed(2)+'</td>			</tr></tbody></table>';
 		title.innerHTML = titleValue;
-
+		times = times + 1
 		start_send()
 
 		setTimeout(function(){

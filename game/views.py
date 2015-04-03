@@ -65,29 +65,34 @@ def sInfo(request):
 	"""
 	try:
 		Uid = request.session['Uid']
-		process = Process.objects.filter(Uid=Uid)
+		process = Process.objects.filter(Uid=Uid).order_by("times")
 	except:
 		return HttpResponse("Please Play the Game first!!~")
 	humanData = [[0,0]]
 	robotData = [[0,0]]
 	maxY = 0
 	minY = 0
-	maxX = 0
+	maxX = len(process)
+
 
 	for element in process:
-		tmpArr = [element.times,element.money]
+		tmpArr = [element.times,element.money/element.times]
 		humanData.append(tmpArr)
-		tmpArr = [element.times,element.robotMoney]
+		tmpArr = [element.times,element.robotMoney/element.times]
 		robotData.append(tmpArr)
 		'''find the maxY and minY'''
-		if element.money > maxY:
-			maxY = element.money
-		if element.money < minY:
-			minY = element.money
-		if element.robotMoney > maxY:
-			maxY = element.robotMoney
-		if element.robotMoney < minY:
-			minY = element.robotMoney
+		element.money = float(element.money)
+		element.robotMoney = float(element.robotMoney)
+		if element.money/element.times > maxY:
+			maxY = element.money/element.times 
+		if element.money/element.times  < minY:
+			minY = element.money/element.times 
+		if element.robotMoney/element.times  > maxY:
+			maxY = element.robotMoney/element.times 
+		if element.robotMoney/element.times  < minY:
+			minY = element.robotMoney/element.times 
+		element.averageMoney = round(element.money/element.times,2)
+		element.averageRobotMoney = round(element.robotMoney/element.times,2)
 
 	maxX = element.times
 	'''
@@ -101,8 +106,8 @@ def sInfo(request):
 			Uid = Uid,
 			trueName = "",
 		    isTrueName = 0,
-		    finalScore = humanData[-1][1],
-		    finalRobotScore = robotData[-1][1],
+		    finalScore = element.money,
+		    finalRobotScore = element.robotMoney,
 		    uploadTime = datetime.datetime.now(),
 		    rounds = maxX,
 		)
@@ -112,7 +117,7 @@ def sInfo(request):
 	abovePerson = Player.objects.filter(finalScore__gt=singlePlayer.finalScore)
 	abovePersonNum = len(abovePerson)+1
 	averagePoint = singlePlayer.finalScore / maxX 
-	return render(request,'sInfo.html',{"humanData":humanData,"robotData":robotData,'maxY':maxY,'maxX':maxX,'minY':minY,'abovePersonNum':abovePersonNum,"averagePoint":averagePoint})
+	return render(request,'sInfo.html',{"humanData":humanData,"robotData":robotData,'maxY':maxY,'maxX':maxX,'minY':minY,'abovePersonNum':abovePersonNum,"averagePoint":averagePoint,'process':process})
 
 def rule(request):
 	return render(request,"rule.html")
@@ -147,7 +152,6 @@ def top(request):
 		else:
 			singleData['trueName'] = "NoName"
 		data.append(singleData)
-		
 		rankNum += 1
 
 	return render(request,"top.html",{"data":data})

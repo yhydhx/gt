@@ -5,28 +5,59 @@
 <title>Result</title>
 
 <script type="text/javascript" src="{%  static  'game/js/jscharts.js' %}"></script>
-<style>
 
 
-.table{text-align:center}
-</style>
 </head>
 <body>
 
 	<h1>Game Over</h1>
-	<h4>The average points: {{averagePoint}}</h4>
-	<h4>The rank of U is {{abovePersonNum}}</h4>
+
 	<form method="post" action="sName">
 		{% csrf_token %}
-		<h4>Would U like save Ur Name?</h4> 
+		<h4>Would you like save your name?</h4> 
 		<input name="username" >
 		<input type="submit" value="submit">
 	</form>
 	
+	<h4>Your average money: {{averagePoint}}</h4>
+	<h4>The rank of you is {{abovePersonNum}}</h4>
+
+	
 	<div class='table' id="graph">Loading...</div>
 
+<table>
+<tbody id="offmain">
+	<thead>
 
+		<tr>
+			<th>Round</th>
+			<th><a title="Team Name" >YourMoney</a></th>
+			<th><span title="Games Played">RobotMoney</span></th>
+			<th><a title="Total Yards" >YourAverageMoney</a></th>
+			<th><a title="Points Per Game" >RobotAverageMoney</a></th>
+		</tr>
+	</thead>
+</br>
+	{% block content %}
+    
+        {% for publisher in process %}
+	        <tr>
+				<td>{{publisher.times}}</td>
+				<td>{{publisher.money}}</td>
+				<td>{{publisher.robotMoney}}</td>
+				<td>{{publisher.averageMoney }}</td>
+				<td>{{publisher.averageRobotMoney}}</td>
 
+			</tr>
+            	
+			
+        {% endfor %}
+
+	{% endblock %}
+
+</tbody>
+
+</table>
 
 <script type="text/javascript">
 	var a = {{humanData}}
@@ -53,16 +84,10 @@
 	myChart.setAxisValuesColor('#454545');
 	myChart.setLineColor('#A4D314', 'green');
 	myChart.setLineColor('#BBBBBB', 'gray');
-	myChart.setTooltip([1,' ']);
-	myChart.setTooltip([2,' ']);
-	myChart.setTooltip([3,' ']);
-	myChart.setTooltip([4,' ']);
-	myChart.setTooltip([5,' ']);
-	myChart.setTooltip([6,' ']);
-	myChart.setTooltip([7,' ']);
-	myChart.setTooltip([8,' ']);
-	myChart.setTooltip([9,' ']);
-	myChart.setTooltip([10,' ']);
+	for(var i = 1; i<= {{maxX}};i++){
+		myChart.setTooltip([i," "])
+	}
+
 	myChart.setFlagColor('#9D16FC');
 	myChart.setFlagRadius(4);
 	myChart.setAxisPaddingRight(100);
