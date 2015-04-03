@@ -205,6 +205,13 @@ width: 500px;
 	font-size: 48px;
 }
 
+#SYS_Choice {
+	position: absolute;
+	top: 17%;
+	text-align: center;
+	width: 100%;
+	font-size: 35px;
+}
 #SYS_LeftTop {
 	position: absolute;
 	top: 20px;
@@ -401,6 +408,7 @@ font-size: 24px;
     <div id="SYS_hire_main_you">
     	<div id="SYS_hire_main_you_title"  onselectstart="return false;">Do you want cooperate?</div>
     	<div id="SYS_Button" > </div>
+    	<div id="SYS_Choice" > </div>
     	<div id="SYS_LeftTop"> Round </div>
         <div id="SYS_hire_main_you_choose"  onselectstart="return false;">
         	<div id="SYS_hire_main_you_choose_male"  class="ani" type="SYS_hire_gen">✔</div>
@@ -513,6 +521,30 @@ font-size: 24px;
 				return 0.5;
 
 		}
+	}
+	function showTheLastChoice(coMethod){
+		var choice = document.getElementById("SYS_Choice")
+		var choiceArr = new Array(2)
+		switch(coMethod){
+			case 1:
+				choiceArr[0] = '✔';
+				choiceArr[1] = '✔';
+				break;
+			case 2:
+				choiceArr[0] = '✖';
+				choiceArr[1] = '✔';
+				break;
+			case 3:
+				choiceArr[0] = '✔';
+				choiceArr[1] = '✖';
+				break;
+			case 4:
+				choiceArr[0] = '✖';
+				choiceArr[1] = '✖';
+				break;
+		}
+		choiceValue = "Last time: Your Choice is "+choiceArr[0]+ "Robot Choice is "+ choiceArr[1];
+		choice.innerHTML = choiceValue;
 	}
 	function restoreData(times,coMethod,addMoney,money,addRobotMoney,robotMoney){
 		SUBMIT_FORM['times'] = times;
@@ -747,10 +779,11 @@ font-size: 24px;
 		r.innerHTML = roundValue;
 		var title = document.getElementById("SYS_Button");
 
-		titleValue  = '<table><tbody style="margin: 0 auto" align="center" >	<thead>		<tr>			<th></th>			<th><a title="Team ame" >This Round</a></th>			<th><span title="Games Played">&nbsp;&nbsp;&nbsp;Average</span></th>		</tr>	</thead></br>	        <tr>				<td>Your Money</td>				<td>'+(addMoney).toFixed(2)+'</td>				<td>&nbsp;&nbsp;&nbsp;'+(money/times).toFixed(2)+'</td>			</tr>			<tr>			<td>RobotsMoney</td>				<td>'+(addRobotMoney).toFixed(2)+'</td>				<td>&nbsp;&nbsp;&nbsp;'+(robotMoney/times).toFixed(2)+'</td>			</tr></tbody></table>';
+		titleValue  = '<table><tbody style="margin: 0 auto" align="center" >	<thead>		<tr>			<th></th>			<th><a title="Team ame" >Last Round</a></th>			<th><span title="Games Played">&nbsp;&nbsp;&nbsp;Average</span></th>		</tr>	</thead></br>	        <tr>				<td>Your Money</td>				<td>'+(addMoney).toFixed(2)+'</td>				<td>&nbsp;&nbsp;&nbsp;'+(money/times).toFixed(2)+'</td>			</tr>			<tr>			<td>RobotsMoney</td>				<td>'+(addRobotMoney).toFixed(2)+'</td>				<td>&nbsp;&nbsp;&nbsp;'+(robotMoney/times).toFixed(2)+'</td>			</tr></tbody></table>';
 		title.innerHTML = titleValue;
 		times = times + 1;
-		start_send()
+		start_send();
+		showTheLastChoice(coMethod);
 		setTimeout(function(){
 			_f("#SYS_hire_main_you_infos").style.marginLeft="0px";
 			_f("#SYS_hire_main_you_infos").style.opacity=1;
@@ -793,11 +826,11 @@ font-size: 24px;
 		roundValue = "Round : "+times;
 		r.innerHTML = roundValue;
 		var title = document.getElementById("SYS_Button");
-		titleValue  = '<table><tbody style="margin: 0 auto" align="center" >	<thead>		<tr>			<th></th>			<th><a title="Team ame" >This Round</a></th>			<th><span title="Games Played">&nbsp;&nbsp;&nbsp;Average</span></th>		</tr>	</thead></br>	        <tr>				<td>Your Money</td>				<td>'+(addMoney).toFixed(2)+'</td>				<td>&nbsp;&nbsp;&nbsp;'+(money/times).toFixed(2)+'</td>			</tr>			<tr>			<td>RobotsMoney</td>				<td>'+(addRobotMoney).toFixed(2)+'</td>				<td>&nbsp;&nbsp;&nbsp;'+(robotMoney/times).toFixed(2)+'</td>			</tr></tbody></table>';
+		titleValue  = '<table><tbody style="margin: 0 auto" align="center" >	<thead>		<tr>			<th></th>			<th><a title="Team ame" >Last Round</a></th>			<th><span title="Games Played">&nbsp;&nbsp;&nbsp;Average</span></th>		</tr>	</thead></br>	        <tr>				<td>Your Money</td>				<td>'+(addMoney).toFixed(2)+'</td>				<td>&nbsp;&nbsp;&nbsp;'+(money/times).toFixed(2)+'</td>			</tr>			<tr>			<td>RobotsMoney</td>				<td>'+(addRobotMoney).toFixed(2)+'</td>				<td>&nbsp;&nbsp;&nbsp;'+(robotMoney/times).toFixed(2)+'</td>			</tr></tbody></table>';
 		title.innerHTML = titleValue;
 		times = times + 1
 		start_send()
-
+		showTheLastChoice(coMethod);
 		setTimeout(function(){
 			_f("#SYS_hire_main_you_infos").style.marginRight="0px";
 			_f("#SYS_hire_main_you_infos").style.opacity=1;
