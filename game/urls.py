@@ -11,5 +11,6 @@ urlpatterns = patterns('',
     url(r'^sName$',views.sName, name ="sName"),
     url(r'^top$',views.top, name ="top"),
     url(r'^static$',views.static, name ="static"),
+    url(r'^getUser$', views.getUser, name='getUser'),
     #url(r'^test$', views.getClientIp, name='getClientIp')
 )

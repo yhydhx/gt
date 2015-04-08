@@ -4,19 +4,19 @@ from django.template import RequestContext, loader
 from django.shortcuts import render,get_object_or_404,RequestContext
 from django.core.urlresolvers import reverse
 from django.views import generic
-#from blog.models import Poll,Choice,Blog
+#from dc.models import Poll,Choice,Blog
 from django import forms
-from debateSNS.models import *
+from gt.models import *
 import datetime
 from django.utils import timezone
 from django.conf import settings
-import hashlib
+import hashlib,time,re
 
 
 '''def index(request):
     latest_poll_list = Poll.objects.all().order_by('-pub_date')[:5]
     context = {'latest_poll_list': 1}
-    return render(request, 'blog/index.html', context)
+    return render(request, 'dc/index.html', context)
 '''
 
 def __checkin__(request):
@@ -41,38 +41,13 @@ def loginCertifacate(request):
         md5Encode.update(tmpPassword)
         password = md5Encode.hexdigest()
 
-        user = get_object_or_404(User, username=username)
-        if user.password == password:
+        admin = get_object_or_404(Admin, username=username)
+        if admin.password == password:
             request.session['username'] = username
-            return HttpResponseRedirect('/blog/news/show')
+            return HttpResponseRedirect('/dc/rule/show')
         else:
             return HttpResponse("密码错误") 
         
-
-def contact(request):
-    '''if request.method == 'POST': # If the form has been submitted...
-        # ContactForm was defined in the previous section
-        form = ContactForm(request.POST) # A form bound to the POST data
-        if form.is_valid(): # All validation rules pass
-            subject = {'data': 2}
-            context = {'latest_poll_list': 1}
-            return render(request, 'tt/index.html', {'data':2,
-            											'bigcity':2})
-            #return HttpResponseRedirect('/thanks/') # Redirect after POST
-    else:
-        form = ContactForm() # An unbound form
-
-    return render(request, 'contact.html', {
-        'form': form,
-    })
-'''
-    if request.method == 'POST':
-        username = request.POST.get("username")
-        request.session['username'] = data
-        return HttpResponse(data)
-        return render(request, 'blog/index.html', {'data':data,'bigcity':2})
-    else:
-        return HttpResponse(request.session['username'])
 
 def addUserView(request):
     return render(request,"blog/addUserView.html")
@@ -87,20 +62,21 @@ def addUser(request):
     md5Encode.update(tmpPassword)
     password = md5Encode.hexdigest()
     
-    veryfyUser = User.objects.filter(username = username).all()
+    veryfyUser = Admin.objects.filter(username = username).all()
     
     try:
         HttpResponse(veryfyUser[0])
     except IndexError,e:
         veryfyUser = None
     if veryfyUser is not None:
-        return HttpResponse("This user is already exits")
+        return HttpResponse("This admin is already exits")
 
-    user = User(
+    admin = Admin(
         username = username,
-        password = password
+        password = password,
+
         )
-    user.save()
+    admin.save()
     return render(request,"blog/login.html")
  
 def changePasswd(request):
@@ -124,322 +100,219 @@ def changePasswd(request):
             return HttpResponse("密码错误")    
         
     else:
-        return render(request,"blog/changePasswd")
+        return render(request,"dc/changePasswd")
 
 def index(request):
-    return render(request,'blog/index2.html',{'news':News.objects.all()})
-    return render(request,'blog/index2.html')
+    # render(request,'dc/index2.html',{'dept':dept.objects.all()})
+    return render(request,'blog/index.html')
 
 
 ########################################################
-# this view is about the news 
-# contains show news list , add news , change news, 
-# delete news,and add new news
-# News contain three parts , title content date                 
+# this view is about the Rule 
+# contains show schl list , add schl , change schl, 
+# delete schl,and add new schl
+# News contain a couple of  parts , title content date                 
 ########################################################
 
-def news(request,method,Oid):
+def rule(request,method,Oid):
     try:
         request.session['username']
     except KeyError,e:
         return HttpResponseRedirect('login.html')
 
-    if method == 'addNews' or method == '':
-        title = request.POST.get('title')
-        content = request.POST.get('content')
-        date = datetime.datetime.now()
-        news = News(
-            title=title,
-            content = content,
-            date = date,
-            uploadUser = request.session['username'],
-
+    if method == 'addRule' :
+        ruleName = request.POST.get("ruleName")
+        p0 = request.POST.get("p0")
+        p1 = request.POST.get("p1")
+        p2 = request.POST.get("p2")
+        p3 = request.POST.get("p3")
+        p4 = request.POST.get("p4")
+        maxRound = request.POST.get("maxRound")
+        minRound = request.POST.get("minRound")
+        w = request.POST.get("w")
+        rule = Rule(
+            ruleName = ruleName,
+            p0 = p0, 
+            p1 = p1,
+            p2 = p2,
+            p3 = p3,
+            p4 = p4,
+            maxRound = maxRound,
+            minRound = minRound,
+            w = w
             )
-        news.save()
-        #Oid = news.id
-        return HttpResponseRedirect('/blog/news/show')
+        rule.save()
+
+        return HttpResponseRedirect('/dc/rule/show')
     elif method == 'change':
-        news = News.objects.get(id=Oid)
-        News.date_format(news)
-        #return HttpResponse(Oid)
-        return render(request,'blog/changeNews.html',{'news':news})
+        rule = Rule.objects.get(id=Oid)
+        return render(request,'blog/changeRule.html',{'rule':rule})
+
     elif method == 'save':
         if request.method == 'POST':
-            news = {'id' : request.POST.get('id'),
-                'title' : request.POST.get('title'),
-                'content' : request.POST.get('content'),
-                'date' : request.POST.get('date')
+            rule = {'id' : request.POST.get('id'),
+                    'ruleName' : request.POST.get("ruleName"),
+                    'p0' : request.POST.get("p0"),
+                    'p1' : request.POST.get("p1"),
+                    'p2' : request.POST.get("p2"),
+                    'p3' : request.POST.get("p3"),
+                    'p4' : request.POST.get("p4"),
+                    'maxRound' : request.POST.get("maxRound"),
+                    'minRound' : request.POST.get("minRound"),
+                    'w' : request.POST.get("w"),
                 }
 
-        News.objects.filter(id=news['id']).update(content=news['content'])
-        News.objects.filter(id=news['id']).update(title=news['title'])
-        News.objects.filter(id=news['id']).update(date=news['date'])
+        Rule.objects.filter(id=rule['id']).update(  ruleName = rule['ruleName'],
+                                                    p0 = rule['p0'],
+                                                    p1 = rule['p1'],
+                                                    p2 = rule['p2'],
+                                                    p3 = rule['p3'],
+                                                    p4 = rule['p4'],
+                                                    maxRound = rule['maxRound'],
+                                                    minRound = rule['minRound'],
+                                                    w = rule['w'],
+                                                )
        
-        return HttpResponseRedirect('/blog/news/show')
+        return HttpResponseRedirect('/dc/rule/show')
+
     elif method == 'delete':
-        News.objects.filter(id=Oid).delete()
+        Rule.objects.filter(id=Oid).delete()
+   
         return HttpResponseRedirect('../show')
     elif method == 'add':
-        return render(request,'blog/addNewsView.html')
-    elif method == 'show':
-        allNews = News.objects.all()
-        for element in allNews:
-             News.date_format(element)
-        return render(request,'blog/showNewsList.html',{'news':index})
+        return render(request,'blog/addRuleView.html')
+    elif method == 'show' or method == '':
+        allRule = Rule.objects.all()
+        return render(request,'blog/showRuleList.html',{'rule':allRule})
     else:
         return HttpResponse('没有该方法')
 
 
-########################################################
-# this view is about the product 
-# contains show news list , add news , change news, 
-# delete news,and add new news
-# News contain three parts , title content date                 
-########################################################
-#
-
-def product(request,method,Oid):
+def payoff(request,method,Oid):
     try:
         request.session['username']
     except KeyError,e:
         return HttpResponseRedirect('login.html')
-    if method == 'addProduct':
-        title = request.POST.get('title')
-        content = request.POST.get('content')
-        product = Product(
-            title=title,
-            content = content,
-            uploadUser = request.session['username'],
+
+    if method == 'addPayoff' :
+        name = request.POST.get("name")
+        R = request.POST.get("R")
+        T = request.POST.get("T")
+        S = request.POST.get("S")
+        P = request.POST.get("P")
+        payoff = PayoffMatrix(
+            name = name,
+            R = R, 
+            T = T,
+            S = S,
+            P = P,
             )
-        product.save()
-        #return HttpResponse(product.id)
-        return HttpResponseRedirect('/blog/product/show')
+        payoff.save()
+
+        return HttpResponseRedirect('/dc/payoff/show')
     elif method == 'change':
-        return render(request,'blog/changeProduct.html',{'product':Product.objects.get(id=Oid)})
+        payoff = PayoffMatrix.objects.get(id=Oid)
+        return render(request,'blog/changePayoff.html',{'payoff':payoff})
 
     elif method == 'save':
         if request.method == 'POST':
-            product = {'id' : request.POST.get('id'),
-                'title' : request.POST.get('title'),
-                'content' : request.POST.get('content'),
+            payoff = {'id' : request.POST.get('id'),
+                    'name' : request.POST.get("name"),
+                    'R' : request.POST.get("R"),
+                    'T' : request.POST.get("T"),
+                    'S' : request.POST.get("S"),
+                    'P' : request.POST.get("P"),
                 }
 
-        Product.objects.filter(id=product['id']).update(content=product['content'])
-        Product.objects.filter(id=product['id']).update(title=product['title'])
-        Oid = product['id']
-        return HttpResponseRedirect('/blog/product/show')
+        PayoffMatrix.objects.filter(id=payoff['id']).update(  name = payoff['name'],
+                                                    R = payoff['R'],
+                                                    T = payoff['T'],
+                                                    S = payoff['S'],
+                                                    P = payoff['P'],
+                                                )
+       
+        return HttpResponseRedirect('/dc/payoff/show')
 
     elif method == 'delete':
-        Product.objects.filter(id=Oid).delete()
+        PayoffMatrix.objects.filter(id=Oid).delete()
+   
         return HttpResponseRedirect('../show')
     elif method == 'add':
-        return render(request,'blog/addProductView.html')
-    elif method == 'show':
-        return render(request,'blog/showProductList.html',{'product':Product.objects.all()})
-    else:
-        return HttpResponse('没有该方法')
-
-
-########################################################
-# this view is about the Plan 
-# contains show news list , add news , change news, 
-# delete news,and add new news
-# News contain three parts , title content date                 
-########################################################
-
-
-def plan(request,method,Oid):
-    try:
-        request.session['username']
-    except KeyError,e:
-        return HttpResponseRedirect('login.html')
-    if method == 'addPlan':
-        title = request.POST.get('title')
-        content = request.POST.get('content')
-        plan = Plan(
-            title=title,
-            content = content,
-            uploadUser = request.session['username'],
-            )
-        plan.save()
-        #Oid = news.id
-        return HttpResponseRedirect('/blog/plan/show')
-    elif method == 'change':
-        return render(request,'blog/changePlan.html',{'plan':Plan.objects.get(id=Oid)})
-
-    elif method == 'save':
-        if request.method == 'POST':
-            plan = {'id' : request.POST.get('id'),
-                    'title' : request.POST.get('title'),
-                    'content' : request.POST.get('content'),
-                    }
-
-            Plan.objects.filter(id=plan['id']).update(content=plan['content'])
-            Plan.objects.filter(id=plan['id']).update(title=plan['title'])
-            Oid = plan['id']
-        return HttpResponseRedirect('/blog/plan/show')
-
-    elif method == 'delete':
-        Plan.objects.filter(id=Oid).delete()
-        return HttpResponseRedirect('../show')
-    elif method == 'add':
-        return render(request,'blog/addPlanView.html')
-    elif method == 'show':
-        return render(request,'blog/showPlanList.html',{'plan':Plan.objects.all()})
-    else:
-        return HttpResponse('没有该方法')
-
-########################################################
-# this view is about the us
-# contains show news list , add  Us , change Us, 
-# delete one,and add new one
-# News contain three parts , title content date                 
-########################################################
-
-def us(request,method,Oid):
-    try:
-        request.session['username']
-    except KeyError,e:
-        return HttpResponseRedirect('login.html')
-    if method == 'addUs':
-        title = request.POST.get('title')
-        content = request.POST.get('content')
-        order = request.POST.get('order')
-        us = Us(
-            title=title,
-            order = order,
-            content = content,
-            uploadUser = request.session['username'],
-            )
-        us.save()
-        #Oid = news.id
-        return HttpResponseRedirect('/blog/us/show')
-    elif method == 'change':
-        return render(request,'blog/changeUs.html',{'us':Us.objects.get(id=Oid)})
-    elif method == 'save':
-        if request.method == 'POST':
-            us = {'id' : request.POST.get('id'),
-                    'title' : request.POST.get('title'),
-                    'content' : request.POST.get('content'),
-                    'order': request.POST.get('order'),
-                    }
-
-            Us.objects.filter(id=us['id']).update(content=us['content'])
-            Us.objects.filter(id=us['id']).update(title=us['title'])
-            Us.objects.filter(id=us['id']).update(order=us['order'])
-            Oid = us['id']
-
-        return HttpResponseRedirect('/blog/us/show')
-
-    elif method == 'delete':
-        Us.objects.filter(id=Oid).delete()
-        return HttpResponseRedirect('../show')
-    elif method == 'add':
-        return render(request,'blog/addUsView.html')
-    elif method == 'show':
-        return render(request,'blog/showUsList.html',{'us':Us.objects.all()})
+        return render(request,'blog/addPayoffView.html')
+    elif method == 'show' or method == '':
+        allPayOff = PayoffMatrix.objects.all()
+        return render(request,'blog/showPayoffList.html',{'payoff':allPayOff})
+    elif method =='select':
+        payoff  = PayoffMatrix.objects.get(id=Oid)
+        PayoffMatrix.objects.filter(name='Default').update(
+                                                            R = payoff.R,
+                                                            T = payoff.T,
+                                                            S = payoff.S,
+                                                            P = payoff.P,
+                                                            )
+        return HttpResponseRedirect("/dc/payoff/show")
     else:
         return HttpResponse('没有该方法')
 
 
 
-########################################################
-# this view is about the recruit
-# contains show news list , add  Us , change Us, 
-# delete one,and add new one
-# News contain three parts , title content date                 
-########################################################
 
-
-def recruit(request,method,Oid):
+def member(request,method,Oid):
     try:
         request.session['username']
     except KeyError,e:
         return HttpResponseRedirect('login.html')
-    if method == 'addRecruit':
-        title = request.POST.get('title')
-        content = request.POST.get('content')
-        recruit = Recruit(
-            title=title,
-            content = content,
+
+    if method == 'addMember' :
+        name = request.POST.get("name")
+        image = request.POST.get("image")
+        description = request.POST.get("description")
+        blog_href = request.POST.get("blog_href")
+        uploadTime = datetime.datetime.now(),
+        uploadUser = request.session['username'],
+        member = Member(
+            name = name,
+            image = image,
+            description = description,
+            blog_href = blog_href,
+            uploadTime = datetime.datetime.now(),
             uploadUser = request.session['username'],
             )
-        recruit.save()
-        #Oid = news.id
-        return HttpResponseRedirect('/blog/recruit/show')
+        member.save()
+
+        return HttpResponseRedirect('/dc/member/show')
     elif method == 'change':
-        return render(request,'blog/changeRecruit.html',{'recruit':Recruit.objects.get(id=Oid)})
+        member = Member.objects.get(id=Oid)
+        return render(request,'blog/changeMember.html',{'member':member})
+
     elif method == 'save':
         if request.method == 'POST':
-            recruit = {'id' : request.POST.get('id'),
-                    'title' : request.POST.get('title'),
-                    'content' : request.POST.get('content'),
-                    }
+            member = {
+                    "id" : request.POST.get("id"),
+                    "name" : request.POST.get("name"),
+                    "image" : request.POST.get("image"),
+                    "description" : request.POST.get("description"),
+                    "blog_href" : request.POST.get("blog_href"),
+                }
 
-            Recruit.objects.filter(id=recruit['id']).update(content=recruit['content'])
-            Recruit.objects.filter(id=recruit['id']).update(title=recruit['title'])
-            Oid = recruit['id']
-
-        return HttpResponseRedirect('/blog/recruit/show')
-
-    elif method == 'delete':
-        Recruit.objects.filter(id=Oid).delete()
-        return HttpResponseRedirect('../show')
-    elif method == 'add':
-        return render(request,'blog/addRecruitView.html')
-    elif method == 'show':
-       return render(request,'blog/showRecruitList.html',{'recruit':Recruit.objects.all()})
-
-    else:
-        return HttpResponse('没有该方法')
-
-
-########################################################
-# this view is about the contact
-# contains show news list , add  Us , change Us, 
-# delete one,and add new one
-# News contain three parts , title content date                 
-########################################################
-
-
-def contact(request,method,Oid):
-    try:
-        request.session['username']
-    except KeyError,e:
-        return HttpResponseRedirect('login.html')
-    if method == 'addContact':
-        tel = request.POST.get('tel')
-        email = request.POST.get('email')
-        address = request.POST.get('address')
-        contact = Contact(
-            tel=tel,
-            email = email,
-            address = address,
-            uploadUser = request.session['username'],
-            )
-        contact.save()
-        return HttpResponseRedirect('/blog/contact/show')
-    elif method == 'change':
-        return render(request,'blog/changeContact.html',{'contact':Contact.objects.get(id=Oid)})
-    elif method == 'save':
-        if request.method == 'POST':
-            contact = {'id' : request.POST.get('id'),
-                    'title' : request.POST.get('title'),
-                    'content' : request.POST.get('content'),
-                    }
-
-            Contact.objects.filter(id=contact['id']).update(content=contact['content'])
-            Contact.objects.filter(id=contact['id']).update(title=contact['title'])
-        return HttpResponseRedirect('/blog/contact/show')
+        Member.objects.filter(id=member['id']).update(
+                                                    name = member['name'],
+                                                    image = member['image'],
+                                                    description = member['description'],
+                                                    blog_href = member['blog_href'],
+                                                )
+       
+        return HttpResponseRedirect('/dc/member/show')
 
     elif method == 'delete':
-        Contact.objects.filter(id=Oid).delete()
+        Member.objects.filter(id=Oid).delete()
+   
         return HttpResponseRedirect('../show')
     elif method == 'add':
-        return render(request,'blog/addContactView.html')
-    elif method == 'show':
-       return render(request,'blog/showContactList.html',{'contact':Contact.objects.all()})
-
+        return render(request,'blog/addMemberView.html')
+    elif method == 'show' or method == '':
+        allMember = Member.objects.all()
+        return render(request,'blog/showMemberList.html',{'member':allMember})
     else:
         return HttpResponse('没有该方法')
 
@@ -480,11 +353,14 @@ def showImgList(request):
         request.session['username']
     except KeyError,e:
         return HttpResponseRedirect('login.html')    
-    return render(request,'blog/showImgList.html',{'image':Image.objects.all() })
+    return render(request,'dc/showImgList.html',{'image':Image.objects.all() })
 
 def deleteImg(request,Oid):
     Image.objects.filter(id=Oid).delete()
     return HttpResponseRedirect('../showImgList')
+
 def test(request):
-    BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-    return   HttpResponse(BASE_DIR)
+    return   render(request,"blog/ust.html")
+
+def demo(request):
+    return render(request,"blog/demo.html")

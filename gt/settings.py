@@ -36,7 +36,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'game'
+    'game',
+    'blog'
 
 )
 
@@ -94,3 +95,4 @@ STATICfILES_DIRS = (
     os.path.join(BASE_DIR,"static"),
     '/var/www/html/gt/gt/static'
 )
+

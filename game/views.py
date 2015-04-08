@@ -1,3 +1,4 @@
+#encoding: utf-8
 from django.http import HttpResponse,HttpResponseRedirect
 from django.template import RequestContext, loader
 from django.shortcuts import render,get_object_or_404,RequestContext
@@ -7,8 +8,8 @@ from django import forms
 from gt.models import *
 import datetime
 from django.utils import timezone
-from django.conf import settings
-import hashlib, time, random,re
+from gt import settings
+import hashlib, time, random,re,json
 
 
 def index(request):
@@ -26,19 +27,84 @@ def index(request):
 	    except:
 	        regip = ""
 	request.session['clientIP'] = regip
-	return render(request, 'index.html')
+	rules = Rule.objects.all()
+	data = []
+	count = 1
+	for element in rules:
+		tmpData = {}
+		tmpData['id'] = element.id
+		tmpData['name'] = "房间"+str(count)
+		tmpData['algorithm'] = element.ruleName
+		count += 1
+		data.append(tmpData)
+
+	'''
+	get the matrix
+	'''
+	payoff = PayoffMatrix.objects.get(name='Default')
+	MONEY_CHANGE = {}
+	matrix = {}
+	MONEY_CHANGE['0'] = [float(payoff.R), float(payoff.R)]
+	MONEY_CHANGE['1'] = [float(payoff.T), float(payoff.S)]
+	MONEY_CHANGE['2'] = [float(payoff.S), float(payoff.T)]
+	MONEY_CHANGE['3'] = [float(payoff.P), float(payoff.P)]
+
+	matrix['R'] = float(payoff.R)
+	matrix['T'] = float(payoff.T)
+	matrix['S'] = float(payoff.S)
+	matrix['P'] = float(payoff.P)
+
+	request.session['MONEY_CHANGE'] = MONEY_CHANGE
+	print MONEY_CHANGE
+	return render(request, 'index.html',{"rules":data,'matrix':matrix})
 
 def getData(request):
 	if request.method == 'POST':
 		Uid = request.session['Uid']
-		times = request.POST.get("times")
-		coMethod = request.POST.get("coMethod")
-		addMoney = request.POST.get("addMoney")
-		money = request.POST.get("money")
-		addRobotMoney = request.POST.get("addRobotMoney")
-		robotMoney = request.POST.get("robotMoney")
-		humanChoose = request.POST.get("humanChoose")
-		robotChoose = request.POST.get("robotChoose")
+		times = float(request.POST.get("times"))
+		lastCoMethod = float(request.POST.get("lastCoMethod"))
+		humanChoose = float(request.POST.get("humanChoose"))
+		money = float(request.POST.get("money"))
+		robotMoney = float(request.POST.get("robotMoney"))
+		isFirst = float(request.POST.get("isFirst"))
+		rule = get_object_or_404(Rule, id=request.session['ruleId'])
+		moneyChange = request.session['MONEY_CHANGE']
+
+
+		#find the last coMethod and get property
+		if isFirst ==1:
+			p = rule.p0
+		elif lastCoMethod == 0:
+			p = rule.p1
+		elif lastCoMethod == 1:
+			p = rule.p2
+		elif lastCoMethod ==2:
+			p = rule.p3
+		elif lastCoMethod == 3:
+			p = rule.p4
+
+		#random a num between 0 and 1. get the robot choice 
+		randomNum = random.random()
+		#p is the pro. the robot want to choose C, so if randomNum > p, He dislike to C you
+		#gernerate the coMethod and money you deserve to get
+		if randomNum > p:
+			robotChoose = 0
+			if humanChoose ==0:
+				coMethod = 3
+			else:
+				coMethod = 2
+		else:
+			robotChoose = 1
+			if humanChoose == 0:
+				coMethod = 1
+			else:
+				coMethod = 0
+		addMoney = moneyChange[str(coMethod)][0]
+		addRobotMoney = moneyChange[str(coMethod)][1]
+		
+
+		money += addMoney
+		robotMoney += addRobotMoney
 		processDate = datetime.datetime.now()
 		clientIP = request.session['clientIP']
 		process = Process(
@@ -53,10 +119,31 @@ def getData(request):
 			robotChoose = robotChoose,
 			processDate = processDate,
 			clientIP = clientIP,
+
 		)
+		'''
+			output :
+				addMoney, robotMoney,robotChoose,exit or not
+		'''
+		Info = {}
+		exitFlag = 0
+		if times > rule.minRound:
+			exitRandom = random.random()
+			if exitRandom < rule.w:
+				exitFlag = 1
+		if times >= rule.maxRound:
+			exitFlag = 1
+		Info['addMoney'] = addMoney
+		Info['addRobotMoney'] = addRobotMoney
+		Info['money'] = money
+		Info['robotMoney'] = robotMoney
+		Info['robotChoose'] = robotChoose
+		Info['coMethod'] = coMethod
+		Info['exitFlag'] = exitFlag
 		process.save()
-		return HttpResponse("success!")
+		return HttpResponse(json.dumps(Info))
 	else:
+
 		return HttpResponse("failed!")
 
 def sInfo(request):
@@ -110,11 +197,12 @@ def sInfo(request):
 		    finalRobotScore = element.robotMoney,
 		    uploadTime = datetime.datetime.now(),
 		    rounds = maxX,
+		    ruleId = request.session['ruleId'],
 		)
 		singlePlayer.save()
 
 
-	abovePerson = Player.objects.filter(finalScore__gt=singlePlayer.finalScore)
+	abovePerson = Player.objects.filter(ruleId=request.session['ruleId'],finalScore__gt=singlePlayer.finalScore)
 	abovePersonNum = len(abovePerson)+1
 	averagePoint = singlePlayer.finalScore / maxX 
 	return render(request,'sInfo.html',{"humanData":humanData,"robotData":robotData,'maxY':maxY,'maxX':maxX,'minY':minY,'abovePersonNum':abovePersonNum,"averagePoint":averagePoint,'process':process})
@@ -135,7 +223,7 @@ def sName(request):
 
 def top(request):
 	data = []
-	allPlayer = Player.objects.all()
+	allPlayer = Player.objects.filter(ruleId=request.session['ruleId'])
 	rankNum = 1
 	for element in allPlayer:
 		singleData = {}
@@ -174,3 +262,17 @@ def static(request):
 		data.append(tmpData)
 	data = ','.join(data)
 	return render(request,'static.html',{"data":str(data)})
+
+def getUser(request):
+	ruleType = request.POST.get("type")
+	rule = get_object_or_404(Rule,id=ruleType)
+	request.session['ruleId'] =rule.id
+	member = Member.objects.all()
+	memberList = []
+	memberLen = len(member)
+	for element in 	member:
+		memberList.append(element.name)	
+	getName = memberList[int(random.random()*memberLen)]
+	output = {}
+	output['name'] = getName
+	return HttpResponse(json.dumps(output))
