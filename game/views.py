@@ -8,7 +8,7 @@ from gt.models import *
 import datetime
 from django.utils import timezone
 from django.conf import settings
-import hashlib, time, random
+import hashlib, time, random,re
 
 
 def index(request):
@@ -155,3 +155,22 @@ def top(request):
 		rankNum += 1
 
 	return render(request,"top.html",{"data":data})
+
+
+def static(request):
+	data = []
+	allPlayer = Player.objects.all()
+	rankNum =1
+	for element in allPlayer:
+		singleData = []
+		if element.isTrueName ==1:
+			singleData.append(element.trueName)
+		else:
+			singleData.append(' ')
+		singleData.append(element.finalScore/element.rounds)
+		tmpData = str(singleData)
+		tmpData = re.sub("u&#39;",'\'',tmpData)
+		tmpData = re.sub("&#39;",'\'',tmpData)
+		data.append(tmpData)
+	data = ','.join(data)
+	return render(request,'static.html',{"data":str(data)})

@@ -10,5 +10,6 @@ urlpatterns = patterns('',
     url(r'^rule$',views.rule, name ="rule"),
     url(r'^sName$',views.sName, name ="sName"),
     url(r'^top$',views.top, name ="top"),
+    url(r'^static$',views.static, name ="static"),
     #url(r'^test$', views.getClientIp, name='getClientIp')
 )
