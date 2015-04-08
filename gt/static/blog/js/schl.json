@@ -1,0 +1,60 @@
+{
+	"directed": false,
+	"graph": [],
+	"nodes": [
+		{
+			"id":0,
+			"label":"AAA"
+		},
+		{
+			"id":1,
+			"label":"BBB"
+		},
+		{
+			"id":2,
+			"label":"CCC"
+		},
+		{
+			"id":3,
+			"label":"UESTC"
+		}
+	],
+	"links": [
+		{
+			"source":3,
+			"target":3,
+			"weight":1234
+		},
+		{
+			"source":0,
+			"target":0,
+			"weight":234
+		},
+		{
+			"source":1,
+			"target":1,
+			"weight":234
+		},
+		{
+			"source":2,
+			"target":2,
+			"weight":34
+		},
+		{
+			"source":0,
+			"target":3,
+			"weight":23
+		},
+		{
+			"source":1,
+			"target":3,
+			"weight":324
+		},
+		{
+			"source":2,
+			"target":3,
+			"weight":23
+		}
+	],
+	"multigraph": false
+}
