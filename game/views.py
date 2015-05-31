@@ -44,15 +44,24 @@ def index(request):
 	payoff = PayoffMatrix.objects.get(name='Default')
 	MONEY_CHANGE = {}
 	matrix = {}
-	MONEY_CHANGE['0'] = [float(payoff.R), float(payoff.R)]
-	MONEY_CHANGE['1'] = [float(payoff.T), float(payoff.S)]
-	MONEY_CHANGE['2'] = [float(payoff.S), float(payoff.T)]
-	MONEY_CHANGE['3'] = [float(payoff.P), float(payoff.P)]
+	if int(payoff.R) == payoff.R:
+		payoff.R = int(payoff.R)
+	if int(payoff.S) == payoff.S:
+		payoff.S = int(payoff.S)
+	if int(payoff.T) == payoff.T:
+		payoff.T = int(payoff.T)
+	if int(payoff.P) == payoff.P:
+		payoff.P = int(payoff.P)
 
-	matrix['R'] = float(payoff.R)
-	matrix['T'] = float(payoff.T)
-	matrix['S'] = float(payoff.S)
-	matrix['P'] = float(payoff.P)
+	MONEY_CHANGE['0'] = [payoff.R, payoff.R]
+	MONEY_CHANGE['1'] = [payoff.T, payoff.S]
+	MONEY_CHANGE['2'] = [payoff.S, payoff.T]
+	MONEY_CHANGE['3'] = [payoff.P, payoff.P]
+
+	matrix['R'] = payoff.R
+	matrix['T'] = payoff.T
+	matrix['S'] = payoff.S
+	matrix['P'] = payoff.P
 
 	request.session['MONEY_CHANGE'] = MONEY_CHANGE
 	print MONEY_CHANGE
@@ -105,7 +114,6 @@ def getData(request):
 
 		money += addMoney
 		robotMoney += addRobotMoney
-		processDate = datetime.datetime.now()
 		clientIP = request.session['clientIP']
 		process = Process(
 			Uid = Uid,
@@ -117,10 +125,13 @@ def getData(request):
 			robotMoney = robotMoney,
 			humanChoose = humanChoose,
 			robotChoose = robotChoose,
-			processDate = processDate,
+			processTime = time.time(),
+			rivalSelectTime = time.time(),
 			clientIP = clientIP,
 
 		)
+		
+		process.save()
 		'''
 			output :
 				addMoney, robotMoney,robotChoose,exit or not
@@ -140,10 +151,10 @@ def getData(request):
 		Info['robotChoose'] = robotChoose
 		Info['coMethod'] = coMethod
 		Info['exitFlag'] = exitFlag
-		process.save()
+		
 		return HttpResponse(json.dumps(Info))
 	else:
-
+		
 		return HttpResponse("failed!")
 
 def sInfo(request):
@@ -160,35 +171,66 @@ def sInfo(request):
 	maxY = 0
 	minY = 0
 	maxX = len(process)
-
+	try:
+		ruleId = request.session['ruleId']
+	except:
+		ruleId = 0
+	try:
+		roomId = request.session['roomId']
+		room = Room.objects.get(roomId = roomId)
+		if room.userOneId == Uid:
+			room.userOneId = ""
+			room.roomExistMember -= 1
+		elif room.userTwoId == Uid:
+			room.userTwoId = ""
+			room.roomExistMember -= 1
+		room.save()
+	except:
+		pass
 
 	for element in process:
-		tmpArr = [element.times,element.money/element.times]
+		tmpArr = [element.times,round(float(element.money)/element.times,2)]
 		humanData.append(tmpArr)
-		tmpArr = [element.times,element.robotMoney/element.times]
+		tmpArr = [element.times,round(float(element.robotMoney)/element.times,2)]
 		robotData.append(tmpArr)
 		'''find the maxY and minY'''
 		element.money = float(element.money)
 		element.robotMoney = float(element.robotMoney)
 		if element.money/element.times > maxY:
-			maxY = element.money/element.times 
+			maxY = round(element.money/element.times,2) 
 		if element.money/element.times  < minY:
-			minY = element.money/element.times 
+			minY = round(element.money/element.times,2) 
 		if element.robotMoney/element.times  > maxY:
-			maxY = element.robotMoney/element.times 
+			maxY = round(element.robotMoney/element.times,2)
 		if element.robotMoney/element.times  < minY:
-			minY = element.robotMoney/element.times 
+			minY = round(element.robotMoney/element.times,2)
 		element.averageMoney = round(element.money/element.times,2)
 		element.averageRobotMoney = round(element.robotMoney/element.times,2)
+		if element.humanChoose ==1:
+			element.humanSelect = '合作'
+		else:
+			element.humanSelect = '背叛'
+		if element.robotChoose == 1:
+			element.robotSelect = '合作'
+		else:
+			element.robotSelect = '背叛'
+			
 
-	maxX = element.times
+
 	'''
 	 Show the result of the game
 	'''
 	#save the player info
 	try:
 		singlePlayer = Player.objects.get(Uid=Uid)
+		singlePlayer.finalScore = element.money
+		singlePlayer.finalRobotScore = element.robotMoney
+		singlePlayer.rounds = maxX
+		singlePlayer.ruleId = ruleId
+		singlePlayer.save()
 	except:
+		payoff = PayoffMatrix.objects.get(name='Default')
+		payoffRestore = [payoff.R,payoff.T,payoff.S,payoff.P]
 		singlePlayer = Player(
 			Uid = Uid,
 			trueName = "",
@@ -197,14 +239,15 @@ def sInfo(request):
 		    finalRobotScore = element.robotMoney,
 		    uploadTime = datetime.datetime.now(),
 		    rounds = maxX,
-		    ruleId = request.session['ruleId'],
+		    ruleId = ruleId,
+		    payoffMatrix = str(payoffRestore),
 		)
 		singlePlayer.save()
 
 
-	abovePerson = Player.objects.filter(ruleId=request.session['ruleId'],finalScore__gt=singlePlayer.finalScore)
+	abovePerson = Player.objects.filter(ruleId=ruleId,finalScore__gt=singlePlayer.finalScore)
 	abovePersonNum = len(abovePerson)+1
-	averagePoint = singlePlayer.finalScore / maxX 
+	averagePoint = round(float(singlePlayer.finalScore) / maxX,2)
 	return render(request,'sInfo.html',{"humanData":humanData,"robotData":robotData,'maxY':maxY,'maxX':maxX,'minY':minY,'abovePersonNum':abovePersonNum,"averagePoint":averagePoint,'process':process})
 
 def rule(request):
@@ -216,14 +259,17 @@ def sName(request):
 		singlePlayer = Player.objects.get(Uid=Uid)
 	except:
 		return HttpResponse("No user")
-	singlePlayer.isTrueName = 1
-	singlePlayer.trueName = request.POST.get("username")
+	singlePlayer.message = request.POST.get("message")
 	singlePlayer.save()
 	return HttpResponseRedirect("top")
 
 def top(request):
 	data = []
-	allPlayer = Player.objects.filter(ruleId=request.session['ruleId'])
+	try:
+		ruleId = request.session['ruleId']
+	except:
+		ruleId =0
+	allPlayer = Player.objects.filter(ruleId=ruleId)
 	rankNum = 1
 	for element in allPlayer:
 		singleData = {}
@@ -233,8 +279,8 @@ def top(request):
 			singleData['rounds'] = len(singleProcss)
 		else:
 			singleData['rounds'] = element.rounds
-		singleData['averageMoney'] = element.finalScore / singleData['rounds']
-		singleData['averageRobotMoney'] = element.finalRobotScore / singleData['rounds']
+		singleData['averageMoney'] = round(float(element.finalScore) / singleData['rounds'],2)
+		singleData['averageRobotMoney'] = round(float(element.finalRobotScore) / singleData['rounds'],2)
 		if element.isTrueName == 1:
 			singleData['trueName'] = element.trueName
 		else:
@@ -276,3 +322,392 @@ def getUser(request):
 	output = {}
 	output['name'] = getName
 	return HttpResponse(json.dumps(output))
+
+
+def rooms(request):
+	'''
+		get the matrix
+	'''
+	payoff = PayoffMatrix.objects.get(name='Default')
+	MONEY_CHANGE = {}
+	matrix = {}
+	MONEY_CHANGE['0'] = [float(payoff.R), float(payoff.R)]
+	MONEY_CHANGE['1'] = [float(payoff.T), float(payoff.S)]
+	MONEY_CHANGE['2'] = [float(payoff.S), float(payoff.T)]
+	MONEY_CHANGE['3'] = [float(payoff.P), float(payoff.P)]
+
+	matrix['R'] = float(payoff.R)
+	matrix['T'] = float(payoff.T)
+	matrix['S'] = float(payoff.S)
+	matrix['P'] = float(payoff.P)
+
+	request.session['MONEY_CHANGE'] = MONEY_CHANGE
+
+	rooms = Room.objects.all()
+
+
+	'''
+		clean the user who is offline
+	'''
+
+	for room in rooms:
+		expireTime = 10 * 60
+		currentTime  = float(time.time())
+		userOneStamp = room.userOneTimestamp
+		userTwoStamp = room.userTwoTimestamp
+		print (currentTime - float(userOneStamp) > expireTime)
+		print (currentTime - float(userTwoStamp) > expireTime)
+		if room.userOneId != "" and (currentTime - float(userOneStamp) > expireTime):
+			room.userOneId = ""
+			room.roomExistMember = room.roomExistMember - 1
+		if room.userTwoId != "" and (currentTime - float(userTwoStamp) > expireTime):
+			room.userTwoId = ""
+			room.roomExistMember = room.roomExistMember - 1
+
+		room.save()
+
+	return render(request,"room.html",{'rooms':rooms})
+
+def online(request,room_id):
+	Uid = time.time()
+	request.session['Uid'] = Uid
+	request.session['roomId'] = room_id
+
+	room = Room.objects.get(roomId=room_id)
+	existNum = room.roomExistMember
+	currentTime  = float(time.time())
+
+
+
+	'''
+		If the user is the first One , roomExistNum must be zero
+		elif the user is not the first One, roomExitNum must one
+	'''
+	if existNum == 0:
+		room.userOneId = Uid
+		room.userOneTimestamp = currentTime
+		room.roomExistMember = 1
+		room.save()
+
+	elif existNum == 1:
+		if room.userOneId == "":
+			room.userOneId = Uid
+			room.userOneTimestamp = currentTime
+			room.roomExistMember = 2
+			room.save()
+						
+		elif room.userTwoId == "":
+			room.userTwoId = Uid
+			room.userTwoTimestamp = currentTime
+			room.roomExistMember = 2
+			room.save()
+	else:
+		return HttpResponse("The room is already full!!!!")
+
+
+	#get the user IP
+	try:
+	    real_ip = request.META['HTTP_X_FORWARDED_FOR']
+	    regip = real_ip.split(",")[0]
+	except:
+	    try:
+	        regip = request.META['REMOTE_ADDR']
+	    except:
+	        regip = ""
+	request.session['clientIP'] = regip
+	
+	'''
+	get the matrix
+	'''
+	payoff = PayoffMatrix.objects.get(name='Default')
+	matrix = {}
+
+
+	matrix['R'] = float(payoff.R)
+	matrix['T'] = float(payoff.T)
+	matrix['S'] = float(payoff.S)
+	matrix['P'] = float(payoff.P)
+
+
+	return render(request, 'indexOnline.html',{'matrix':matrix})
+
+def getOnlineUser(request):
+	Uid = request.session['Uid']
+	print Uid
+	roomId = request.session['roomId']
+	room = Room.objects.get(roomId=roomId)
+
+	'''
+		update the current  user's timestamp
+	'''
+
+	if str(room.userOneId) == str(Uid):
+		isUserOne = 1
+		room.userOneTimestamp = time.time()
+	elif str(room.userTwoId) == str(Uid):
+		isUserOne = 0
+		room.userTwoTimestamp = time.time()
+
+	data = {}
+	existNum = room.roomExistMember
+	if existNum == 2:
+		data['isFull'] = 1
+		if isUserOne == 1:
+			request.session['rivalId'] = room.userTwoId
+		else:
+			request.session['rivalId'] = room.userOneId
+		return HttpResponse(json.dumps(data))
+	else:
+		data['isFull'] = 0
+		return HttpResponse(json.dumps(data))
+
+def getOnlionData(request):
+	if request.method == 'POST':
+		Uid = request.session['Uid']
+		rivalId = request.session['rivalId']
+		times = float(request.POST.get("times"))
+		lastCoMethod = float(request.POST.get("lastCoMethod"))
+		humanChoose = float(request.POST.get("humanChoose"))
+		money = float(request.POST.get("money"))
+		robotMoney = float(request.POST.get("robotMoney"))
+		isFirst = float(request.POST.get("isFirst"))
+		moneyChange = request.session['MONEY_CHANGE']
+		clientIP = request.session['clientIP']
+	
+		
+		getRivalInfo = 0
+		
+		rivalProcess = Process.objects.filter(Uid=rivalId,times=times)
+		if len(rivalProcess) != 0:
+			rivalProcess = rivalProcess[0]
+			getRivalInfo = 1
+			rivalChoice = rivalProcess.humanChoose
+
+			if	rivalChoice == 0:
+				robotChoose = 0
+				if humanChoose ==0:
+					coMethod = 3
+				else:
+					coMethod = 2
+			else:
+				robotChoose = 1
+				if humanChoose == 0:
+					coMethod = 1
+				else:
+					coMethod = 0
+			addMoney = moneyChange[str(coMethod)][0]
+			addRobotMoney = moneyChange[str(coMethod)][1]
+			money += addMoney
+			robotMoney += addRobotMoney
+
+			userProcessSet = Process.objects.filter(Uid=Uid,times=times)
+
+			if len(userProcessSet) == 0:
+				process = Process(
+					Uid = Uid,
+					times = times,
+					coMethod = coMethod,
+					addMoney = addMoney,
+					money = money,
+					addRobotMoney = addRobotMoney,
+					robotMoney = robotMoney,
+					humanChoose = humanChoose,
+					robotChoose = robotChoose,
+					processTime = time.time(),
+					rivalSelectTime = rivalProcess.processTime,
+					clientIP = clientIP,
+				)
+				process.save()
+				Room.objects.filter(userOneId=Uid).update(userOneTimestamp=process.processTime)
+				Room.objects.filter(userTwoId=Uid).update(userOneTimestamp=process.processTime)
+
+			else:
+				userProcess = userProcessSet[0]
+				userProcess.coMethod = coMethod
+				userProcess.addMoney = addMoney
+				userProcess.money = money
+				userProcess.addRobotMoney = addRobotMoney
+				userProcess.robotMoney = robotMoney
+				userProcess.humanChoose = humanChoose
+				userProcess.robotChoose = robotChoose
+				userProcess.rivalSelectTime = rivalProcess.rivalSelectTime
+				userProcess.save()
+
+
+
+		else:
+			
+			if len(Process.objects.filter(Uid=Uid,times=times)) == 0:
+				process = Process(
+					Uid = Uid,
+					times = times,
+					coMethod = -1,
+					addMoney = 0,
+					money = money,
+					addRobotMoney = 0,
+					robotMoney = robotMoney,
+					humanChoose = humanChoose,
+					robotChoose = -1,
+					processTime = time.time(),
+					rivalSelectTime = 0,
+					clientIP = clientIP,
+
+				)
+				process.save()
+				Room.objects.filter(userOneId=Uid).update(userOneTimestamp=process.processTime)
+				Room.objects.filter(userTwoId=Uid).update(userOneTimestamp=process.processTime)
+
+		'''
+			output :
+				addMoney, robotMoney,robotChoose,exit or not
+		'''
+		Info = {}
+		
+
+
+		roomId = request.session['roomId']
+		room = Room.objects.get(roomId=roomId)
+		
+		'''
+			clean the user who is offline
+		'''
+		expireTime = 10 * 60
+		currentTime  = float(time.time())
+		userOneStamp = room.userOneTimestamp
+		userTwoStamp = room.userTwoTimestamp
+		
+		if room.userOneId != "" and (currentTime - float(userOneStamp) > expireTime):
+			room.userOneId = ""
+			room.roomExistMember = room.roomExistMember - 1
+		if room.userTwoId != "" and (currentTime - float(userTwoStamp) > expireTime):
+			room.userTwoId = ""
+			room.roomExistMember = room.roomExistMember - 1
+		room.save()
+		
+		"""
+			check the User or His rival  is offLine or not!
+		"""
+		
+		if str(room.userOneId) != str(Uid) and str(room.userTwoId) != str(Uid):
+			Info['offLineState'] = 1
+		elif str(room.userTwoId) != str(rivalId) and str(room.userOneId) != str(rivalId):
+			Info['offLineState'] = 2
+		else:
+			Info['offLineState'] = 0
+
+
+
+		"""
+			check the max round is arrived or not
+		"""
+		exitFlag = 0
+		if times > room.maxRound:
+				exitFlag = 1
+		
+
+		Info['getRivalInfo'] = getRivalInfo
+		Info['rivalId'] = rivalId
+		Info['Uid'] = Uid
+		Info['times'] =int(times)
+		if getRivalInfo == 1:
+			Info['addMoney'] = addMoney
+			Info['addRobotMoney'] = addRobotMoney
+			Info['money'] = money
+			Info['robotMoney'] = robotMoney
+			Info['robotChoose'] = robotChoose
+			Info['coMethod'] = coMethod
+			Info['exitFlag'] = exitFlag
+
+		
+		return HttpResponse(json.dumps(Info))
+	else:
+		
+		return HttpResponse("failed!")
+
+def quitGame(request):
+	Uid = str(request.session['Uid'])
+	roomId = request.session['roomId']
+	room = Room.objects.get(roomId=roomId)
+	#print Uid,room.userOneId,room.userTwoId
+	#print str(room.userOneId) == Uid,str(room.userTwoId) == Uid
+	if room.userOneId == Uid:
+		#print " adsfasdfas"
+		room.userOneId = ""
+		room.roomExistMember -= 1
+	elif room.userTwoId == Uid:
+		#print " this is user two"
+		room.roomExistMember -= 1
+		room.userTwoId = ""
+	room.save()
+	return HttpResponse("Good Bye@")
+
+def getInitInfo(request):
+	if request.method == 'POST':
+		Uid = request.session['Uid']
+		trueName = request.POST.get('name')
+		sex = request.POST.get('sex')
+		email = request.POST.get('email')
+		age = request.POST.get('age')
+
+		try:
+			singlePlayer = Player.objects.get(Uid=Uid)
+		except:
+			payoff = PayoffMatrix.objects.get(name='Default')
+			payoffRestore = [payoff.R,payoff.T,payoff.S,payoff.P]
+			singlePlayer = Player(
+				Uid = Uid,
+				trueName = trueName,
+				email = email,
+				age = age,
+				sex = sex,
+			    isTrueName = 1,
+			    finalScore = 0.0,
+			    finalRobotScore = 0.0,
+			    uploadTime = datetime.datetime.now(),
+			    rounds = 0,
+			    ruleId = 0,
+			    payoffMatrix = str(payoffRestore),
+			)
+		singlePlayer.save()
+		return render(request,"success.html")
+
+def checkRule(request):
+	Uid = request.session['Uid']
+	isRead = 1
+	
+	try:
+		singlePlayer = Player.objects.get(Uid=Uid)
+	except:
+		isRead = 0
+	'''test '''
+	isRead = 1
+	'''testend'''
+	Info = {}
+	Info['isRead'] = isRead
+	return HttpResponse(json.dumps(Info))
+
+def question(request):
+	questions = Question.objects.filter(isShow=1).order_by('order')
+	count = 0
+	for element in questions:
+		count += 1
+		element.name = "Question "+str(count)
+	questionNumber = count
+	return render(request,'question.html',{'questions':questions,'questionNumber':questionNumber})
+
+
+def getAnswer(request):
+	questions = Question.objects.filter(isShow=1).order_by('order')
+	answer = request.GET.get('qAnswer').split(",")
+	count = 0 
+	check = {}
+	for element in questions:
+		check[str(count)]  = {}
+		if element.correctAnswer == int(answer[count]):
+			check[str(count)]['correct'] = 1
+		else:
+			check[str(count)]['correct'] = 0
+		check[str(count)]['correctAnswer'] = element.correctAnswer
+		count += 1
+
+	return HttpResponse(json.dumps(check))

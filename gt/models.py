@@ -4,33 +4,38 @@ from django.db import models
 from django.utils import timezone
 from djangotoolbox.fields import  ListField
 from django import forms
+import time
 
 class Process(models.Model):
     Uid = models.CharField(max_length=100)
     times = models.IntegerField()
     coMethod = models.IntegerField()
-    addMoney = models.IntegerField()
-    money = models.IntegerField()
-    addRobotMoney = models.IntegerField()
-    robotMoney = models.IntegerField()
+    addMoney = models.FloatField()
+    money = models.FloatField()
+    addRobotMoney = models.FloatField()
+    robotMoney = models.FloatField()
     humanChoose = models.IntegerField()
     robotChoose = models.IntegerField()
-    processDate = models.DateTimeField()
+    processTime = models.FloatField()
+    rivalSelectTime = models.FloatField(null=True)
     clientIP = models.CharField(max_length=30)
     
-    def date_format(self):
-    	self.date = self.date.strftime("%Y-%m-%d")
 
 
 class Player(models.Model):
     Uid = models.CharField(max_length=100)
     trueName = models.CharField(max_length = 100)
     isTrueName = models.IntegerField()
+    sex = models.CharField()
+    email = models.CharField()
+    age = models.IntegerField(null=True)
+    message = models.TextField()
     uploadTime = models.DateTimeField()
     finalScore = models.IntegerField(null=True )
     finalRobotScore = models.IntegerField(null=True )
     rounds = models.IntegerField(null=True)
     ruleId = models.CharField(null=True,max_length=100)
+    payoffMatrix = models.CharField(null=True,max_length=100)
     def date_format(self):
         self.uploadTime = self.uploadTime.strftime("%Y-%m-%d")
 
@@ -72,3 +77,36 @@ class Member(models.Model):
     uploadUser = models.CharField(max_length = 100)
     def date_format(self):
         self.uploadTime = self.uploadTime.strftime("%Y-%m-%d")
+
+class Room(models.Model):
+    roomId = models.CharField(max_length=100)
+    roomName = models.CharField(max_length=100)
+    userOneId = models.CharField(max_length=100)
+    userTwoId = models.CharField(max_length=100)
+    userOneTimestamp = models.FloatField()
+    userTwoTimestamp = models.FloatField()
+    roomSize = models.IntegerField()
+    roomExistMember = models.IntegerField()
+    uploadTime = models.DateTimeField()
+    uploadUser = models.CharField(max_length = 100)
+    maxRound = models.IntegerField()
+    def date_format(self):
+        self.uploadTime = self.uploadTime.strftime("%Y-%m-%d")
+
+
+
+class Question(models.Model):
+    description = models.TextField()
+    selectA = models.CharField(max_length=100)
+    selectB = models.CharField(max_length=100)
+    selectC = models.CharField(max_length=100)
+    selectD = models.CharField(max_length=100)
+    correctAnswer = models.IntegerField()
+    isShow = models.IntegerField()
+    order = models.IntegerField()
+    uploadTime = models.DateTimeField()
+    uploadUser = models.CharField(max_length = 100)
+    def date_format(self):
+        self.uploadTime = self.uploadTime.strftime("%Y-%m-%d")
+
+

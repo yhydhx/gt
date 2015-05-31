@@ -254,7 +254,154 @@ def payoff(request,method,Oid):
     else:
         return HttpResponse('没有该方法')
 
+def room(request,method,Oid):
+    try:
+        request.session['username']
+    except KeyError,e:
+        return HttpResponseRedirect('login.html')
 
+    if method == 'addRoom' :
+        roomId = request.POST.get("roomId")
+        roomName = request.POST.get("roomName")
+        roomSize = request.POST.get('roomSize')
+        maxRound = request.POST.get("maxRound")
+        room = Room(
+            roomId = roomId,
+            roomName = roomName, 
+            userOneId = '',
+            userTwoId = '',
+            userOneTimestamp = 0,
+            userTwoTimestamp = 0,
+            roomSize = roomSize,
+            roomExistMember = 0,
+            maxRound = maxRound,
+            uploadTime = datetime.datetime.now(),
+            uploadUser = request.session['username'],
+            )
+        room.save()
+
+        return HttpResponseRedirect('/dc/room/show')
+    elif method == 'change':
+        room = Room.objects.get(id=Oid)
+        return render(request,'blog/changeRoom.html',{'room':room})
+
+    elif method == 'save':
+        if request.method == 'POST':
+            room = {'roomId' : request.POST.get('roomId'),
+                    'roomName' : request.POST.get("roomName"),
+                    'roomSize' : request.POST.get("roomSize"),
+                    'id' : request.POST.get("id"),
+                    'maxRound' : request.POST.get("maxRound")
+                }
+
+        Room.objects.filter(id=room['id']).update(  roomId = room['roomId'],
+                                                    roomName = room['roomName'],
+                                                    roomSize = room['roomSize'],
+                                                    maxRound = room['maxRound']
+                                                )
+       
+        return HttpResponseRedirect('/dc/room/show')
+
+    elif method == 'delete':
+        Room.objects.filter(id=Oid).delete()
+   
+        return HttpResponseRedirect('../show')
+    elif method == 'add':
+        return render(request,'blog/addRoomView.html')
+    elif method == 'show' or method == '':
+        allRoom = Room.objects.all()
+        return render(request,'blog/showRoomList.html',{'data':allRoom})
+    elif method == 'clear':
+        room = Room.objects.get(id=Oid)
+        room.userOneId = ''
+        room.userTwoId = ''
+        room.roomExistMember = 0
+        room.save()
+        return HttpResponseRedirect('../show')
+    else:
+        return HttpResponse('没有该方法')
+
+def question(request,method,Oid):
+    try:
+        request.session['username']
+    except KeyError,e:
+        return HttpResponseRedirect('login.html')
+
+    if method == 'addQuestion' :
+        content = request.POST.get('content') 
+        choiceA = request.POST.get('choiceA') 
+        choiceB = request.POST.get('choiceB') 
+        choiceC = request.POST.get('choiceC')
+        choiceD = request.POST.get('choiceD') 
+        order = request.POST.get('order')
+        correctAnswer = request.POST.get('correctAnswer')
+        radiobutton = request.POST.get('radiobutton')
+
+        if content == "" or choiceA == "" or choiceB == ""or choiceC == ""or radiobutton == "" or correctAnswer == "":
+            return HttpResponse("Please Complete the section!!")
+
+        question = Question(
+            description = content,
+            selectA = choiceA,
+            selectB = choiceB,
+            selectC = choiceC,
+            selectD = choiceD,
+            isShow = radiobutton,
+            order = order,
+            correctAnswer = correctAnswer,
+            uploadTime = datetime.datetime.now(),
+            uploadUser = request.session['username'],
+            )
+        question.save()
+
+        return HttpResponseRedirect('/dc/question/show')
+    elif method == 'change':
+        question = Question.objects.get(id=Oid)
+        return render(request,'blog/changeQuestion.html',{'question':question})
+
+    elif method == 'save':
+        if request.method == 'POST':
+            question = {
+                        'id' : request.POST.get("id"),
+                        'content' : request.POST.get('content') ,
+                        'choiceA' : request.POST.get('choiceA') ,
+                        'choiceB' : request.POST.get('choiceB') ,
+                        'choiceC' : request.POST.get('choiceC'),
+                        'choiceD' : request.POST.get('choiceD') ,
+                        'order' : request.POST.get('order'),
+                        'correctAnswer' : request.POST.get("correctAnswer"),
+                        'radiobutton' : request.POST.get('radiobutton')
+                }
+
+        Question.objects.filter(id=question['id']).update(
+                                                    description = question['content'] ,
+                                                    selectA = question['choiceA'] ,
+                                                    selectB = question['choiceB'] ,
+                                                    selectC = question['choiceC'] ,
+                                                    selectD = question['choiceD'] ,
+                                                    isShow = question['radiobutton'] ,
+                                                    order   = question['order'] ,
+                                                    correctAnswer = question['correctAnswer']
+                                                )
+       
+        return HttpResponseRedirect('/dc/question/show')
+
+    elif method == 'delete':
+        Question.objects.filter(id=Oid).delete()
+        return HttpResponseRedirect('../show')
+    elif method == 'add':
+        allQuestion = Question.objects.all()
+        questionNum = len(allQuestion) + 1
+        return render(request,'blog/addQuestionView.html',{'order':questionNum})
+    elif method == 'show' or method == '':
+        allQuestion = Question.objects.all()
+        for element in allQuestion:
+            element.name = "Question" + str(element.order)
+        return render(request,'blog/showQuestionList.html',{'data':allQuestion})
+    elif method == 'clear':
+        return HttpResponseRedirect('../show')
+    else:
+        return HttpResponse('没有该方法')
 
 
 def member(request,method,Oid):
@@ -316,6 +463,94 @@ def member(request,method,Oid):
     else:
         return HttpResponse('没有该方法')
 
+
+
+
+
+def users(request,method,Oid):
+    try:
+        request.session['username']
+    except KeyError,e:
+        return HttpResponseRedirect('login.html')
+
+
+    if method == 'detail':
+        player = Player.objects.get(id=Oid)
+        process = Process.objects.filter(Uid=player.Uid).order_by("times")
+        humanData = [[0,0]]
+        robotData = [[0,0]]
+        maxY = 0
+        minY = 0
+        maxX = len(process)
+
+
+        for element in process:
+            tmpArr = [element.times,round(float(element.money)/element.times,2)]
+            humanData.append(tmpArr)
+            tmpArr = [element.times,round(float(element.robotMoney)/element.times,2)]
+            robotData.append(tmpArr)
+            '''find the maxY and minY'''
+            element.money = float(element.money)
+            element.robotMoney = float(element.robotMoney)
+            if element.money/element.times > maxY:
+                maxY = round(element.money/element.times,2) 
+            if element.money/element.times  < minY:
+                minY = round(element.money/element.times,2) 
+            if element.robotMoney/element.times  > maxY:
+                maxY = round(element.robotMoney/element.times,2)
+            if element.robotMoney/element.times  < minY:
+                minY = round(element.robotMoney/element.times,2)
+            element.averageMoney = round(element.money/element.times,2)
+            element.averageRobotMoney = round(element.robotMoney/element.times,2)
+            if element.humanChoose ==1:
+                element.humanSelect = 'C'
+            else:
+                element.humanSelect = 'D'
+            if element.robotChoose == 1:
+                element.robotSelect = 'C'
+            else:
+                element.robotSelect = 'D'
+            if element.times == 1:
+                beginTime = float(element.processTime)
+                print beginTime
+                element.thinkTime = 0
+            else:
+                tmpTime = float(element.processTime)
+                element.thinkTime = round(tmpTime-beginTime,2)
+                endTime = tmpTime
+        
+        wholeTime = round(endTime - beginTime,2)
+        maxX = element.times
+        '''
+         Show the result of the game
+        '''
+
+        abovePerson = Player.objects.filter(ruleId=player.ruleId,finalScore__gt=player.finalScore)
+        abovePersonNum = len(abovePerson)+1
+        averagePoint = round(float(player.finalScore) / maxX,2)
+
+        return render(request,'blog/detail.html',{"wholeTime":wholeTime,"player":player, "humanData":humanData,"robotData":robotData,'maxY':maxY,'maxX':maxX,'minY':minY,'abovePersonNum':abovePersonNum,"averagePoint":averagePoint,'process':process})
+
+    elif method == 'delete':
+        Player.objects.filter(id=Oid).delete()
+        return HttpResponseRedirect('../show')
+
+    elif method == 'show' or method == '':
+        allMember = Player.objects.all().order_by("finalScore")
+        for element in allMember:
+            if element.isTrueName == 0:
+                element.trueName = "Anonymous"
+            element.humanAveragePoint = round(float(element.finalScore)/element.rounds,2)
+            element.robotAveragePoint = round(float(element.finalRobotScore)/element.rounds,2)
+            try:
+                rule = Rule.objects.get(id=element.ruleId)
+                element.ruleName = rule.ruleName
+            except:
+                element.ruleName = 0
+        
+        return render(request,'blog/showUserList.html',{'member':allMember})
+    else:
+        return HttpResponse('没有该方法')
 
 ##################################################################################################
 #  file operation 

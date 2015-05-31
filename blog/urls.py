@@ -15,6 +15,9 @@ urlpatterns = patterns('',
 	url(r'^rule/(?P<method>\w+)/(?P<Oid>\w*)$', views.rule,name ='rule'),
 	url(r'^member/(?P<method>\w+)/(?P<Oid>\w*)$', views.member,name ='member'),
     url(r'^payoff/(?P<method>\w+)/(?P<Oid>\w*)$', views.payoff,name ='payoff'),
+    url(r'^users/(?P<method>\w+)/(?P<Oid>\w*)$', views.users,name ='users'),
+    url(r'^room/(?P<method>\w+)/(?P<Oid>\w*)$', views.room,name ='room'),
+    url(r'^question/(?P<method>\w+)/(?P<Oid>\w*)$', views.question,name ='question'),
     
 
     

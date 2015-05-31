@@ -442,13 +442,13 @@ font-size: 24px;
     				</thead></br>	        
     					<tr>				
     						<td>合作</td>				
-    						<td>&nbsp;&nbsp;({{matrix.R}},{{matrix.R}})</td>				
-    						<td>&nbsp;&nbsp;({{matrix.S}},{{matrix.T}})</td>			
+    						<td>&nbsp;&nbsp;({{matrix.R}})</td>				
+    						<td>&nbsp;&nbsp;({{matrix.S}})</td>			
     					</tr>			
     					<tr>			
     						<td>背叛</td>				
-    						<td>&nbsp;&nbsp;({{matrix.T}},{{matrix.S}})</td>				
-    						<td>&nbsp;&nbsp;({{matrix.P}},{{matrix.P}})</td>			
+    						<td>&nbsp;&nbsp;({{matrix.T}})</td>				
+    						<td>&nbsp;&nbsp;({{matrix.P}})</td>			
     					</tr>
     				</tbody>
     			</table>
@@ -554,6 +554,7 @@ font-size: 24px;
 	var robotMoney = 0;
 	var checkedType = 0;
 	var robotName = 0;
+	var isRead = 0;
 	function getP(coMethod){
 		switch(coMethod){
 			case 0:
@@ -687,48 +688,66 @@ font-size: 24px;
 	hookbar("SYS_hire_bar_1");
 	hookbar("SYS_hire_bar_2");
 	_f("#SYS_hire_main_fp_next").addEventListener("click",function(){
-		var checkBox = document.getElementById("checkType");
-		list = checkBox.children[0].children;
-		var flag = false;
-
-		for (var i=0; i < list.length ; i++){
-			if (list[i].checked == true){
-				flag = true;
-				checkedType = list[i].value;
-			}
-		}
-		if (flag == false){
-			alert("Please Choose a room");
-			return
-		}
-		SUBMIT_CHOICE['type'] = checkedType
-		var csf = document.getElementsByName("csrfmiddlewaretoken")[0].value
-		SUBMIT_CHOICE["csrfmiddlewaretoken"] = csf;
 		$.ajax({
-		   url: "getUser",
-		   type: "POST",
-		   dataType: 'json',
-		   data: SUBMIT_CHOICE,
-		   success:function (result) {
-		   		robotName = result['name'];
-		   		var nameField = document.getElementById("SYS_hire_main_you_title")
-		   		var ouputValue = nameField.innerHTML;
-		   		outputValue = ouputValue + robotName +" 博弈！"
-		   		nameField.innerHTML = outputValue;
-		   },
-		   error:function(result){
+				url: "/checkRule",
+				type: "GET",
+				dataType: 'json',
+				data: 1,
+				success:function (result) {
+						isRead = result['isRead'];
+						if (isRead == 0){
+							alert("Please read the rule and complete the info!");
+							return;
+						}else{
+							var checkBox = document.getElementById("checkType");
+							list = checkBox.children[0].children;
+							var flag = false;
 
-		   }
+							for (var i=0; i < list.length ; i++){
+								if (list[i].checked == true){
+									flag = true;
+									checkedType = list[i].value;
+								}
+							}
+							if (flag == false){
+								alert("Please Choose a room");
+								return
+							}
+							SUBMIT_CHOICE['type'] = checkedType
+							var csf = document.getElementsByName("csrfmiddlewaretoken")[0].value
+							SUBMIT_CHOICE["csrfmiddlewaretoken"] = csf;
+							$.ajax({
+							   url: "getUser",
+							   type: "POST",
+							   dataType: 'json',
+							   data: SUBMIT_CHOICE,
+							   success:function (result) {
+							   		robotName = result['name'];
+							   		var nameField = document.getElementById("SYS_hire_main_you_title")
+							   		var ouputValue = nameField.innerHTML;
+							   		outputValue = ouputValue + robotName +" 博弈！"
+							   		nameField.innerHTML = outputValue;
+							   },
+							   error:function(result){
+
+							   }
+							});
+							_f("#SYS_hire_main_fp").style.marginLeft="-100px";
+							_f("#SYS_hire_main_fp").style.opacity=0;
+							_f("#SYS_hire_main_you").style.display="block";
+							setTimeout(function(){
+								_f("#SYS_hire_main_fp").style.display="none";
+								_f("#SYS_hire_main_you").style.marginLeft="0px";
+								_f("#SYS_hire_main_you").style.opacity=1;
+								_f("#SYS_hire_main_you_next").style.opacity=0;
+							},600);
+						}
+				},
+				error:function(result){
+				}
 		});
-		_f("#SYS_hire_main_fp").style.marginLeft="-100px";
-		_f("#SYS_hire_main_fp").style.opacity=0;
-		_f("#SYS_hire_main_you").style.display="block";
-		setTimeout(function(){
-			_f("#SYS_hire_main_fp").style.display="none";
-			_f("#SYS_hire_main_you").style.marginLeft="0px";
-			_f("#SYS_hire_main_you").style.opacity=1;
-			_f("#SYS_hire_main_you_next").style.opacity=0;
-		},600);
+		
+		
 	},false);
 	_f("#SYS_hire_main_you_next").addEventListener("click",function(){
 		if(!_f("#SYS_hire_form_name").value){
@@ -858,7 +877,7 @@ font-size: 24px;
 		   		}
 		   		console.log(money)
 		   		console.log(robotMoney)
-				times = times + 1;
+				
 		   		var r = document.getElementById("SYS_LeftTop");
 				roundValue = "";
 				r.innerHTML = roundValue;
@@ -867,7 +886,8 @@ font-size: 24px;
 				titleValue  = '<table><tbody style="margin: 0 auto" align="center" >	<thead>		<tr>			<th></th>			<th><a title="Team ame" >上一轮</a></th>			<th><span title="Games Played">&nbsp;&nbsp;&nbsp;平均</span></th>		</tr>	</thead></br>	        <tr>				<td>您的收益</td>				<td>&nbsp;&nbsp;'+(addMoney).toFixed(2)+'</td>				<td>&nbsp;&nbsp;&nbsp;'+(money/times).toFixed(2)+'</td>			</tr>			<tr>			<td>对手的收益</td>				<td>&nbsp;&nbsp;'+(addRobotMoney).toFixed(2)+'</td>				<td>&nbsp;&nbsp;&nbsp;'+(robotMoney/times).toFixed(2)+'</td>			</tr></tbody></table>';
 				title.innerHTML = titleValue;
 				showTheLastChoice(coMethod);
-				isFirst = 0
+				isFirst = 0;
+				times = times + 1;
 		   },
 		   error:function(){
 		   		
