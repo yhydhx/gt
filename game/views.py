@@ -251,7 +251,13 @@ def sInfo(request):
 	return render(request,'sInfo.html',{"humanData":humanData,"robotData":robotData,'maxY':maxY,'maxX':maxX,'minY':minY,'abovePersonNum':abovePersonNum,"averagePoint":averagePoint,'process':process})
 
 def rule(request):
-	return render(request,"rule.html")
+	questions = Question.objects.filter(isShow=1).order_by('order')
+	count = 0
+	for element in questions:
+		count += 1
+		element.name = "Question "+str(count)
+	questionNumber = count
+	return render(request,"rule.html",{'questions':questions,'questionNumber':questionNumber})
 
 def sName(request):
 	try:
@@ -668,7 +674,9 @@ def getInitInfo(request):
 			    ruleId = 0,
 			    payoffMatrix = str(payoffRestore),
 			)
-		singlePlayer.save()
+			singlePlayer.save()
+			del request.session['allCorrectFlag']
+
 		return render(request,"success.html")
 
 def checkRule(request):
@@ -679,9 +687,7 @@ def checkRule(request):
 		singlePlayer = Player.objects.get(Uid=Uid)
 	except:
 		isRead = 0
-	'''test '''
-	isRead = 1
-	'''testend'''
+	
 	Info = {}
 	Info['isRead'] = isRead
 	return HttpResponse(json.dumps(Info))
@@ -701,13 +707,21 @@ def getAnswer(request):
 	answer = request.GET.get('qAnswer').split(",")
 	count = 0 
 	check = {}
+	allCorrectFlag = 1
 	for element in questions:
 		check[str(count)]  = {}
 		if element.correctAnswer == int(answer[count]):
 			check[str(count)]['correct'] = 1
 		else:
 			check[str(count)]['correct'] = 0
+			allCorrectFlag = 0
 		check[str(count)]['correctAnswer'] = element.correctAnswer
 		count += 1
+	request.session['allCorrectFlag'] = allCorrectFlag
 
 	return HttpResponse(json.dumps(check))
+
+def getAnswerAllCorrect(request):
+	Info = {}
+	Info['allCorrectFlag'] = request.session['allCorrectFlag']
+	return HttpResponse(json.dumps(Info))
