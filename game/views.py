@@ -108,7 +108,7 @@ def sInfo(request):
 		    isTrueName = 0,
 		    finalScore = element.money,
 		    finalRobotScore = element.robotMoney,
-		    uploadTime = datetime.datetime.now(),
+		    uploadTime = timezone.now(),
 		    rounds = maxX,
 		)
 		singlePlayer.save()
