@@ -192,9 +192,9 @@ width: 500px;
 }
 #SYS_hire_main_you_title,#SYS_hire_main_skill_title {
 	position: absolute;
-	top: 20px;
-	left: 50px;
-	font-size: 48px;
+	top: 10%;
+	left: 5%;
+	font-size: 42px;
 }
 
 
@@ -202,15 +202,21 @@ width: 500px;
 	position: absolute;
 	top: 65%;
 	left: 33%;
-	font-size: 48px;
+	font-size: 40px;
 }
 
+#SYS_Matrix {
+	position: absolute;
+	top: 0%;
+	right:100px;
+	font-size: 40px;
+}
 #SYS_Choice {
 	position: absolute;
 	top: 17%;
 	text-align: center;
 	width: 100%;
-	font-size: 35px;
+	font-size: 40px;
 }
 #SYS_LeftTop {
 	position: absolute;
@@ -221,8 +227,8 @@ width: 500px;
 
 #SYS_hire_main_you_choose {
 	position: absolute;
-	top: 30%;
-	font-size: 200px;
+	top: 38%;
+	font-size: 120px;
 	text-align: center;
 	width: 100%;
 }
@@ -260,6 +266,7 @@ width: 500px;
 .SYS_hire_form_ipt:focus{
 	box-shadow:0px 0px 20px #63A7F0;
 }
+
 .ipterr{
 	border: solid 1px rgba(255,0,0,1) !important;
 	color: #f00 !important;
@@ -386,6 +393,10 @@ font-size: 24px;
 	color:#444;
 	text-shadow:none;
 }
+#checkType{
+	font-size: 1.8em;
+	color:#00F
+}
   </style>
 </head>
 <body>
@@ -397,22 +408,54 @@ font-size: 24px;
 	<div id="SYS_hire_main_fp" onselectstart="return false;">
     	<center id="SYS_hire_main_fp_main">
         	<div id="SYS_hire_main_fp_logo" class="ani">欢迎参加</br>囚徒困境游戏！</div>
-            <div id="SYS_hire_main_fp_us">每一次游戏正式开始前，您会被匹配到一个计算机程序策略，</br>与对方进行囚徒困境的博弈游戏。系统将通过每一轮中您们各自</br>的策略选择，来决定您们获得的分数。</div>
+            <div id="SYS_hire_main_fp_us">每一次游戏正式开始前，您会被随机匹配到一个对手，</br>与对方进行囚徒困境的博弈游戏。系统将通过每一轮中您们各自</br>的策略选择，来决定您们获得的分数。</div>
+            <div id='checkType'>
+				 <h>请选择一个房间：</h2>
+				 	{% block content %}
+				        {% for publisher in rules %}
+							<input type="radio" id='{{publisher.algorithm}}' name="radiobutton" value="{{publisher.id}}" > {{publisher.name}}  
+				        {% endfor %}
+					{% endblock %}
+				
+            </div>
             <div id="SYS_hire_main_fp_about">
-            	<a href="rule" target="_blank" >游戏规则</a><br/>
+            	
                
             </div>
         </center>
         <div id="SYS_hire_main_fp_next" type="SYS_hire_next" class="loading_rotate">&#xe096;</div>
     </div>
     <div id="SYS_hire_main_you">
-    	<div id="SYS_hire_main_you_title"  onselectstart="return false;">Do you want cooperate?</div>
+    	<div id="SYS_hire_main_you_title"  onselectstart="return false;">您正在与 </div>
     	<div id="SYS_Button" > </div>
     	<div id="SYS_Choice" > </div>
-    	<div id="SYS_LeftTop"> Round </div>
+    	<div id="SYS_LeftTop"> </div>
+    	<div id="SYS_Matrix">
+    		<table>
+    			<tbody style="margin: 0 auto" align="center" >	
+    				<thead>
+    					<tr>			
+    						<th></th>			
+    						<th>&nbsp;&nbsp;合作</th>			
+    						<th>&nbsp;&nbsp;背叛</th>		
+    					</tr>	
+    				</thead></br>	        
+    					<tr>				
+    						<td>合作</td>				
+    						<td>&nbsp;&nbsp;({{matrix.R}},{{matrix.R}})</td>				
+    						<td>&nbsp;&nbsp;({{matrix.S}},{{matrix.T}})</td>			
+    					</tr>			
+    					<tr>			
+    						<td>背叛</td>				
+    						<td>&nbsp;&nbsp;({{matrix.T}},{{matrix.S}})</td>				
+    						<td>&nbsp;&nbsp;({{matrix.P}},{{matrix.P}})</td>			
+    					</tr>
+    				</tbody>
+    			</table>
+    	</div>
         <div id="SYS_hire_main_you_choose"  onselectstart="return false;">
-        	<div id="SYS_hire_main_you_choose_male"  class="ani" type="SYS_hire_gen">✔</div>
-            <div id="SYS_hire_main_you_choose_female"  class="ani" type="SYS_hire_gen">✖</div>
+        	<div id="SYS_hire_main_you_choose_male"  class="ani" type="SYS_hire_gen">合作</div>
+            <div id="SYS_hire_main_you_choose_female"  class="ani" type="SYS_hire_gen">背叛</div>
         </div>
         <div id="SYS_hire_main_you_infos" class="ani">
         	<div type="SYS_hire_form">
@@ -440,7 +483,7 @@ font-size: 24px;
             	<textarea class="SYS_hire_form_ipt" id="SYS_hire_form_intro"></textarea>
             </div>
         </div>
-        <div id="SYS_hire_main_you_next" type="SYS_hire_next"  onselectstart="return false;">&#x3d;</div>
+        <div id="SYS_hire_main_you_next" type="SYS_hire_next"  style="display:none"  onselectstart="return false;">&#x3d;</div>
     </div>
     <div id="SYS_hire_main_skill">
     	<div id="SYS_hire_main_skill_title"  onselectstart="return false;"></div>
@@ -505,19 +548,22 @@ font-size: 24px;
 <script type="text/javascript">
 	var money = 0
 	var times = 1
-	var maxTimes = 30
+	var isFirst = 1
 	var exitFlag = false
 	var coMethod = 1
-	var robotMoney = 0
+	var robotMoney = 0;
+	var checkedType = 0;
+	var robotName = 0;
+	var isRead = 0;
 	function getP(coMethod){
 		switch(coMethod){
-			case 1:
+			case 0:
 				return 0.5;
-			case 2:
+			case 1:
 				return 0;
-			case 3:
+			case 2:
 				return 1;
-			case 4:
+			case 3:
 				return 0.5;
 
 		}
@@ -526,52 +572,33 @@ font-size: 24px;
 		var choice = document.getElementById("SYS_Choice")
 		var choiceArr = new Array(2)
 		switch(coMethod){
+			case 0:
+				choiceArr[0] = '合作';
+				choiceArr[1] = '合作';
+				break;
 			case 1:
-				choiceArr[0] = '✔';
-				choiceArr[1] = '✔';
+				choiceArr[0] = '背叛';
+				choiceArr[1] = '合作';
 				break;
 			case 2:
-				choiceArr[0] = '✖';
-				choiceArr[1] = '✔';
+				choiceArr[0] = '合作';
+				choiceArr[1] = '背叛';
 				break;
 			case 3:
-				choiceArr[0] = '✔';
-				choiceArr[1] = '✖';
-				break;
-			case 4:
-				choiceArr[0] = '✖';
-				choiceArr[1] = '✖';
+				choiceArr[0] = '背叛';
+				choiceArr[1] = '背叛';
 				break;
 		}
-		choiceValue = "Last time: Your Choice is "+choiceArr[0]+ "Robot Choice is "+ choiceArr[1];
+		choiceValue = "上一轮您选择了 "+choiceArr[0]+ "</br>上一轮对手选择了 "+ choiceArr[1];
 		choice.innerHTML = choiceValue;
 	}
-	function restoreData(times,coMethod,addMoney,money,addRobotMoney,robotMoney){
+	function restoreData(humanChoose,times,coMethod,money,robotMoney){
 		SUBMIT_FORM['times'] = times;
-		SUBMIT_FORM['coMethod'] = coMethod;
-		SUBMIT_FORM['addMoney'] = addMoney;
+		SUBMIT_FORM['lastCoMethod'] = coMethod;
 		SUBMIT_FORM['money'] = money;
-		SUBMIT_FORM['addRobotMoney'] = addRobotMoney;
 		SUBMIT_FORM['robotMoney'] = robotMoney;
-		switch(coMethod){
-			case 1:
-				SUBMIT_FORM['humanChoose'] = 1;
-				SUBMIT_FORM['robotChoose'] = 1;
-				break;
-			case 2:
-				SUBMIT_FORM['humanChoose'] = 1;
-				SUBMIT_FORM['robotChoose'] = 0;
-				break;
-			case 3:
-				SUBMIT_FORM['humanChoose'] = 0;
-				SUBMIT_FORM['robotChoose'] = 1;
-				break;
-			case 4:
-				SUBMIT_FORM['humanChoose'] = 0;
-				SUBMIT_FORM['robotChoose'] = 0;
-				break;
-
-		}
+		SUBMIT_FORM['humanChoose'] = humanChoose;
+		SUBMIT_FORM['isFirst'] = isFirst
 	}
 	function check_canvas(){
 		var elem = document.createElement('canvas');
@@ -585,14 +612,16 @@ font-size: 24px;
 	$SYSVARS="";
 	SUBMIT_FORM={
 		times:0,
-		coMethod:0,
-		addMoney:0,
+		lastCoMethod:0,
 		money:0,
-		addRobotMoney:0,
 		robotMoney:0,
 		humanChoose:0,
-		robotChoose:0,
-		csrfmiddlewaretoken: 0 ,
+		csrfmiddlewaretoken: 0,
+		isFirst:0,
+	}
+	SUBMIT_CHOICE={
+		type:0,
+		csrfmiddlewaretoken: 0,
 	}
 	HIRE_FORM={
 		name:0,
@@ -659,17 +688,67 @@ font-size: 24px;
 	hookbar("SYS_hire_bar_1");
 	hookbar("SYS_hire_bar_2");
 	_f("#SYS_hire_main_fp_next").addEventListener("click",function(){
-		
+		$.ajax({
+				url: "/checkRule",
+				type: "GET",
+				dataType: 'json',
+				data: 1,
+				success:function (result) {
+						isRead = result['isRead'];
+						isRead = 1
+						if (isRead == 0){
+							alert("请完成信息填写!");
+							return;
+						}else{
+							var checkBox = document.getElementById("checkType");
+							list = checkBox.children[0].children;
+							var flag = false;
 
-		_f("#SYS_hire_main_fp").style.marginLeft="-100px";
-		_f("#SYS_hire_main_fp").style.opacity=0;
-		_f("#SYS_hire_main_you").style.display="block";
-		setTimeout(function(){
-			_f("#SYS_hire_main_fp").style.display="none";
-			_f("#SYS_hire_main_you").style.marginLeft="0px";
-			_f("#SYS_hire_main_you").style.opacity=1;
-			_f("#SYS_hire_main_you_next").style.opacity=0;
-		},600);
+							for (var i=0; i < list.length ; i++){
+								if (list[i].checked == true){
+									flag = true;
+									checkedType = list[i].value;
+								}
+							}
+							if (flag == false){
+								alert("请选择房间!");
+								return
+							}
+							SUBMIT_CHOICE['type'] = checkedType
+							var csf = document.getElementsByName("csrfmiddlewaretoken")[0].value
+							SUBMIT_CHOICE["csrfmiddlewaretoken"] = csf;
+							$.ajax({
+							   url: "getUser",
+							   type: "POST",
+							   dataType: 'json',
+							   data: SUBMIT_CHOICE,
+							   success:function (result) {
+							   		robotName = result['name'];
+							   		var nameField = document.getElementById("SYS_hire_main_you_title")
+							   		var ouputValue = nameField.innerHTML;
+							   		outputValue = ouputValue + robotName +" 博弈！"
+							   		nameField.innerHTML = outputValue;
+							   },
+							   error:function(result){
+
+							   }
+							});
+							_f("#SYS_hire_main_fp").style.marginLeft="-100px";
+							_f("#SYS_hire_main_fp").style.opacity=0;
+							_f("#SYS_hire_main_you").style.display="block";
+							setTimeout(function(){
+								_f("#SYS_hire_main_fp").style.display="none";
+								_f("#SYS_hire_main_you").style.marginLeft="0px";
+								_f("#SYS_hire_main_you").style.opacity=1;
+								_f("#SYS_hire_main_you_next").style.opacity=0;
+							},600);
+						}
+				},
+				error:function(result){
+				}
+		});
+		
+		
 	},false);
 	_f("#SYS_hire_main_you_next").addEventListener("click",function(){
 		if(!_f("#SYS_hire_form_name").value){
@@ -747,43 +826,11 @@ font-size: 24px;
 	_f("#SYS_hire_main_you_choose_male").addEventListener("click",function(){
 		//if(HIRE_FORM.gender){return;}
 		HIRE_FORM.gender=-1;
-
-		var exitNum = Math.random()
-		if (exitNum < 0){
-			exitFlag = true;
-		}
-		if (times > maxTimes || exitFlag){
-			alert("Game Over!");
-			window.location.href = "sInfo";
-			return
-		}
-		property = getP(coMethod);
-		var t = Math.random();
-		if (t > property){
-			
-			addMoney = -100;
-			addRobotMoney = 300;
-			coMethod = 3;
-		}else{
-			
-			addMoney = 200;
-			addRobotMoney = 200;
-			coMethod = 1;
-		}
-		money = money + addMoney;
-		robotMoney = robotMoney + addRobotMoney;
-		restoreData(times,coMethod,addMoney,money,addRobotMoney,robotMoney)
-
-		var r = document.getElementById("SYS_LeftTop");
-		roundValue = "Round : "+times;
-		r.innerHTML = roundValue;
-		var title = document.getElementById("SYS_Button");
-
-		titleValue  = '<table><tbody style="margin: 0 auto" align="center" >	<thead>		<tr>			<th></th>			<th><a title="Team ame" >Last Round</a></th>			<th><span title="Games Played">&nbsp;&nbsp;&nbsp;Average</span></th>		</tr>	</thead></br>	        <tr>				<td>Your Money</td>				<td>'+(addMoney).toFixed(2)+'</td>				<td>&nbsp;&nbsp;&nbsp;'+(money/times).toFixed(2)+'</td>			</tr>			<tr>			<td>RobotsMoney</td>				<td>'+(addRobotMoney).toFixed(2)+'</td>				<td>&nbsp;&nbsp;&nbsp;'+(robotMoney/times).toFixed(2)+'</td>			</tr></tbody></table>';
-		title.innerHTML = titleValue;
-		times = times + 1;
+		humanChoose = 1
+		restoreData(humanChoose,times,coMethod,money,robotMoney)
 		start_send();
-		showTheLastChoice(coMethod);
+
+		
 		setTimeout(function(){
 			_f("#SYS_hire_main_you_infos").style.marginLeft="0px";
 			_f("#SYS_hire_main_you_infos").style.opacity=1;
@@ -793,44 +840,10 @@ font-size: 24px;
 	_f("#SYS_hire_main_you_choose_female").addEventListener("click",function(){
 		//if(HIRE_FORM.gender){return;}
 		HIRE_FORM.gender=1;
-		//_f("#SYS_hire_main_you_choose_male").style.opacity=0;	
-		//_f("#SYS_hire_main_you_choose_female").style.textShadow='0px 0px 50px #63A7F0';
-		//_f("#SYS_hire_main_you_choose_female").style.cursor='default';
-		var exitNum = Math.random()
-		if (exitNum < 0){
-			exitFlag = true;
-		}
-		if (times > maxTimes || exitFlag){
-			alert("Game Over!");
-			window.location.href = "sInfo";
-			return
-		}
-		property = getP(coMethod);
-		var t = Math.random();
-		if (t > property){
-		
-			addMoney = 0 ;
-			addRobotMoney = 0;
-			coMethod = 4;
-		}else{
-	
-			addMoney = 300;
-			addRobotMoney = -100;
-			coMethod = 2;
-		}
-		money = money + addMoney;
-		robotMoney = robotMoney + addRobotMoney;
-		restoreData(times,coMethod,addMoney,money,addRobotMoney,robotMoney)
+		humanChoose = 0
+		restoreData(humanChoose,times,coMethod,money,robotMoney)
+		start_send();
 
-		var r = document.getElementById("SYS_LeftTop");
-		roundValue = "Round : "+times;
-		r.innerHTML = roundValue;
-		var title = document.getElementById("SYS_Button");
-		titleValue  = '<table><tbody style="margin: 0 auto" align="center" >	<thead>		<tr>			<th></th>			<th><a title="Team ame" >Last Round</a></th>			<th><span title="Games Played">&nbsp;&nbsp;&nbsp;Average</span></th>		</tr>	</thead></br>	        <tr>				<td>Your Money</td>				<td>'+(addMoney).toFixed(2)+'</td>				<td>&nbsp;&nbsp;&nbsp;'+(money/times).toFixed(2)+'</td>			</tr>			<tr>			<td>RobotsMoney</td>				<td>'+(addRobotMoney).toFixed(2)+'</td>				<td>&nbsp;&nbsp;&nbsp;'+(robotMoney/times).toFixed(2)+'</td>			</tr></tbody></table>';
-		title.innerHTML = titleValue;
-		times = times + 1
-		start_send()
-		showTheLastChoice(coMethod);
 		setTimeout(function(){
 			_f("#SYS_hire_main_you_infos").style.marginRight="0px";
 			_f("#SYS_hire_main_you_infos").style.opacity=1;
@@ -847,18 +860,38 @@ font-size: 24px;
 		$.ajax({
 		   url: "getData",
 		   type: "POST",
-		   dataType: 'jsonp',
+		   dataType: 'json',
 		   data: SUBMIT_FORM,
-		   success: function (data) {
-		   		if (data.status===success) {
-		   			alert(data)
-				
-		   		}else{
-		   			alert("fdasjdklf");
+		   success: function (msg) {
+		   		console.log(msg)
+		   		robotChoose = msg['robotChoose']
+		   		addMoney = msg['addMoney']
+		   		addRobotMoney = msg['addRobotMoney']
+		   		coMethod = msg['coMethod']
+		   		exitFlag = msg['exitFlag']
+		   		money = msg['money']
+		   		robotMoney = msg['robotMoney']
+		   		if (exitFlag ==1){
+		   			alert("游戏结束");
+		   			window.location.href = "sInfo";
+					return;
 		   		}
+		   		console.log(money)
+		   		console.log(robotMoney)
+				
+		   		var r = document.getElementById("SYS_LeftTop");
+				roundValue = "";
+				r.innerHTML = roundValue;
+				var title = document.getElementById("SYS_Button");
+
+				titleValue  = '<table><tbody style="margin: 0 auto" align="center" >	<thead>		<tr>			<th></th>			<th><a title="Team ame" >上一轮</a></th>			<th><span title="Games Played">&nbsp;&nbsp;&nbsp;平均</span></th>		</tr>	</thead></br>	        <tr>				<td>您的收益</td>				<td>&nbsp;&nbsp;'+(addMoney).toFixed(2)+'</td>				<td>&nbsp;&nbsp;&nbsp;'+(money/times).toFixed(2)+'</td>			</tr>			<tr>			<td>对手的收益</td>				<td>&nbsp;&nbsp;'+(addRobotMoney).toFixed(2)+'</td>				<td>&nbsp;&nbsp;&nbsp;'+(robotMoney/times).toFixed(2)+'</td>			</tr></tbody></table>';
+				title.innerHTML = titleValue;
+				showTheLastChoice(coMethod);
+				isFirst = 0;
+				times = times + 1;
 		   },
 		   error:function(){
-		   		//alert("failed");
+		   		
 		   }
 		});
 

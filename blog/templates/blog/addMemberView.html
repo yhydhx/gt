@@ -1,0 +1,14 @@
+
+{% load staticfiles %}
+
+<form method = 'post' action = '/dc/member/addMember/'>
+	 {% csrf_token %}
+	<h2>name<input name='name' value ='' ></h2>
+	<h2>description<input name='description' value ='' ></h2>
+	<h2>blog_href<input name='blog_href' value ='' ></h2>
+	<h2>image<input name='image' value ='' ></h2>
+
+	<input type='submit' value="确认">
+    <input type='button' onclick = "history.go(-1)" value="取消">
+</form>
+

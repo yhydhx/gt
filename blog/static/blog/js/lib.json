@@ -1,0 +1,109 @@
+{
+	"directed": false,
+	"graph": [],
+	"nodes": [
+		{
+			"name":"Fan Chao",
+			"label":"CL:Fan Chao",
+			"dept":"complexLab",
+			"uniqueID":"213",
+			"fullname":"",
+			"id":0
+		},
+		{
+			"name":"Huang PanHua",
+			"label":"CP:Huangpanhua",
+			"dept":"complexLab",
+			"uniqueID":"",
+			"fullname":"",
+			"id":1
+		},
+		{
+			"name":"Dai Haixing",
+			"label":"CP:Daihaixing",
+			"dept":"complexLab",
+			"uniqueID":"",
+			"fullname":"",
+			"id":2
+		},
+		{
+			"name":"fakeA",
+			"label":"123",
+			"dept":"tmpA",
+			"uniqueID":"",
+			"fullname":"",
+			"id":3
+		},
+		{
+			"name":"fakeB",
+			"label":"123456",
+			"dept":"tmpB",
+			"uniqueID":"456",
+			"fullname":"123",
+			"id":4
+		},
+		{
+			"name":"fakeC",
+			"label":"132",
+			"dept":"tmpC",
+			"uniqueID":"",
+			"fullname":"",
+			"id":5
+		},
+		{
+			"name":"Tang.",
+			"label":"dajfkl",
+			"dept":"bigData",
+			"uniqueID":"",
+			"fullname":"",
+			"id":6
+		},
+		{
+			"name":"Rong Zhihai",
+			"label":"CL:rongzhihao",
+			"dept":"complexLab",
+			"uniqueID":"",
+			"fullname":"",
+			"id":7
+		},
+		{
+			"name":"Huang junming",
+			"label":"23",
+			"dept":"complexLab",
+			"uniqueID":"",
+			"fullname":"",
+			"id":8
+		},
+		{
+			"name":"Pu Jiansu",
+			"label":"CP:pujiansu",
+			"dept":"complexLab",
+			"uniqueID":"",
+			"fullname":"",
+			"id":9
+		}
+	],
+	"links": [
+		{
+			"source":0,
+			"target":1,
+			"weight":324
+		},
+		{
+			"source":0,
+			"target":2,
+			"weight":231
+		},
+		{
+			"source":1,
+			"target":2,
+			"weight":14
+		},
+		{
+			"source":2,
+			"target":9,
+			"weight":232
+		}
+	],
+	"multigraph": false
+}

@@ -2,7 +2,7 @@
 <html>
 <head>
 
-<title>Result</title>
+<title>结果页面</title>
 
 <script type="text/javascript" src="{%  static  'game/js/jscharts.js' %}"></script>
 
@@ -10,31 +10,39 @@
 </head>
 <body>
 
-	<h1>Game Over</h1>
+	<h1 style="text-align: center;">游戏结束</h1>
 
-	<form method="post" action="sName">
-		{% csrf_token %}
-		<h4>Would you like save your name?</h4> 
-		<input name="username" >
-		<input type="submit" value="submit">
-	</form>
-	
-	<h4>Your average money: {{averagePoint}}</h4>
-	<h4>The rank of you is {{abovePersonNum}}</h4>
 
 	
 	<div class='table' id="graph">Loading...</div>
 
+
+<form method="post" action="sName"> 
+		{% csrf_token %}
+		<h4>对于本游戏，您有什么建议与感想？</h4> 
+		<textarea name="message" style="height:300px;width:600px"></textarea>
+		<input type="submit" value="submit">
+	</form>
+	
+	<h4>您的平均钱数: {{averagePoint}}</h4>
+	<h4>您的排名: {{abovePersonNum}}</h4>
+
+
+
+<h1 style="text-align: center;" onclick="showTable()">显示详情!(点击下拉)</h1>	
+
+<div align="center" id="table"   style="display: none;">
 <table>
 <tbody id="offmain">
 	<thead>
 
 		<tr>
-			<th>Round</th>
-			<th><a title="Team Name" >YourMoney</a></th>
-			<th><span title="Games Played">RobotMoney</span></th>
-			<th><a title="Total Yards" >YourAverageMoney</a></th>
-			<th><a title="Points Per Game" >RobotAverageMoney</a></th>
+			<th>轮数</th>
+			<th><a title="Total Yards" >您的平均收益</a></th>
+			<th><a title="Points Per Game" >您对手的平均收益</a></th>
+			<th><a title="Total Yards" >您的选择</a></th>
+			<th><a title="Points Per Game" >您对手的选择</a></th>
+
 		</tr>
 	</thead>
 </br>
@@ -43,10 +51,11 @@
         {% for publisher in process %}
 	        <tr>
 				<td>{{publisher.times}}</td>
-				<td>{{publisher.money}}</td>
-				<td>{{publisher.robotMoney}}</td>
+				
 				<td>{{publisher.averageMoney }}</td>
 				<td>{{publisher.averageRobotMoney}}</td>
+				<td>{{publisher.humanSelect }}</td>
+				<td>{{publisher.robotSelect}}</td>
 
 			</tr>
             	
@@ -58,15 +67,56 @@
 </tbody>
 
 </table>
+</div>
 
+<script type="text/JavaScript" src="{% static 'game/js/jquery.ajax.min.js' %}"></script>
 <script type="text/javascript">
+	//listen to the exit button
+	var UnloadConfirm = {};
+	UnloadConfirm.MSG_UNLOAD = "数据尚未保存，离开后可能会导致数据丢失\n\n您确定要离开吗？";
+	UnloadConfirm.set = function(a) {
+	    window.onbeforeunload = function(b) {
+	    	QUIT_FLAG={
+				'quit': 1,
+			}
+	    	$.ajax({
+				url: "/quit",
+				type: "GET",
+				dataType: 'json',
+				data: QUIT_FLAG,
+				success:function (result) {
+						isFull = result['isFull'];
+				},
+				error:function(result){
+				}
+			});
+	        //b = b || window.event;
+	        //b.returnValue = a;
+	        //return a
+	    }
+	};
+	UnloadConfirm.clear = function() {
+	    fckDraft.delDraftById();
+	    window.onbeforeunload = function() {
+
+	    }
+	};
+	UnloadConfirm.set(UnloadConfirm.MSG_UNLOAD);
+	//end set listen function 
+
+	function showTable(){
+		var table = document.getElementById("table");
+		table.style.display= "";
+	}
+
+
 	var a = {{humanData}}
 	var b = {{robotData}}
 	var maxX = {{maxX}}
 	var maxY = {{maxY}}
 	var minY = {{minY}}
 	var myChart = new JSChart('graph', 'line');
-	myChart.setTitle("Result");
+	myChart.setTitle("结果");
 	myChart.setDataArray({{humanData}}, 'blue');
 	myChart.setDataArray({{robotData}}, 'green');
 	//myChart.setDataArray([[1, 150],[2, 25],[3, 100],[4, 80],[5, 20],[6, 65],[7, 0],[8, 155],[9, 190],[10, 200]], 'gray');
@@ -74,8 +124,8 @@
 	myChart.setAxisValuesNumberY(5);
 	myChart.setIntervalStartY(minY);
 	myChart.setIntervalEndY(maxY);
-	for(var i = 0; i < 5; i++){
-		tmpNum = maxX / 5 * (i +1);
+	for(var i = 0; i < 4; i++){
+		tmpNum = maxX / 4 * (i +1);
 		myChart.setLabelX([tmpNum,tmpNum.toFixed(2)]);
 	}
 	myChart.setAxisValuesNumberX(5);
@@ -84,6 +134,8 @@
 	myChart.setAxisValuesColor('#454545');
 	myChart.setLineColor('#A4D314', 'green');
 	myChart.setLineColor('#BBBBBB', 'gray');
+	myChart.setAxisNameX("游戏轮数")
+	myChart.setAxisNameY("平均得分")
 	for(var i = 1; i<= {{maxX}};i++){
 		myChart.setTooltip([i," "])
 	}
@@ -93,8 +145,8 @@
 	myChart.setAxisPaddingRight(100);
 	myChart.setLegendShow(true);
 	myChart.setLegendPosition(600, 80);
-	myChart.setLegendForLine('blue', 'HumanData');
-	myChart.setLegendForLine('green', 'RobotData');
+	myChart.setLegendForLine('blue', '您的信息');
+	myChart.setLegendForLine('green', '对手信息');
 	myChart.draw();
 	
 </script>

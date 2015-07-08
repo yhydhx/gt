@@ -1,0 +1,13 @@
+
+{% load staticfiles %}
+
+<form method = 'post' action = '/dc/room/addRoom/'>
+	 {% csrf_token %}
+	<h2>roomId<input name='roomId' value ='' ></h2>
+	<h2>roomName<input name='roomName' value ='' ></h2>
+	<h2>roomSize<input name='roomSize' value ='' ></h2>
+	<h2>maxRound<input name='maxRound' value ='' ></h2>
+	<input type='submit' value="确认">
+    <input type='button' onclick = "history.go(-1)" value="取消">
+</form>
+

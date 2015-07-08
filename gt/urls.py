@@ -7,4 +7,5 @@ from game.views import *
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 	url(r'',include('game.urls')),
+	url(r"^dc/",include('blog.urls')),
 )

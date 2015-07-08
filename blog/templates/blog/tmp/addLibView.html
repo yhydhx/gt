@@ -1,0 +1,23 @@
+
+{% load staticfiles %}
+
+<form method = 'post' action = '/dc/lib/addLib/'>
+	 {% csrf_token %}
+	<h2>name<input name='name' value ='' ></h2>
+	<h2>label<input name='label' value ='' ></h2>
+	Department
+	<select id="dept" name="dept">
+    {% block content %}
+        {% for publisher in departments %}
+			<option name='dept'value={{publisher.id}}>{{publisher.label}}</option>
+        {% endfor %}
+	{% endblock %}
+
+	</select>
+	<h2>uniqueID<input name='uniqueID' value ='' ></h2>
+	<h2>fullname<input name='fullname' value ='' ></h2>
+
+    <input type='submit' value="确认">
+    <input type='button' onclick = "history.go(-1)" value="取消">
+</form>
+

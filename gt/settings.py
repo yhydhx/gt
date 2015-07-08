@@ -36,7 +36,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'game'
+    'game',
+    'blog'
 
 )
 
@@ -61,10 +62,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django_mongodb_engine',
         'NAME': "game",
-        'USER': 'jupiter',
-        'PASSWORD' : '5080',
+        #'USER': 'jupiter',
+        #'PASSWORD' : '5080',
         'HOST' : '127.0.0.1',
-        'PORT' : '27000',
+        #'PORT' : '27000',
     }
 }
 
@@ -94,3 +95,4 @@ STATICfILES_DIRS = (
     os.path.join(BASE_DIR,"static"),
     '/var/www/html/gt/gt/static'
 )
+
