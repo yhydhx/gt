@@ -408,22 +408,14 @@ font-size: 24px;
 	<div id="SYS_hire_main_fp" onselectstart="return false;">
     	<center id="SYS_hire_main_fp_main">
         	<div id="SYS_hire_main_fp_logo" class="ani">欢迎参加</br>囚徒困境游戏！</div>
-            <div id="SYS_hire_main_fp_us">每一次游戏正式开始前，您会被随机匹配到一个对手，</br>与对方进行囚徒困境的博弈游戏。系统将通过每一轮中您们各自</br>的策略选择，来决定您们获得的分数。</div>
-            <div id='checkType'>
-				 <h>请选择一个房间：</h2>
-				 	{% block content %}
-				        {% for publisher in rules %}
-							<input type="radio" id='{{publisher.algorithm}}' name="radiobutton" value="{{publisher.id}}" > {{publisher.name}}  
-				        {% endfor %}
-					{% endblock %}
-				
-            </div>
+            <div id="SYS_hire_main_fp_us">每一次游戏正式开始前，您会被随机匹配到一个对手，</br>与对方进行囚徒困境的博弈游戏。系统将通过每一轮中您们各自</br>的策略选择，来决定您们获得的分数。请点击游戏规则!~</div>
+
             <div id="SYS_hire_main_fp_about">
-            	
+            	<a href="rule"  >游戏规则</a><br/>
                
             </div>
         </center>
-        <div id="SYS_hire_main_fp_next" type="SYS_hire_next" class="loading_rotate">&#xe096;</div>
+        <div style="display:none" id="SYS_hire_main_fp_next" type="SYS_hire_next" class="loading_rotate">&#xe096;</div>
     </div>
     <div id="SYS_hire_main_you">
     	<div id="SYS_hire_main_you_title"  onselectstart="return false;">您正在与 </div>
@@ -442,13 +434,13 @@ font-size: 24px;
     				</thead></br>	        
     					<tr>				
     						<td>合作</td>				
-    						<td>&nbsp;&nbsp;({{matrix.R}},{{matrix.R}})</td>				
-    						<td>&nbsp;&nbsp;({{matrix.S}},{{matrix.T}})</td>			
+    						<td>&nbsp;&nbsp;({{matrix.R}})</td>				
+    						<td>&nbsp;&nbsp;({{matrix.S}})</td>			
     					</tr>			
     					<tr>			
     						<td>背叛</td>				
-    						<td>&nbsp;&nbsp;({{matrix.T}},{{matrix.S}})</td>				
-    						<td>&nbsp;&nbsp;({{matrix.P}},{{matrix.P}})</td>			
+    						<td>&nbsp;&nbsp;({{matrix.T}})</td>				
+    						<td>&nbsp;&nbsp;({{matrix.P}})</td>			
     					</tr>
     				</tbody>
     			</table>
@@ -483,7 +475,7 @@ font-size: 24px;
             	<textarea class="SYS_hire_form_ipt" id="SYS_hire_form_intro"></textarea>
             </div>
         </div>
-        <div id="SYS_hire_main_you_next" type="SYS_hire_next"  style="display:none"  onselectstart="return false;">&#x3d;</div>
+        <div id="SYS_hire_main_you_next" type="SYS_hire_next"  onselectstart="return false;">&#x3d;</div>
     </div>
     <div id="SYS_hire_main_skill">
     	<div id="SYS_hire_main_skill_title"  onselectstart="return false;"></div>
@@ -589,7 +581,7 @@ font-size: 24px;
 				choiceArr[1] = '背叛';
 				break;
 		}
-		choiceValue = "上一轮您选择了 "+choiceArr[0]+ "</br>上一轮对手选择了 "+ choiceArr[1];
+		choiceValue = "您选择了 "+choiceArr[0]+ "</br>对手选择了 "+ choiceArr[1];
 		choice.innerHTML = choiceValue;
 	}
 	function restoreData(humanChoose,times,coMethod,money,robotMoney){
@@ -697,7 +689,7 @@ font-size: 24px;
 						isRead = result['isRead'];
 						isRead = 1
 						if (isRead == 0){
-							alert("请完成信息填写!");
+							alert("Please read the rule and complete the info!");
 							return;
 						}else{
 							var checkBox = document.getElementById("checkType");
@@ -711,7 +703,7 @@ font-size: 24px;
 								}
 							}
 							if (flag == false){
-								alert("请选择房间!");
+								alert("Please Choose a room");
 								return
 							}
 							SUBMIT_CHOICE['type'] = checkedType
@@ -872,7 +864,7 @@ font-size: 24px;
 		   		money = msg['money']
 		   		robotMoney = msg['robotMoney']
 		   		if (exitFlag ==1){
-		   			alert("游戏结束");
+		   			alert("Game Over");
 		   			window.location.href = "sInfo";
 					return;
 		   		}

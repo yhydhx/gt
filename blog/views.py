@@ -540,8 +540,14 @@ def users(request,method,Oid):
         for element in allMember:
             if element.isTrueName == 0:
                 element.trueName = "Anonymous"
-            element.humanAveragePoint = round(float(element.finalScore)/element.rounds,2)
-            element.robotAveragePoint = round(float(element.finalRobotScore)/element.rounds,2)
+            try:
+                element.humanAveragePoint = round(float(element.finalScore)/element.rounds,2)
+            except:
+                element.humanAveragePoint = 0
+            try:
+                element.robotAveragePoint = round(float(element.finalRobotScore)/element.rounds,2)
+            except:
+                element.robotAveragePoint = 0
             try:
                 rule = Rule.objects.get(id=element.ruleId)
                 element.ruleName = rule.ruleName

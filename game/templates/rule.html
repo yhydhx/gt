@@ -49,9 +49,12 @@
       </div>
       <div class='right' style="  font-size: 35px;">
       	<div class='subleft' style="margin-top:40%">
-      		<font color=#00FFFF>您的 选择</font>
+      		<font color=#00FFFF>您的</font>
+      		</br></br>
+      		<font color=#00FFFF>选择</font>
+      		
       	</div> 
-      	<div class='subright' style="margin-top:-50%">  
+      	<div class='subright' style="margin-top:-40%">  
 			<table class="table table-bordered">
 			   <caption><font color=#FF00FF>对手的选择</font></caption>
 			   <thead>
@@ -79,21 +82,23 @@
 
     </section>
     <section>
+    	<h2>问券调查</h2>
+    	<h4>回答正确才可以进行下一步哦～</h4>
     	<div class="panel-body news" id= 'ques'>
 
 			{% block content %}
 	    
 	        {% for q in questions %}
 		        {{q.name}}:  {{q.description|safe}}
-				<input type="radio" id="A" name="radiobutton{{q.name}}" value="1">A. {{q.selectA}}
-	    		<input type="radio" id="B" name="radiobutton{{q.name}}" value="2">B. {{q.selectB}}
-				<input type="radio" id="C" name="radiobutton{{q.name}}" value="3">C. {{q.selectC}}
-	    		<input type="radio" id="D" name="radiobutton{{q.name}}" value="4">D. {{q.selectD}}
+				<input type="radio" id="A" name="radiobutton{{q.name}}" value="1">A.{{q.selectA}}&nbsp; 
+	    		<input type="radio" id="B" name="radiobutton{{q.name}}" value="2">B.{{q.selectB}}&nbsp;
+				<input type="radio" id="C" name="radiobutton{{q.name}}" value="3">C.{{q.selectC}}&nbsp;
+	    		<input type="radio" id="D" name="radiobutton{{q.name}}" value="4">D.{{q.selectD}}&nbsp;
 	    	</br></br>
 	        {% endfor %}
 
 			{% endblock %}
-			<input type='button' onclick="uploadAnswer()" value="uploadAnswer">
+			<input type='button' onclick="uploadAnswer()" value="下一步">
 		</div>
     </section>
 
@@ -260,9 +265,9 @@
 		var email = $("#email")[0].value
 		var re= /\w@\w*\.\w/
 		if (name== "" || sex == "" || email=="" || age == '0'){
-			alert("Please check your input");
+			alert("请完成信息填写!");
 		}else if(!re.test(email)){
-			alert("Please check your email address!");
+			alert("请检查邮箱格式!");
 		}else{
 			$.ajax({
 				url: "/getAnswerAllCorrect",
@@ -270,7 +275,7 @@
 				dataType: 'json',
 				success:function (result) {
 					if (result['allCorrectFlag'] == 0){
-						alert("Please Choose answer!");
+						alert("请先正确回答上一页的问题!");
 					}else{
 						userInfo.submit();
 					}
@@ -312,7 +317,7 @@ function uploadAnswer(){
 	}
 
 	if (dat['answer'].length != allNum){
-		alert("Please choose the answer!~~");
+		alert("请先正确回答上一页的问题!~~");
 		return;
 	}else{
 		dat['qAnswer'] = ""
@@ -346,18 +351,18 @@ function uploadAnswer(){
 					}else if (result[i].correctAnswer == 4){
 						correctChar = 'D';
 					}
-					answerValue += "The Answer of Question "+(i+1).toString()+" is uncorrect!\n"
+					answerValue += "您问题"+(i+1).toString()+" 回答错误,请重新回答!\n"
 				}
 
 			}
 			if (answerValue == ""){
-				alert("Your answers are all correct!!");
+				alert("恭喜你，全部答对!!");
 				window.location.href = "/rule#/3";
 			}else{
 				alert(answerValue)
 			}
 			score = correctNum/allNum ;
-			answerValue = "<h2> You got "+(score*100).toFixed(2).toString()+"/100 score</h2>" + answerValue
+			answerValue = "<h2> 你得到了 "+(score*100).toFixed(2).toString()+"/100 分</h2>" + answerValue
 			$("#ans")[0].innerHTML = answerValue;
 
 			$("#answer")[0].style.display = ""

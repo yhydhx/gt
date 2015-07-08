@@ -68,7 +68,42 @@
 
 </table>
 </div>
+
+<script type="text/JavaScript" src="{% static 'game/js/jquery.ajax.min.js' %}"></script>
 <script type="text/javascript">
+	//listen to the exit button
+	var UnloadConfirm = {};
+	UnloadConfirm.MSG_UNLOAD = "数据尚未保存，离开后可能会导致数据丢失\n\n您确定要离开吗？";
+	UnloadConfirm.set = function(a) {
+	    window.onbeforeunload = function(b) {
+	    	QUIT_FLAG={
+				'quit': 1,
+			}
+	    	$.ajax({
+				url: "/quit",
+				type: "GET",
+				dataType: 'json',
+				data: QUIT_FLAG,
+				success:function (result) {
+						isFull = result['isFull'];
+				},
+				error:function(result){
+				}
+			});
+	        //b = b || window.event;
+	        //b.returnValue = a;
+	        //return a
+	    }
+	};
+	UnloadConfirm.clear = function() {
+	    fckDraft.delDraftById();
+	    window.onbeforeunload = function() {
+
+	    }
+	};
+	UnloadConfirm.set(UnloadConfirm.MSG_UNLOAD);
+	//end set listen function 
+
 	function showTable(){
 		var table = document.getElementById("table");
 		table.style.display= "";
@@ -89,8 +124,8 @@
 	myChart.setAxisValuesNumberY(5);
 	myChart.setIntervalStartY(minY);
 	myChart.setIntervalEndY(maxY);
-	for(var i = 0; i < 5; i++){
-		tmpNum = maxX / 5 * (i +1);
+	for(var i = 0; i < 4; i++){
+		tmpNum = maxX / 4 * (i +1);
 		myChart.setLabelX([tmpNum,tmpNum.toFixed(2)]);
 	}
 	myChart.setAxisValuesNumberX(5);
@@ -99,6 +134,8 @@
 	myChart.setAxisValuesColor('#454545');
 	myChart.setLineColor('#A4D314', 'green');
 	myChart.setLineColor('#BBBBBB', 'gray');
+	myChart.setAxisNameX("游戏轮数")
+	myChart.setAxisNameY("平均得分")
 	for(var i = 1; i<= {{maxX}};i++){
 		myChart.setTooltip([i," "])
 	}

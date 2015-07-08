@@ -13,8 +13,6 @@ import hashlib, time, random,re,json
 
 
 def index(request):
-	#regist a user automatically 
-
 	Uid = time.time()
 	request.session['Uid'] = Uid
 	#get the user IP
@@ -27,6 +25,20 @@ def index(request):
 	    except:
 	        regip = ""
 	request.session['clientIP'] = regip
+	return render(request, 'default.html')
+
+
+def begin(request):
+	#regist a user automatically 
+	try:
+		Uid = request.session['Uid']
+	except:
+		return HttpResponseRedirect('index')
+
+	#delete process is there exist process
+	Process.objects.filter(Uid=Uid).delete()
+	
+	
 	rules = Rule.objects.all()
 	data = []
 	count = 1
@@ -64,12 +76,14 @@ def index(request):
 	matrix['P'] = payoff.P
 
 	request.session['MONEY_CHANGE'] = MONEY_CHANGE
-	print MONEY_CHANGE
+	
 	return render(request, 'index.html',{"rules":data,'matrix':matrix})
 
 def getData(request):
 	if request.method == 'POST':
 		Uid = request.session['Uid']
+		
+		#check end
 		times = float(request.POST.get("times"))
 		lastCoMethod = float(request.POST.get("lastCoMethod"))
 		humanChoose = float(request.POST.get("humanChoose"))
@@ -165,7 +179,15 @@ def sInfo(request):
 		Uid = request.session['Uid']
 		process = Process.objects.filter(Uid=Uid).order_by("times")
 	except:
-		return HttpResponse("Please Play the Game first!!~")
+		if request.session.has_key('user_id'):
+			Uid = request.session['user_id']
+			process = Process.objects.filter(Uid=Uid).order_by("times")
+		else:
+			return HttpResponse("Please Play the Game first!!~")
+
+	#prepare for sName
+	request.session['user_id'] = Uid
+	
 	humanData = [[0,0]]
 	robotData = [[0,0]]
 	maxY = 0
@@ -261,7 +283,7 @@ def rule(request):
 
 def sName(request):
 	try:
-		Uid = request.session['Uid']
+		Uid = request.session['user_id']
 		singlePlayer = Player.objects.get(Uid=Uid)
 	except:
 		return HttpResponse("No user")
@@ -647,9 +669,21 @@ def quitGame(request):
 	room.save()
 	return HttpResponse("Good Bye@")
 
+
+def quit(request):
+	quitFlag = request.GET.get("quit")
+	
+	if quitFlag == '1':
+		del request.session['Uid']
+		return HttpResponse("{'answer':'quit the game'}")
+
 def getInitInfo(request):
 	if request.method == 'POST':
-		Uid = request.session['Uid']
+		try:
+			Uid = request.session['Uid']
+		except:
+			return HttpResponseRedirect("index")
+
 		trueName = request.POST.get('name')
 		sex = request.POST.get('sex')
 		email = request.POST.get('email')
@@ -677,7 +711,7 @@ def getInitInfo(request):
 			singlePlayer.save()
 			del request.session['allCorrectFlag']
 
-		return render(request,"success.html")
+		return HttpResponseRedirect("begin")
 
 def checkRule(request):
 	Uid = request.session['Uid']
@@ -723,5 +757,8 @@ def getAnswer(request):
 
 def getAnswerAllCorrect(request):
 	Info = {}
-	Info['allCorrectFlag'] = request.session['allCorrectFlag']
+	try:
+		Info['allCorrectFlag'] = request.session['allCorrectFlag']
+	except:
+		Info['allCorrectFlag'] = 0
 	return HttpResponse(json.dumps(Info))
