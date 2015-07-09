@@ -65,7 +65,7 @@ DATABASES = {
         #'USER': 'jupiter',
         #'PASSWORD' : '5080',
         'HOST' : '127.0.0.1',
-        'PORT' : '27000',
+        #'PORT' : '27000',
     }
 }
 

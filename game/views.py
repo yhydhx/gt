@@ -165,6 +165,7 @@ def getData(request):
 		Info['robotChoose'] = robotChoose
 		Info['coMethod'] = coMethod
 		Info['exitFlag'] = exitFlag
+		Info['times'] =int(times)
 		
 		return HttpResponse(json.dumps(Info))
 	else:

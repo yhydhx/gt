@@ -555,6 +555,8 @@ font-size: 24px;
 	var checkedType = 0;
 	var robotName = 0;
 	var isRead = 0;
+	var getRivalInfo = 1;
+
 	function getP(coMethod){
 		switch(coMethod){
 			case 0:
@@ -593,6 +595,8 @@ font-size: 24px;
 		choice.innerHTML = choiceValue;
 	}
 	function restoreData(humanChoose,times,coMethod,money,robotMoney){
+		var choice = document.getElementById("SYS_Choice")
+		choice.innerHTML = "Your rival is thinking"
 		SUBMIT_FORM['times'] = times;
 		SUBMIT_FORM['lastCoMethod'] = coMethod;
 		SUBMIT_FORM['money'] = money;
@@ -825,10 +829,19 @@ font-size: 24px;
 
 	_f("#SYS_hire_main_you_choose_male").addEventListener("click",function(){
 		//if(HIRE_FORM.gender){return;}
-		HIRE_FORM.gender=-1;
-		humanChoose = 1
-		restoreData(humanChoose,times,coMethod,money,robotMoney)
-		start_send();
+
+		if (getRivalInfo == 1){
+			getRivalInfo = 0;
+			HIRE_FORM.gender=-1;
+			humanChoose = 1;
+			restoreData(humanChoose,times,coMethod,money,robotMoney);
+			start_send();
+			getRivalObject = setInterval("start_send()",3000); 
+		}else{
+			alert("Please Wait a moment!!!");
+			return;
+		}
+
 
 		
 		setTimeout(function(){
@@ -839,10 +852,17 @@ font-size: 24px;
 	},false);
 	_f("#SYS_hire_main_you_choose_female").addEventListener("click",function(){
 		//if(HIRE_FORM.gender){return;}
-		HIRE_FORM.gender=1;
-		humanChoose = 0
-		restoreData(humanChoose,times,coMethod,money,robotMoney)
-		start_send();
+		if (getRivalInfo ==1){
+			getRivalInfo = 0;
+			HIRE_FORM.gender=1;
+			humanChoose = 0
+			restoreData(humanChoose,times,coMethod,money,robotMoney)
+			start_send()
+			getRivalObject = setInterval("start_send()",3000); 
+		}else{
+			alert("Please wati a moment!!!");
+			return;
+		}
 
 		setTimeout(function(){
 			_f("#SYS_hire_main_you_infos").style.marginRight="0px";
@@ -857,25 +877,34 @@ font-size: 24px;
 		_f("#SYS_hire_main_con_sending_icon").innerHTML="&#xe096;";
 		_c(_f("#SYS_hire_main_con_sending_icon")).add("loading_rotate");
 
+
+
 		$.ajax({
 		   url: "getData",
 		   type: "POST",
 		   dataType: 'json',
 		   data: SUBMIT_FORM,
 		   success: function (msg) {
+		   		getRivalInfo = 1
 		   		console.log(msg)
-		   		robotChoose = msg['robotChoose']
-		   		addMoney = msg['addMoney']
-		   		addRobotMoney = msg['addRobotMoney']
-		   		coMethod = msg['coMethod']
-		   		exitFlag = msg['exitFlag']
-		   		money = msg['money']
-		   		robotMoney = msg['robotMoney']
-		   		if (exitFlag ==1){
-		   			alert("游戏结束");
-		   			window.location.href = "sInfo";
-					return;
-		   		}
+		   		if (getRivalInfo == 1){
+			   		robotChoose = msg['robotChoose']
+			   		addMoney = msg['addMoney']
+			   		addRobotMoney = msg['addRobotMoney']
+			   		coMethod = msg['coMethod']
+			   		exitFlag = msg['exitFlag']
+			   		money = msg['money']
+			   		robotMoney = msg['robotMoney']
+			   		times = msg['times'] +1;
+			   	
+			   		if (exitFlag ==1){
+			   			alert("游戏结束");
+			   			window.location.href = "sInfo";
+						return;
+			   		}
+			   	}
+
+		   		
 		   		console.log(money)
 		   		console.log(robotMoney)
 				
@@ -895,7 +924,10 @@ font-size: 24px;
 		   }
 		});
 
+
 	}
+
+
 	var err=function(){
 			_f("#SYS_hire_main_con_sending_words").innerHTML="报名出错了,请<b onclick='start_send()'>点击重试</b>";
 			_f("#SYS_hire_main_con_sending_icon").innerHTML="&#xe047;";
