@@ -913,11 +913,11 @@ font-size: 24px;
 				r.innerHTML = roundValue;
 				var title = document.getElementById("SYS_Button");
 
-				titleValue  = '<table><tbody style="margin: 0 auto" align="center" >	<thead>		<tr>			<th></th>			<th><a title="Team ame" >上一轮</a></th>			<th><span title="Games Played">&nbsp;&nbsp;&nbsp;平均</span></th>		</tr>	</thead></br>	        <tr>				<td>您的收益</td>				<td>&nbsp;&nbsp;'+(addMoney).toFixed(2)+'</td>				<td>&nbsp;&nbsp;&nbsp;'+(money/times).toFixed(2)+'</td>			</tr>			<tr>			<td>对手的收益</td>				<td>&nbsp;&nbsp;'+(addRobotMoney).toFixed(2)+'</td>				<td>&nbsp;&nbsp;&nbsp;'+(robotMoney/times).toFixed(2)+'</td>			</tr></tbody></table>';
+				titleValue  = '<table><tbody style="margin: 0 auto" align="center" >	<thead>		<tr>			<th></th>			<th><a title="Team ame" >上一轮</a></th>			<th><span title="Games Played">&nbsp;&nbsp;&nbsp;平均</span></th>		</tr>	</thead></br>	        <tr>				<td>您的收益</td>				<td>&nbsp;&nbsp;'+(addMoney).toFixed(2)+'</td>				<td>&nbsp;&nbsp;&nbsp;'+(money/(times-1)).toFixed(2)+'</td>			</tr>			<tr>			<td>对手的收益</td>				<td>&nbsp;&nbsp;'+(addRobotMoney).toFixed(2)+'</td>				<td>&nbsp;&nbsp;&nbsp;'+(robotMoney/(times-1)).toFixed(2)+'</td>			</tr></tbody></table>';
 				title.innerHTML = titleValue;
 				showTheLastChoice(coMethod);
 				isFirst = 0;
-				times = times + 1;
+				
 		   },
 		   error:function(){
 		   		
