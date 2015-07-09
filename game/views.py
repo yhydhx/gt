@@ -691,6 +691,11 @@ def getInitInfo(request):
 
 		try:
 			singlePlayer = Player.objects.get(Uid=Uid)
+			singlePlayer.trueName = trueName
+			singlePlayer.sex = sex
+			singlePlayer.email = email
+			singlePlayer.age = age
+			singlePlayer.save()
 		except:
 			payoff = PayoffMatrix.objects.get(name='Default')
 			payoffRestore = [payoff.R,payoff.T,payoff.S,payoff.P]
