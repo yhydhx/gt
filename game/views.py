@@ -79,6 +79,58 @@ def begin(request):
 	
 	return render(request, 'index.html',{"rules":data,'matrix':matrix})
 
+def begin_smaller(request):
+	#regist a user automatically 
+	try:
+		Uid = request.session['Uid']
+	except:
+		return HttpResponseRedirect('index')
+
+	#delete process is there exist process
+	Process.objects.filter(Uid=Uid).delete()
+	
+	
+	rules = Rule.objects.all()
+	data = []
+	count = 1
+	for element in rules:
+		tmpData = {}
+		tmpData['id'] = element.id
+		tmpData['name'] = "房间"+str(count)
+		tmpData['algorithm'] = element.ruleName
+		count += 1
+		data.append(tmpData)
+
+	'''
+	get the matrix
+	'''
+	payoff = PayoffMatrix.objects.get(name='Default')
+	MONEY_CHANGE = {}
+	matrix = {}
+	if int(payoff.R) == payoff.R:
+		payoff.R = int(payoff.R)
+	if int(payoff.S) == payoff.S:
+		payoff.S = int(payoff.S)
+	if int(payoff.T) == payoff.T:
+		payoff.T = int(payoff.T)
+	if int(payoff.P) == payoff.P:
+		payoff.P = int(payoff.P)
+
+	MONEY_CHANGE['0'] = [payoff.R, payoff.R]
+	MONEY_CHANGE['1'] = [payoff.T, payoff.S]
+	MONEY_CHANGE['2'] = [payoff.S, payoff.T]
+	MONEY_CHANGE['3'] = [payoff.P, payoff.P]
+
+	matrix['R'] = payoff.R
+	matrix['T'] = payoff.T
+	matrix['S'] = payoff.S
+	matrix['P'] = payoff.P
+
+	request.session['MONEY_CHANGE'] = MONEY_CHANGE
+	
+	return render(request, 'index-smaller.html',{"rules":data,'matrix':matrix})
+
+
 def getData(request):
 	if request.method == 'POST':
 		Uid = request.session['Uid']
@@ -768,3 +820,6 @@ def getAnswerAllCorrect(request):
 	except:
 		Info['allCorrectFlag'] = 0
 	return HttpResponse(json.dumps(Info))
+
+def test(request):
+	return HttpResponse("Helloworld!")

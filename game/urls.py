@@ -24,7 +24,7 @@ urlpatterns = patterns('',
     url(r'^getAnswerAllCorrect$', views.getAnswerAllCorrect, name='getAnswerAllCorrect'),
     url(r'^begin$', views.begin, name='begin'),
     url(r'^quit$', views.quit, name='quit'),
-    
+    url(r'^begin_smaller$', views.begin_smaller, name='begin_smaller'),
 
-    #url(r'^test$', views.getClientIp, name='getClientIp')
+    url(r'^test$', views.test, name='test')
 )
