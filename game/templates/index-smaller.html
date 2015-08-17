@@ -410,6 +410,7 @@ font-size: 24px;
         	<div id="SYS_hire_main_fp_logo" class="ani">欢迎参加</br>囚徒困境游戏！</div>
             <div id="SYS_hire_main_fp_us">每一次游戏正式开始前，您会被随机匹配到一个对手，</br>与对方进行囚徒困境的博弈游戏。系统将通过每一轮中您们各自</br>的策略选择，来决定您们获得的分数。</div>
             <div id='checkType'>
+            	<h>在不同的房间中，您将遇到不同类型的对手!</h2></br>
 				 <h>请选择一个房间：</h2>
 				 	{% block content %}
 				        {% for publisher in rules %}
@@ -591,7 +592,7 @@ font-size: 24px;
 				choiceArr[1] = '背叛';
 				break;
 		}
-		choiceValue = "上一轮您选择了 "+choiceArr[0]+ "</br>上一轮对手选择了 "+ choiceArr[1];
+		choiceValue = "本轮是第"+times.toString()+"轮</br>上一轮您选择了 "+choiceArr[0]+ "</br>上一轮对手选择了 "+ choiceArr[1];
 		choice.innerHTML = choiceValue;
 	}
 	function restoreData(humanChoose,times,coMethod,money,robotMoney){

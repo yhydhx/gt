@@ -17,15 +17,16 @@
 	<div class='table' id="graph">Loading...</div>
 
 
-<form method="post" action="sName"> 
+	<h4>您的平均收益: {{averagePoint}}</h4>
+	<h4>您的排名: {{abovePersonNum}}</h4>
+	<form method="post" action="sName"> 
 		{% csrf_token %}
 		<h4>对于本游戏，您有什么建议与感想？</h4> 
 		<textarea name="message" style="height:300px;width:600px"></textarea>
-		<input type="submit" value="submit">
+		<input type="submit" value="提交">
 	</form>
 	
-	<h4>您的平均钱数: {{averagePoint}}</h4>
-	<h4>您的排名: {{abovePersonNum}}</h4>
+
 
 
 
@@ -116,7 +117,7 @@
 	var maxY = {{maxY}}
 	var minY = {{minY}}
 	var myChart = new JSChart('graph', 'line');
-	myChart.setTitle("结果");
+	myChart.setTitle("游戏结果");
 	myChart.setDataArray({{humanData}}, 'blue');
 	myChart.setDataArray({{robotData}}, 'green');
 	//myChart.setDataArray([[1, 150],[2, 25],[3, 100],[4, 80],[5, 20],[6, 65],[7, 0],[8, 155],[9, 190],[10, 200]], 'gray');
@@ -126,7 +127,7 @@
 	myChart.setIntervalEndY(maxY);
 	for(var i = 0; i < 4; i++){
 		tmpNum = maxX / 4 * (i +1);
-		myChart.setLabelX([tmpNum,tmpNum.toFixed(2)]);
+		myChart.setLabelX([tmpNum,tmpNum.toFixed(0)]);
 	}
 	myChart.setAxisValuesNumberX(5);
 	myChart.setShowXValues(false);
@@ -135,7 +136,7 @@
 	myChart.setLineColor('#A4D314', 'green');
 	myChart.setLineColor('#BBBBBB', 'gray');
 	myChart.setAxisNameX("游戏轮数")
-	myChart.setAxisNameY("平均得分")
+	myChart.setAxisNameY("平均收益")
 	for(var i = 1; i<= {{maxX}};i++){
 		myChart.setTooltip([i," "])
 	}
