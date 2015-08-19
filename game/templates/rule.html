@@ -78,15 +78,15 @@
     </section>
     <section>
     	<h2>问券调查</h2>
-    	<h>回答正确才可以进行下一步哦～</h></br>
-    	<h>温馨提示：如果回答过程中遇到问题，可跳转到前一页参考游戏规则</h>
+    	<h4>回答正确才可以进行下一步哦～</h4>
+    	<h4>温馨提示：如果回答过程中遇到问题，可跳转到前一页参考游戏规则</h4>
     	
     	<div class="panel-body news" id= 'ques'>
 
 			{% block content %}
 	    
 	        {% for q in questions %}
-		        {{q.name}}:  {{q.description|safe}}
+		        <h>{{q.name}}:  {{q.description|safe}}</h>
 				<input type="radio" id="A" name="radiobutton{{q.name}}" value="1">A.{{q.selectA}}&nbsp; 
 	    		<input type="radio" id="B" name="radiobutton{{q.name}}" value="2">B.{{q.selectB}}&nbsp;
 				<input type="radio" id="C" name="radiobutton{{q.name}}" value="3">C.{{q.selectC}}&nbsp;
@@ -193,45 +193,7 @@
 		         	<option>65</option>
 		         	<option>66</option>
 		         	<option>67</option>
-		         	<optionCOMPLAX LAB
-PRISONER'S DILEMMA GAME
-
-游戏规则
-每一轮游戏中，您和您的对手需要在“合作”与“背叛”两个策略中进行选择。双方选择完成后，系统将根据右方的支付矩阵计算你们的收益：
-1.当你们都选择“合作”时，将同样获得200分的收益；
-2.当您选择“合作”，而您的对手选择“背叛”时，您将获得-100分，对手则获得300分；
-3.当您选择“背叛”，而您的对手选择“合作”时，您将获得300分，对手则获得-100分；
-4.当你们都选择“背叛”时，则双方都获得0分。
-游戏将在有限轮之后结束。届时，您的分数会与历史上其他玩家进行比较并存入排行榜中，排行结果将向您展示。
-成绩优异者将获得我们的奖品。 您的 
-
-选择
-对手的选择
-合作	背叛
-合作	200,200	-100,300
-背叛	300,-100	0,0
-问券调查
-回答正确才可以进行下一步哦～
-
-温馨提示：如果回答过程中遇到问题，可跳转到前一页参考游戏规则
-
-Question 1:
-如果你的对手都选了C，你也选了弹夹没考上了发动机航空啦
-
-￼A.100  ￼B.200  ￼C.200  ￼D.-100  
-Question 2:
-如果你选了c，你的u地首选了D
-
-￼A.200  ￼B.100  ￼C.-100  ￼D.190  
-￼
-为了我们后期跟进联系，请留下您的个人信息与联系方式：
-
-@姓名￼
-性别 ￼
-年龄 ￼
-@Email￼￼ 确认
-THE END
->68</option>
+		         	<option>68</option>
 		         	<option>69</option>
 		         	<option>70</option>
 		         	<option>71</option>
