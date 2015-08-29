@@ -598,7 +598,7 @@ font-size: 24px;
 				choiceArr[1] = '背叛';
 				break;
 		}
-		choiceValue = "本轮是第"+times.toString()+"轮</br>上一轮您选择了 "+choiceArr[0]+ "</br>上一轮对手选择了 "+ choiceArr[1];
+		choiceValue = "上一轮您选择了 "+choiceArr[0]+ "</br>上一轮对手选择了 "+ choiceArr[1] + "</br>本轮是第"+times.toString()+"轮, 您的选择是:";
 		choice.innerHTML = choiceValue;
 	}
 	function restoreData(humanChoose,times,coMethod,money,robotMoney){
