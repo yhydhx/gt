@@ -25,89 +25,78 @@
 <div class="reveal">
   <div class="slides" >
     <section>
-      <h1>囚徒困境游戏</h1>
+      <h1>Prisoner's Dilemma</h1>
       <h3>Complax Lab</h3>
     </section>
     <section   data-transition="linear"data-background-transition="slide">
-      <h2>游戏规则</h2>
+      <h2>Game Rule</h2>
       <div class='left'>
-      	<font style="  font-size: 20px;">每一轮游戏中，您和您的对手需要在“合作”与“背叛”两个策略中进行选择。双方选择完成后，系统将根据右方的支付矩阵计算你们的收益． </br></br>
-			因此，一共有以下四种可能的结果：</br>
-			１.　您的选择：合作；  对手的选择：合作；</br>
-			　   您的得分： 200； 对手的得分： 200； </br> </br>
-			２.　您的选择：合作；  对手的选择：背叛；</br>
-			　   您的得分：-100； 对手的得分： 300； </br> </br>
-			３.　您的选择：背叛；  对手的选择：合作；</br>
-			　   您的得分： 300； 对手的得分：-100； </br> </br>
-			４.　您的选择：背叛；  对手的选择：背叛；</br>
-			　   您的得分： 0  ； 对手的得分： 0  ； </br> </br>
-
-	游戏将在有限轮之后结束。届时，您的分数会与历史上其他玩家进行比较并存入排行榜中，排行结果将向您展示。</br>
-	成绩优异者将获得我们的奖品。
-</font>
+      	<font style="  font-size: 20px;">
+      		In the beginning, you will be assigned to a opponent. In each round, you and your opponent choose between Cooperation(C) and Defection(D) simultaneously. After you have independently chosen, your scores will be calculated and displayed according to the matrix on the right.</br></br>
+      		So there are four possible outcomes:</br>
+      		1.  Your choice: C; Your opponent's choice: C; </br>
+      			Your payoff:  200; Your opponent's payoff:  200; </br></br>
+      		2.	Your choice: C; Your opponent's choice: D; </br>
+      			Your payoff: -100; Your opponent's payoff:  300; </br></br>
+      		3.	Your choice: D; Your opponent's choice: C; </br>
+      			Your payoff:  300; Your opponent's payoff: -100; </br></br>
+      		4.	Your choice: D; Your opponent's choice: D; </br>
+      			Your payoff : 0  ; Your opponent's payoff:  0  ; </br></br>
+      		The game terminates after finite rounds. Your scores will be compared with others and showed on a ranking list. Those accomplish with top grade will be rewarded.
+		</font>
       </div>
       <div class='right' >
 		<img src="static/game/images/PayoffMatrix1.png">
       </div>
     </section>
     <section style='font-size: 25px;'>
-    	<h2>问券调查</h2>
-    	
-    		
-<!--    	<h4>温馨提示：如果回答过程中遇到问题，可跳转到前一页参考游戏规则</h4> -->
+    	<h2>Questionnaires</h2>  
     	
     	<div class='right' >
 		<img src="static/game/images/PayoffMatrix1.png">
     	</div>
     	<div class="panel-body news left" id= 'ques' style='font-size: 25px;'>
-    		<p>请根据上一页的游戏规则和右方的支付矩阵，正确回答下列四个问题．</p>
-			{% block content %}
+    		<h4>Please answer the questions correctly</h4			{% block content %}
 	    
-	    	<ul>
-		        {% for q in questions %}
-		        <li>
-			        {{q.description|safe}}
-					<label><input type="radio" id="A" name="radiobutton{{q.name}}" value="1"><span>{{q.selectA}}</span></label>
-		    		<label><input type="radio" id="B" name="radiobutton{{q.name}}" value="2"><span>{{q.selectB}}</span></label>
-					<label><input type="radio" id="C" name="radiobutton{{q.name}}" value="3"><span>{{q.selectC}}</span></label>
-		    		<label><input type="radio" id="D" name="radiobutton{{q.name}}" value="4"><span>{{q.selectD}}</span></label>
-		        </li>
-		        {% endfor %}
-	    	</ul>
+	        {% for q in questions %}
+		        <h>{{q.name}}:  {{q.description|safe}}</h>
+				<input type="radio" id="A" name="radiobutton{{q.name}}" value="1">{{q.selectA}}&nbsp; 
+	    		<input type="radio" id="B" name="radiobutton{{q.name}}" value="2">{{q.selectB}}&nbsp;
+				<input type="radio" id="C" name="radiobutton{{q.name}}" value="3">{{q.selectC}}&nbsp;
+	    		<input type="radio" id="D" name="radiobutton{{q.name}}" value="4">{{q.selectD}}&nbsp;
+	    	</br>
+	        {% endfor %}
 
 			{% endblock %}
-			<input type='button' class="btn btn-large btn-primary" onclick="uploadAnswer()" value="提交"/>
+			<input type='button' onclick="uploadAnswer()" value="Submit">
 		</div>
     </section>
 
     <section>
-   <!--<link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+   <link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-   <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>-->
-   <link href="static/game/css/bootstrap.min.css" rel="stylesheet">
-   <script src="static/game/js/jquery.min.js"></script>
-   <script src="static/game/js/bootstrap.min.js"></script>
-		<h3>为了我们后期跟进联系，请留下您的个人信息与联系方式：</h3>
+   <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+   		<h4>Please fill in the form about your information for our research and follow-up.</h4> 
 
 		<div style="padding: 100px 100px 10px;">
 		   <form id='userInfo' class="bs-example bs-example-form" role="form" method='post' action="/getInitInfo">
 		   	{% csrf_token %} 
 		      <div class="input-group input-group-lg">
-		         <span class="input-group-addon">姓名</span>
+		         <span class="input-group-addon">Name</span>
 		         <input id='name' name='name' type="text" class="form-control" placeholder="Name">
 		      </div><br>
 
 		      <div  class="input-group input-group-lg">
-		         性别
+		         Gender
 		         <select id='sex' name='sex'>
 		         	<option></option>
-		         	<option>男</option>
-		         	<option>女</option>
+		         	<option>Male</option>
+		         	<option>Female</option>
 		         </select>
 		      </div><br>
 
 		      <div  class="input-group input-group-lg">
-		          年龄
+		          Age
 		         <select id='age' name='age'>
 		         	<option>0</option>
 		         	<option>15</option>
@@ -189,12 +178,11 @@
 		      </div>
 		  </br>
 		      <div class="input-group input-group-lg">
-		         <span class="input-group-addon">邮箱</span>
+		         <span class="input-group-addon">Email</span>
 		         <input id='email' name='email'  type="text" class="form-control" placeholder="email">
 		      </div>
-		  </br>
 		       <button type="button" class="btn btn-primary btn-lg" onclick="check()">
-			      确认
+			      Confirm
 			   </button>
 		   </form>
 		</div>
@@ -233,9 +221,9 @@
 		var email = $("#email")[0].value
 		var re= /\w@\w*\.\w/
 		if (name== "" || sex == "" || email=="" || age == '0'){
-			alert("请完成信息填写!");
+			alert("Please fill the information!");
 		}else if(!re.test(email)){
-			alert("请检查邮箱格式!");
+			alert("Please check your email!");
 		}else{
 			$.ajax({
 				url: "/getAnswerAllCorrect",
@@ -243,7 +231,7 @@
 				dataType: 'json',
 				success:function (result) {
 					if (result['allCorrectFlag'] == 0){
-						alert("请先正确回答上一页的问题!");
+						alert("Please answer the Questionnaires correctly on the previous page first!");
 					}else{
 						userInfo.submit();
 					}
@@ -257,23 +245,35 @@
 	}
 
 function uploadAnswer(){
-	var answers = $("#ques input");
-
+	var answers = $("#ques")[0].children
 	var allNum = {{questionNumber}}
 	dat = {
 		'answer' : [],
 		'qAnswer' : ""
 	}
 
-	for(var i=0;i<answers.length;i++){
-		if(answers[i].checked){
-			dat['answer'].push(i % 4+1)
+	for(var i=1;i<=answers.length;i++){
+		if (((i-1) %6)  == 2){
+			if(answers[i-1].checked){
+				dat['answer'].push(1)
+			}
+		}else if (((i-1) %6)  == 3){
+			if(answers[i-1].checked){
+				dat['answer'].push(2)
+			}
+		}else if (((i-1) %6)  == 4){
+			if(answers[i-1].checked){
+				dat['answer'].push(3)
+			}
+		}else if (((i-1) %6)  == 5){
+			if(answers[i-1].checked){
+				dat['answer'].push(4)
+			}
 		}
 	}
 
-
 	if (dat['answer'].length != allNum){
-		alert("请先完成问卷!~~");
+		alert("Please finish the Questionnaires first!~~");
 		return;
 	}else{
 		dat['qAnswer'] = ""
@@ -307,18 +307,18 @@ function uploadAnswer(){
 					}else if (result[i].correctAnswer == 4){
 						correctChar = 'D';
 					}
-					answerValue += "您问题"+(i+1).toString()+" 回答错误,请重新回答!\n"
+					answerValue += "Your had the"+(i+1).toString()+"th wrong, please answer again!\n"
 				}
 
 			}
 			if (answerValue == ""){
-				alert("恭喜你，全部答对!!");
+				alert("Congratulations，correct answers!!");
 				window.location.href = "/rule#/3";
 			}else{
 				alert(answerValue)
 			}
 			score = correctNum/allNum ;
-			answerValue = "<h2> 你得到了 "+(score*100).toFixed(2).toString()+"/100 分</h2>" + answerValue
+			answerValue = "<h2> You got "+(score*100).toFixed(2).toString()+"/100 score</h2>" + answerValue
 			$("#ans")[0].innerHTML = answerValue;
 
 			$("#answer")[0].style.display = ""

@@ -194,7 +194,7 @@ width: 500px;
 	position: absolute;
 	top: 10%;
 	left: 5%;
-	font-size: 42px;
+	font-size: 27px;
 }
 
 
@@ -202,21 +202,21 @@ width: 500px;
 	position: absolute;
 	top: 65%;
 	left: 33%;
-	font-size: 40px;
+	font-size: 25px;
 }
 
 #SYS_Matrix {
 	position: absolute;
 	top: 0%;
 	right:100px;
-	font-size: 40px;
+	font-size: 25px;
 }
 #SYS_Choice {
 	position: absolute;
 	top: 17%;
 	text-align: center;
 	width: 100%;
-	font-size: 40px;
+	font-size: 25px;
 }
 #SYS_LeftTop {
 	position: absolute;
@@ -228,7 +228,7 @@ width: 500px;
 #SYS_hire_main_you_choose {
 	position: absolute;
 	top: 38%;
-	font-size: 120px;
+	font-size: 75px;
 	text-align: center;
 	width: 100%;
 }
@@ -407,18 +407,23 @@ font-size: 24px;
 <div id="SYS_hire_main">
 	<div id="SYS_hire_main_fp" onselectstart="return false;">
     	<center id="SYS_hire_main_fp_main">
-        	<div id="SYS_hire_main_fp_logo" class="ani">欢迎参加</br>囚徒困境游戏！</div>
-            <div id="SYS_hire_main_fp_us">每一次游戏正式开始前，您会被随机匹配到一个对手，</br>与对方进行囚徒困境的博弈游戏。系统将通过每一轮中您们各自</br>的策略选择，来决定您们获得的分数。请点击游戏规则!~</div>
-            <div id="CHOOSE_LANGUAGE">
-            	<a href="selectChinese">中文版&nbsp;&nbsp;</a>
-            	<a href="selectEnglish">English Version</a>
+        	<div id="SYS_hire_main_fp_logo" class="ani">Welcome to</br>Prinsoner's Dilemma Game！</div>
+            <div id='checkType'>
+            	<h>In different room, you will meet different opponent!</h2></br>
+				 Please choose a room：
+				 	{% block content %}
+				        {% for publisher in rules %}
+							<input type="radio" id='{{publisher.algorithm}}' name="radiobutton" value="{{publisher.id}}" > {{publisher.name}}  
+				        {% endfor %}
+					{% endblock %}
+				
             </div>
             <div id="SYS_hire_main_fp_about">
-            	<a href="rule"  >游戏规则</a><br/>
+            	
                
             </div>
         </center>
-        <div style="display:none" id="SYS_hire_main_fp_next" type="SYS_hire_next" class="loading_rotate">&#xe096;</div>
+        <div id="SYS_hire_main_fp_next" type="SYS_hire_next" class="loading_rotate">&#xe096;</div>
     </div>
     <div id="SYS_hire_main_you">
     	<div id="SYS_hire_main_you_title"  onselectstart="return false;">您正在与 </div>
@@ -431,26 +436,26 @@ font-size: 24px;
     				<thead>
     					<tr>			
     						<th></th>			
-    						<th>&nbsp;&nbsp;合作</th>			
-    						<th>&nbsp;&nbsp;背叛</th>		
+    						<th>&nbsp;&nbsp;Cooperate</th>			
+    						<th>&nbsp;&nbsp;Defect</th>		
     					</tr>	
     				</thead></br>	        
     					<tr>				
-    						<td>合作</td>				
-    						<td>&nbsp;&nbsp;({{matrix.R}})</td>				
-    						<td>&nbsp;&nbsp;({{matrix.S}})</td>			
+    						<td>Cooperate</td>				
+    						<td>&nbsp;&nbsp;({{matrix.R}},{{matrix.R}})</td>				
+    						<td>&nbsp;&nbsp;({{matrix.S}},{{matrix.T}})</td>			
     					</tr>			
     					<tr>			
-    						<td>背叛</td>				
-    						<td>&nbsp;&nbsp;({{matrix.T}})</td>				
-    						<td>&nbsp;&nbsp;({{matrix.P}})</td>			
+    						<td>Defect</td>				
+    						<td>&nbsp;&nbsp;({{matrix.T}},{{matrix.S}})</td>				
+    						<td>&nbsp;&nbsp;({{matrix.P}},{{matrix.P}})</td>			
     					</tr>
     				</tbody>
     			</table>
     	</div>
         <div id="SYS_hire_main_you_choose"  onselectstart="return false;">
-        	<div id="SYS_hire_main_you_choose_male"  class="ani" type="SYS_hire_gen">合作</div>
-            <div id="SYS_hire_main_you_choose_female"  class="ani" type="SYS_hire_gen">背叛</div>
+        	<div id="SYS_hire_main_you_choose_male"  class="ani" type="SYS_hire_gen">Cooperate</div>
+            <div id="SYS_hire_main_you_choose_female"  class="ani" type="SYS_hire_gen">Defect</div>
         </div>
         <div id="SYS_hire_main_you_infos" class="ani">
         	<div type="SYS_hire_form">
@@ -478,7 +483,7 @@ font-size: 24px;
             	<textarea class="SYS_hire_form_ipt" id="SYS_hire_form_intro"></textarea>
             </div>
         </div>
-        <div id="SYS_hire_main_you_next" type="SYS_hire_next"  onselectstart="return false;">&#x3d;</div>
+        <div id="SYS_hire_main_you_next" type="SYS_hire_next"  style="display:none"  onselectstart="return false;">&#x3d;</div>
     </div>
     <div id="SYS_hire_main_skill">
     	<div id="SYS_hire_main_skill_title"  onselectstart="return false;"></div>
@@ -529,7 +534,7 @@ font-size: 24px;
 	<center id="SYS_hire_main_con_sending">
 		{% csrf_token %} 
     	<div id="SYS_hire_main_con_sending_icon" class="loading_rotate">&#xe096;</div>
-        <div id="SYS_hire_main_con_sending_words">正在通信...</div>
+        <div id="SYS_hire_main_con_sending_words">Connecting...</div>
     </center>
 </div>
 </body>
@@ -550,6 +555,8 @@ font-size: 24px;
 	var checkedType = 0;
 	var robotName = 0;
 	var isRead = 0;
+	var getRivalInfo = 1;
+
 	function getP(coMethod){
 		switch(coMethod){
 			case 0:
@@ -568,26 +575,28 @@ font-size: 24px;
 		var choiceArr = new Array(2)
 		switch(coMethod){
 			case 0:
-				choiceArr[0] = '合作';
-				choiceArr[1] = '合作';
+				choiceArr[0] = 'Cooperate';
+				choiceArr[1] = 'Cooperate';
 				break;
 			case 1:
-				choiceArr[0] = '背叛';
-				choiceArr[1] = '合作';
+				choiceArr[0] = 'Defect';
+				choiceArr[1] = 'Cooperate';
 				break;
 			case 2:
-				choiceArr[0] = '合作';
-				choiceArr[1] = '背叛';
+				choiceArr[0] = 'Cooperate';
+				choiceArr[1] = 'Defect';
 				break;
 			case 3:
-				choiceArr[0] = '背叛';
-				choiceArr[1] = '背叛';
+				choiceArr[0] = 'Defect';
+				choiceArr[1] = 'Defect';
 				break;
 		}
-		choiceValue = "您选择了 "+choiceArr[0]+ "</br>对手选择了 "+ choiceArr[1];
+		choiceValue = "Last round you chose "+choiceArr[0]+ "</br>Your opponent's chose "+ choiceArr[1] + "</br>It's "+times.toString()+"th round, your choice is:";
 		choice.innerHTML = choiceValue;
 	}
 	function restoreData(humanChoose,times,coMethod,money,robotMoney){
+		var choice = document.getElementById("SYS_Choice")
+		choice.innerHTML = "Your opponent is thinking!"
 		SUBMIT_FORM['times'] = times;
 		SUBMIT_FORM['lastCoMethod'] = coMethod;
 		SUBMIT_FORM['money'] = money;
@@ -600,7 +609,7 @@ font-size: 24px;
   		return !!(elem.getContext && elem.getContext('2d'));
 	}
 	if(!check_canvas()){
-		alert("请使用现代浏览器!  例如Chrome,Firefox等");
+		alert("Please use other browsers,such as Chrome and irefox");
 		window.open('', '_self', '');
 		window.close();
 	}	
@@ -690,9 +699,9 @@ font-size: 24px;
 				data: 1,
 				success:function (result) {
 						isRead = result['isRead'];
-						isRead = 1
+						//isRead = 1
 						if (isRead == 0){
-							alert("Please read the rule and complete the info!");
+							alert("Please fill your information!");
 							return;
 						}else{
 							var checkBox = document.getElementById("checkType");
@@ -706,7 +715,7 @@ font-size: 24px;
 								}
 							}
 							if (flag == false){
-								alert("Please Choose a room");
+								alert("Please choose a room!");
 								return
 							}
 							SUBMIT_CHOICE['type'] = checkedType
@@ -721,7 +730,7 @@ font-size: 24px;
 							   		robotName = result['name'];
 							   		var nameField = document.getElementById("SYS_hire_main_you_title")
 							   		var ouputValue = nameField.innerHTML;
-							   		outputValue = ouputValue + robotName +" 博弈！"
+							   		outputValue = ouputValue + robotName +" game！"
 							   		nameField.innerHTML = outputValue;
 							   },
 							   error:function(result){
@@ -820,10 +829,19 @@ font-size: 24px;
 
 	_f("#SYS_hire_main_you_choose_male").addEventListener("click",function(){
 		//if(HIRE_FORM.gender){return;}
-		HIRE_FORM.gender=-1;
-		humanChoose = 1
-		restoreData(humanChoose,times,coMethod,money,robotMoney)
-		start_send();
+
+		if (getRivalInfo == 1){
+			getRivalInfo = 0;
+			HIRE_FORM.gender=-1;
+			humanChoose = 1;
+			restoreData(humanChoose,times,coMethod,money,robotMoney);
+			start_send();
+			
+		}else{
+			alert("Please wait for your opponent!");
+			return;
+		}
+
 
 		
 		setTimeout(function(){
@@ -834,10 +852,17 @@ font-size: 24px;
 	},false);
 	_f("#SYS_hire_main_you_choose_female").addEventListener("click",function(){
 		//if(HIRE_FORM.gender){return;}
-		HIRE_FORM.gender=1;
-		humanChoose = 0
-		restoreData(humanChoose,times,coMethod,money,robotMoney)
-		start_send();
+		if (getRivalInfo ==1){
+			getRivalInfo = 0;
+			HIRE_FORM.gender=1;
+			humanChoose = 0
+			restoreData(humanChoose,times,coMethod,money,robotMoney)
+			start_send()
+			
+		}else{
+			alert("Please wait for your opponent!");
+			return;
+		}
 
 		setTimeout(function(){
 			_f("#SYS_hire_main_you_infos").style.marginRight="0px";
@@ -848,9 +873,11 @@ font-size: 24px;
 	function start_send(){
 		var csf = document.getElementsByName("csrfmiddlewaretoken")[0].value
 		SUBMIT_FORM["csrfmiddlewaretoken"] = csf;
-		_f("#SYS_hire_main_con_sending_words").innerHTML="正在发送...";
+		_f("#SYS_hire_main_con_sending_words").innerHTML="Sending...";
 		_f("#SYS_hire_main_con_sending_icon").innerHTML="&#xe096;";
 		_c(_f("#SYS_hire_main_con_sending_icon")).add("loading_rotate");
+
+
 
 		$.ajax({
 		   url: "getData",
@@ -858,19 +885,26 @@ font-size: 24px;
 		   dataType: 'json',
 		   data: SUBMIT_FORM,
 		   success: function (msg) {
+		   		getRivalInfo = 1
 		   		console.log(msg)
-		   		robotChoose = msg['robotChoose']
-		   		addMoney = msg['addMoney']
-		   		addRobotMoney = msg['addRobotMoney']
-		   		coMethod = msg['coMethod']
-		   		exitFlag = msg['exitFlag']
-		   		money = msg['money']
-		   		robotMoney = msg['robotMoney']
-		   		if (exitFlag ==1){
-		   			alert("Game Over");
-		   			window.location.href = "sInfo";
-					return;
-		   		}
+		   		if (getRivalInfo == 1){
+			   		robotChoose = msg['robotChoose']
+			   		addMoney = msg['addMoney']
+			   		addRobotMoney = msg['addRobotMoney']
+			   		coMethod = msg['coMethod']
+			   		exitFlag = msg['exitFlag']
+			   		money = msg['money']
+			   		robotMoney = msg['robotMoney']
+			   		times = msg['times'] +1;
+			   	
+			   		if (exitFlag ==1){
+			   			alert("Game over");
+			   			window.location.href = "sInfo";
+						return;
+			   		}
+			   	}
+
+		   		
 		   		console.log(money)
 		   		console.log(robotMoney)
 				
@@ -879,20 +913,23 @@ font-size: 24px;
 				r.innerHTML = roundValue;
 				var title = document.getElementById("SYS_Button");
 
-				titleValue  = '<table><tbody style="margin: 0 auto" align="center" >	<thead>		<tr>			<th></th>			<th><a title="Team ame" >上一轮</a></th>			<th><span title="Games Played">&nbsp;&nbsp;&nbsp;平均</span></th>		</tr>	</thead></br>	        <tr>				<td>您的收益</td>				<td>&nbsp;&nbsp;'+(addMoney).toFixed(2)+'</td>				<td>&nbsp;&nbsp;&nbsp;'+(money/times).toFixed(2)+'</td>			</tr>			<tr>			<td>对手的收益</td>				<td>&nbsp;&nbsp;'+(addRobotMoney).toFixed(2)+'</td>				<td>&nbsp;&nbsp;&nbsp;'+(robotMoney/times).toFixed(2)+'</td>			</tr></tbody></table>';
+				titleValue  = '<table><tbody style="margin: 0 auto" align="center" >	<thead>		<tr>			<th></th>			<th><a title="Team ame" >Last round</a></th>			<th><span title="Games Played">&nbsp;&nbsp;&nbsp;average</span></th>		</tr>	</thead></br>	        <tr>				<td>Your score</td>				<td>&nbsp;&nbsp;'+(addMoney).toFixed(2)+'</td>				<td>&nbsp;&nbsp;&nbsp;'+(money/(times-1)).toFixed(2)+'</td>			</tr>			<tr>			<td>Your opponent\'s score</td>				<td>&nbsp;&nbsp;'+(addRobotMoney).toFixed(2)+'</td>				<td>&nbsp;&nbsp;&nbsp;'+(robotMoney/(times-1)).toFixed(2)+'</td>			</tr></tbody></table>';
 				title.innerHTML = titleValue;
 				showTheLastChoice(coMethod);
 				isFirst = 0;
-				times = times + 1;
+				
 		   },
 		   error:function(){
 		   		
 		   }
 		});
 
+
 	}
+
+
 	var err=function(){
-			_f("#SYS_hire_main_con_sending_words").innerHTML="报名出错了,请<b onclick='start_send()'>点击重试</b>";
+			_f("#SYS_hire_main_con_sending_words").innerHTML="Error,please<b onclick='start_send()'>click again</b>";
 			_f("#SYS_hire_main_con_sending_icon").innerHTML="&#xe047;";
 			_c(_f("#SYS_hire_main_con_sending_icon")).remove("loading_rotate");
 	}

@@ -407,21 +407,21 @@ font-size: 24px;
 <div id="SYS_hire_main">
 	<div id="SYS_hire_main_fp" onselectstart="return false;">
     	<center id="SYS_hire_main_fp_main">
-        	<div id="SYS_hire_main_fp_logo" class="ani">欢迎参加</br>囚徒困境游戏！</div>
-            <div id="SYS_hire_main_fp_us">每一次游戏正式开始前，您会被随机匹配到一个对手，</br>与对方进行囚徒困境的博弈游戏。系统将通过每一轮中您们各自</br>的策略选择，来决定您们获得的分数。请点击游戏规则!~</div>
+        	<div id="SYS_hire_main_fp_logo" class="ani">Welcome to</br>Prinsoner's Dilemma Game！</div>
+            <div id="SYS_hire_main_fp_us">Please click 'Game Rules'</div>
             <div id="CHOOSE_LANGUAGE">
             	<a href="selectChinese">中文版&nbsp;&nbsp;</a>
             	<a href="selectEnglish">English Version</a>
             </div>
             <div id="SYS_hire_main_fp_about">
-            	<a href="rule"  >游戏规则</a><br/>
+            	<a href="rule"  >Game Rule</a><br/>
                
             </div>
         </center>
         <div style="display:none" id="SYS_hire_main_fp_next" type="SYS_hire_next" class="loading_rotate">&#xe096;</div>
     </div>
     <div id="SYS_hire_main_you">
-    	<div id="SYS_hire_main_you_title"  onselectstart="return false;">您正在与 </div>
+    	<div id="SYS_hire_main_you_title"  onselectstart="return false;">You are playing with </div>
     	<div id="SYS_Button" > </div>
     	<div id="SYS_Choice" > </div>
     	<div id="SYS_LeftTop"> </div>
@@ -431,17 +431,17 @@ font-size: 24px;
     				<thead>
     					<tr>			
     						<th></th>			
-    						<th>&nbsp;&nbsp;合作</th>			
-    						<th>&nbsp;&nbsp;背叛</th>		
+    						<th>&nbsp;&nbsp;Cooperate</th>			
+    						<th>&nbsp;&nbsp;Defect</th>		
     					</tr>	
     				</thead></br>	        
     					<tr>				
-    						<td>合作</td>				
+    						<td>Cooperate</td>				
     						<td>&nbsp;&nbsp;({{matrix.R}})</td>				
     						<td>&nbsp;&nbsp;({{matrix.S}})</td>			
     					</tr>			
     					<tr>			
-    						<td>背叛</td>				
+    						<td>Defect</td>				
     						<td>&nbsp;&nbsp;({{matrix.T}})</td>				
     						<td>&nbsp;&nbsp;({{matrix.P}})</td>			
     					</tr>
@@ -449,8 +449,8 @@ font-size: 24px;
     			</table>
     	</div>
         <div id="SYS_hire_main_you_choose"  onselectstart="return false;">
-        	<div id="SYS_hire_main_you_choose_male"  class="ani" type="SYS_hire_gen">合作</div>
-            <div id="SYS_hire_main_you_choose_female"  class="ani" type="SYS_hire_gen">背叛</div>
+        	<div id="SYS_hire_main_you_choose_male"  class="ani" type="SYS_hire_gen">Cooperate</div>
+            <div id="SYS_hire_main_you_choose_female"  class="ani" type="SYS_hire_gen">Defect</div>
         </div>
         <div id="SYS_hire_main_you_infos" class="ani">
         	<div type="SYS_hire_form">
@@ -568,20 +568,20 @@ font-size: 24px;
 		var choiceArr = new Array(2)
 		switch(coMethod){
 			case 0:
-				choiceArr[0] = '合作';
-				choiceArr[1] = '合作';
+				choiceArr[0] = 'Cooperate';
+				choiceArr[1] = 'Cooperate';
 				break;
 			case 1:
-				choiceArr[0] = '背叛';
-				choiceArr[1] = '合作';
+				choiceArr[0] = 'Defect';
+				choiceArr[1] = 'Cooperate';
 				break;
 			case 2:
-				choiceArr[0] = '合作';
-				choiceArr[1] = '背叛';
+				choiceArr[0] = 'Cooperate';
+				choiceArr[1] = 'Defect';
 				break;
 			case 3:
-				choiceArr[0] = '背叛';
-				choiceArr[1] = '背叛';
+				choiceArr[0] = 'Defect';
+				choiceArr[1] = 'Defect';
 				break;
 		}
 		choiceValue = "您选择了 "+choiceArr[0]+ "</br>对手选择了 "+ choiceArr[1];
@@ -600,7 +600,7 @@ font-size: 24px;
   		return !!(elem.getContext && elem.getContext('2d'));
 	}
 	if(!check_canvas()){
-		alert("请使用现代浏览器!  例如Chrome,Firefox等");
+		alert("Please use other browsers,such as Chrome and irefox");
 		window.open('', '_self', '');
 		window.close();
 	}	

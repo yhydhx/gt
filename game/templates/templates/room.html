@@ -1,0 +1,204 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link href="{% static 'game/metro/css/metro-bootstrap.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'game/metro/docs/css/iconFont.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'game/css/site.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'game/css/bootstrap.css' %}" rel="stylesheet" type="text/css">
+	
+
+	<script src="{% static 'game/metro/jquery.min.js' %}" type="text/javascript"></script>
+	<script src="{% static 'game/metro/jquery-ui/jquery.widget.min.js' %}" type="text/javascript"></script>
+	<script src="{% static 'game/js/global.js' %}" type="text/javascript"></script>
+</head>
+<body  onbeforeunload="fnUnloadHandler()">
+<div class="container">
+
+<div class="panel panel-primary metro-block">
+<div class="panel-body">
+<div class="metro">
+	<div class="tile triple double-vertical bg-darkBlue" onclick="changeUrl(this.value)">
+		<div class="tile-content icon">
+			<i class="icon-camera-2"></i>
+		</div>
+		<div class="tile-status">
+        	<span class="name">BigRoom</span>
+    	</div>
+	</div>
+	
+	<div class="tile double-vertical bg-darkViolet" onclick="changeUrl(this.value)">
+		<div class="tile-content icon">
+			<i class="icon-music"></i>
+		</div>
+		<div class="tile-status">
+        	<span class="name">MiddleRoom</span>
+    	</div>
+	</div>
+	
+	<div class="tile quadro bg-darkGreen"  >
+		<div class="tile-content icon">
+			<i class="icon-diamonds"></i>
+		</div>
+		<div class="tile-status">
+        	<span class="name">Room</span>
+    	</div>
+	</div>
+	
+	<div class="tile bg-darkGreen" >
+		<div class="tile-content icon">
+			<i class="icon-diamonds"></i>
+		</div>
+		<div class="tile-status">
+        	<span class="name">Room</span>
+    	</div>
+	</div>
+	
+	<div class="tile bg-darkGreen" >
+		<div class="tile-content icon">
+			<i class="icon-diamonds"></i>
+		</div>
+		<div class="tile-status">
+        	<span class="name">Room</span>
+    	</div>
+	</div>
+	
+	<div class="tile double bg-darkGreen" >
+		<div class="tile-content icon">
+			<i class="icon-diamonds"></i>
+		</div>
+		<div class="tile-status">
+        	<span class="name">Room</span>
+    	</div>
+	</div>
+	
+	<div class="tile double bg-darkGreen" >
+		<div class="tile-content icon">
+			<i class="icon-diamonds"></i>
+		</div>
+		<div class="tile-status">
+        	<span class="name">Room</span>
+    	</div>
+	</div>
+	
+	<div class="tile double bg-darkGreen" >
+		<div class="tile-content icon">
+			<i class="icon-diamonds"></i>
+		</div>
+		<div class="tile-status">
+        	<span class="name">Room</span>
+    	</div>
+	</div>
+	
+	<div class="tile double bg-darkGreen" >
+		<div class="tile-content icon">
+			<i class="icon-diamonds"></i>
+		</div>
+		<div class="tile-status">
+        	<span class="name">Room</span>
+    	</div>
+	</div>	
+	
+	<div class="tile bg-darkGreen" >
+		<div class="tile-content icon">
+			<i class="icon-diamonds"></i>
+		</div>
+		<div class="tile-status">
+        	<span class="name">Room</span>
+    	</div>
+	</div>
+	
+	<div class="tile bg-darkGreen" >
+		<div class="tile-content icon">
+			<i class="icon-diamonds"></i>
+		</div>
+		<div class="tile-status">
+        	<span class="name">Room</span>
+    	</div>
+	</div>
+	
+	
+	<div class="tile triple bg-darkGreen" >
+		<div class="tile-content icon">
+			<i class="icon-diamonds"></i>
+		</div>
+		<div class="tile-status">
+        	<span class="name">Room</span>
+    	</div>
+	</div>
+	
+	<div class="tile bg-darkGreen" >
+		<div class="tile-content icon">
+			<i class="icon-diamonds"></i>
+		</div>
+		<div class="tile-status">
+        	<span class="name">Room</span>
+    	</div>
+	</div>
+	
+	<div class="tile double bg-darkGreen" >
+		<div class="tile-content icon">
+			<i class="icon-diamonds"></i>
+		</div>
+		<div class="tile-status">
+        	<span class="name">Room</span>
+    	</div>
+	</div>
+
+	<div class="tile double bg-darkGreen" >
+		<div class="tile-content icon">
+			<i class="icon-diamonds"></i>
+		</div>
+		<div class="tile-status">
+        	<span class="name">Room</span>
+    	</div>
+	</div>	
+	
+</div>
+</div>
+</div>
+<div class="push"></div>
+</div>
+
+
+<script>
+
+
+	$(function() {
+		enable_transform();
+	});
+	rooms = [];
+	roomName = [];
+	roomExistNumber = [];
+	{% block content %}
+    
+        {% for publisher in rooms %}
+			rooms.push({{publisher.roomId}})
+			roomName.push('{{publisher.roomName}}')
+			roomExistNumber.push("{{publisher.roomExistMember}}")
+        {% endfor %}
+
+	{% endblock %}
+
+
+	function changeUrl(locationStr){
+		//alert(locationStr);
+		window.location.href = locationStr;
+	}
+	var roomBlocks = document.getElementsByClassName("metro")[0];
+	var childrens = roomBlocks.children;
+	for (var i =0 ; i < rooms.length ; i++){
+		singleRoom = childrens[i];
+		singleRoom.value = "/online/"+rooms[i];
+		singleRoom.children[1].innerHTML = "<span class='name'>Room: "+roomName[i]+" ("+roomExistNumber[i]+"/2)</span>"
+	} 
+
+	window.onbeforeunload = function() {
+       // Add your code here
+       alert("Unload event.. Do something to invalidate users session..");
+	}
+</script>
+	<script src="{% static 'game/metro/min/metro.min.js' %}" type="text/javascript"></script>
+</body>
+</html>

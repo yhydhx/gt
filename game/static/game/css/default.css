@@ -37,7 +37,6 @@ body {
   font-family: "League Gothic", Impact,"华文琥珀",sans-serif;
   line-height: 0.9em; 
   letter-spacing: 0.02em;
-  text-transform: uppercase;
   text-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2); }
 
 .reveal h1 {
@@ -127,3 +126,25 @@ body {
   -ms-transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985);
   -o-transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985);
   transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985); }
+
+#ques p{
+  margin: 0;
+}
+#ques li{
+  margin:5px 0;
+  list-style-type: decimal;
+}
+
+#ques label{
+  display: inline-block;
+  margin: 0 5px;
+}
+
+#ques label input{
+  margin: 0 5px;
+}
+
+#ques label span{
+  vertical-align:middle;
+  font-size: 0.9em;
+}

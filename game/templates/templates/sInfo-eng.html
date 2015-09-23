@@ -2,7 +2,7 @@
 <html>
 <head>
 
-<title>结果页面</title>
+<title>Results</title>
 
 <script type="text/javascript" src="{%  static  'game/js/jscharts.js' %}"></script>
 
@@ -10,27 +10,27 @@
 </head>
 <body>
 
-	<h1 style="text-align: center;">游戏结束</h1>
+	<h1 style="text-align: center;">Game over</h1>
 
 
 	
 	<div class='table' id="graph">Loading...</div>
 
 
-	<h4>您的平均收益: {{averagePoint}}</h4>
-	<h4>您的排名: {{abovePersonNum}}</h4>
+	<h4>Your average score: {{averagePoint}}</h4>
+	<h4>Your rank: {{abovePersonNum}}</h4>
 	<form method="post" action="sName"> 
 		{% csrf_token %}
-		<h4>对于本游戏，您有什么建议与感想？</h4> 
+		<h4>Any suggestion or idea about this game?</h4> 
 		<textarea name="message" style="height:300px;width:600px"></textarea>
-		<input type="submit" value="提交">
+		<input type="submit" value="Submit">
 	</form>
 	
 
 
 
 
-<h1 style="text-align: center;" onclick="showTable()">显示详情!(点击下拉)</h1>	
+<h1 style="text-align: center;" onclick="showTable()">Details!(Click and pulldown)</h1>	
 
 <div align="center" id="table"   style="display: none;">
 <table>
@@ -38,11 +38,11 @@
 	<thead>
 
 		<tr>
-			<th>轮数</th>
-			<th><a title="Total Yards" >您的平均收益</a></th>
-			<th><a title="Points Per Game" >您对手的平均收益</a></th>
-			<th><a title="Total Yards" >您的选择</a></th>
-			<th><a title="Points Per Game" >您对手的选择</a></th>
+			<th>Round</th>
+			<th><a title="Total Yards" >Your average score</a></th>
+			<th><a title="Points Per Game" >Your opponent's score</a></th>
+			<th><a title="Total Yards" >Your choice</a></th>
+			<th><a title="Points Per Game" >Your opponent's choice</a></th>
 
 		</tr>
 	</thead>
@@ -117,7 +117,7 @@
 	var maxY = {{maxY}}
 	var minY = {{minY}}
 	var myChart = new JSChart('graph', 'line');
-	myChart.setTitle("游戏结果");
+	myChart.setTitle("Results");
 	myChart.setDataArray({{humanData}}, 'blue');
 	myChart.setDataArray({{robotData}}, 'green');
 	//myChart.setDataArray([[1, 150],[2, 25],[3, 100],[4, 80],[5, 20],[6, 65],[7, 0],[8, 155],[9, 190],[10, 200]], 'gray');
@@ -129,15 +129,18 @@
 		tmpNum = maxX / 4 * (i +1);
 		myChart.setLabelX([tmpNum,tmpNum.toFixed(0)]);
 	}
-	
+	for(var i = 0; i < 4; i++){
+		tmpNum = (maxY - minY) / 4 * (i +1);
+		myChart.setLabelY([tmpNum,tmpNum.toFixed(0)]);
+	}
 	myChart.setAxisValuesNumberX(5);
 	myChart.setShowXValues(false);
 	myChart.setTitleColor('#454545');
 	myChart.setAxisValuesColor('#454545');
 	myChart.setLineColor('#A4D314', 'green');
 	myChart.setLineColor('#BBBBBB', 'gray');
-	myChart.setAxisNameX("游戏轮数")
-	myChart.setAxisNameY("平均收益")
+	myChart.setAxisNameX("Round")
+	myChart.setAxisNameY("Average Score")
 	for(var i = 1; i<= {{maxX}};i++){
 		myChart.setTooltip([i," "])
 	}
@@ -147,8 +150,8 @@
 	myChart.setAxisPaddingRight(100);
 	myChart.setLegendShow(true);
 	myChart.setLegendPosition(600, 80);
-	myChart.setLegendForLine('blue', '您的信息');
-	myChart.setLegendForLine('green', '对手信息');
+	myChart.setLegendForLine('blue', 'Your information');
+	myChart.setLegendForLine('green', 'Your opponent\'s information');
 	myChart.draw();
 	
 </script>

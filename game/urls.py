@@ -26,5 +26,8 @@ urlpatterns = patterns('',
     url(r'^quit$', views.quit, name='quit'),
     url(r'^begin_smaller$', views.begin_smaller, name='begin_smaller'),
 
+    url(r'^selectEnglish$', views.selectEnglish, name='selectEnglish'),
+    url(r'^selectChinese$', views.selectChinese, name='selectChinese'),
+
     url(r'^test$', views.test, name='test')
 )

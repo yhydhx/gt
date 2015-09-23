@@ -25,8 +25,24 @@ def index(request):
 	    except:
 	        regip = ""
 	request.session['clientIP'] = regip
-	return render(request, 'default.html')
 
+	try:
+		isEng = request.session['isEng']
+	except:
+		return render(request, 'default.html')
+	if isEng == 1:
+		return render(request, 'default-eng.html')	
+	else:
+		return render(request, 'default.html')
+
+#language choose
+def selectEnglish(request):
+	request.session['isEng'] = 1
+	return HttpResponseRedirect("index")
+
+def selectChinese(request):
+	request.session['isEng'] = 0
+	return HttpResponseRedirect("index")
 
 def begin(request):
 	#regist a user automatically 
@@ -77,7 +93,14 @@ def begin(request):
 
 	request.session['MONEY_CHANGE'] = MONEY_CHANGE
 	
-	return render(request, 'index.html',{"rules":data,'matrix':matrix})
+	try:
+		isEng = request.session['isEng']
+	except:
+		return render(request, 'index.html',{"rules":data,'matrix':matrix})
+	if isEng == 1:
+		return render(request, 'index-eng.html',{"rules":data,'matrix':matrix})
+	else:
+		return render(request, 'index.html',{"rules":data,'matrix':matrix})
 
 def begin_smaller(request):
 	#regist a user automatically 
@@ -128,8 +151,16 @@ def begin_smaller(request):
 
 	request.session['MONEY_CHANGE'] = MONEY_CHANGE
 	
-	return render(request, 'index-smaller.html',{"rules":data,'matrix':matrix})
 
+	try:
+		isEng = request.session['isEng']
+	except:
+		return render(request, 'index-smaller.html',{"rules":data,'matrix':matrix})
+	if isEng == 1:
+		return render(request, 'index-smaller-eng.html',{"rules":data,'matrix':matrix})
+	else:
+		return render(request, 'index-smaller.html',{"rules":data,'matrix':matrix})
+	
 
 def getData(request):
 	if request.method == 'POST':
@@ -290,7 +321,8 @@ def sInfo(request):
 		else:
 			element.robotSelect = '背叛'
 			
-
+	# change the maxY to enable the screen show the whole figure
+	maxY = maxY * 1.4
 
 	'''
 	 Show the result of the game
@@ -323,7 +355,18 @@ def sInfo(request):
 	abovePerson = Player.objects.filter(ruleId=ruleId,finalScore__gt=singlePlayer.finalScore)
 	abovePersonNum = len(abovePerson)+1
 	averagePoint = round(float(singlePlayer.finalScore) / maxX,2)
-	return render(request,'sInfo.html',{"humanData":humanData,"robotData":robotData,'maxY':maxY,'maxX':maxX,'minY':minY,'abovePersonNum':abovePersonNum,"averagePoint":averagePoint,'process':process})
+	
+	try:
+		isEng = request.session['isEng']
+	except:
+		return render(request,'sInfo.html',{"humanData":humanData,"robotData":robotData,'maxY':maxY,'maxX':maxX,'minY':minY,'abovePersonNum':abovePersonNum,"averagePoint":averagePoint,'process':process})
+	if isEng == 1:
+		return render(request,'sInfo-eng.html',{"humanData":humanData,"robotData":robotData,'maxY':maxY,'maxX':maxX,'minY':minY,'abovePersonNum':abovePersonNum,"averagePoint":averagePoint,'process':process})
+	else:
+		return render(request,'sInfo.html',{"humanData":humanData,"robotData":robotData,'maxY':maxY,'maxX':maxX,'minY':minY,'abovePersonNum':abovePersonNum,"averagePoint":averagePoint,'process':process})
+	
+
+	
 
 def rule(request):
 	questions = Question.objects.filter(isShow=1).order_by('order')
@@ -332,7 +375,18 @@ def rule(request):
 		count += 1
 		element.name = "Question "+str(count)
 	questionNumber = count
-	return render(request,"rule.html",{'questions':questions,'questionNumber':questionNumber})
+
+
+	try:
+		isEng = request.session['isEng']
+	except:
+		return render(request,"rule.html",{'questions':questions,'questionNumber':questionNumber})
+	if isEng == 1:
+		return render(request,"rule-eng.html",{'questions':questions,'questionNumber':questionNumber})
+	else:
+		return render(request,"rule.html",{'questions':questions,'questionNumber':questionNumber})
+	
+	
 
 def sName(request):
 	try:

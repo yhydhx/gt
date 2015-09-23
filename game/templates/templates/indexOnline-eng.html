@@ -117,16 +117,16 @@ opacity:0;
 	left:0px;
 }
 #SYS_hire_main_fp_logo {
-font-family: 'SYSLAB_logo_Fonts';
-font-size: 100px;
--webkit-transform: rotate(-5deg);
--moz-transform: rotate(-5deg);
--ms-transform: rotate(-5deg);
--o-transform: rotate(-5deg);
-transform: rotate(-5deg);
-width:750px;
-cursor:default;
-text-shadow:0px 0px 20px #444;
+	font-family: 'SYSLAB_logo_Fonts';
+	font-size: 100px;
+	-webkit-transform: rotate(-5deg);
+	-moz-transform: rotate(-5deg);
+	-ms-transform: rotate(-5deg);
+	-o-transform: rotate(-5deg);
+	transform: rotate(-5deg);
+	width:750px;
+	cursor:default;
+	text-shadow:0px 0px 20px #444;
 }
 #SYS_hire_main_fp_logo:hover{
 	-webkit-transform:scale(1.2,1.2);
@@ -140,8 +140,8 @@ text-shadow:0px 0px 20px #444;
 	margin-top:60px;
 }
 #SYS_hire_main_fp_about {
-font-size: 24px;
-margin-top: 30px;
+	font-size: 24px;
+	margin-top: 30px;
 }
 #SYS_hire_main_fp_main{
 	position: absolute;
@@ -171,21 +171,21 @@ margin-top: 30px;
 	cursor:pointer;
 }
 #SYS_hire_main_skill_icon {
-font-family: 'SYSLAB_icon_Fonts';
-display: inline-block;
-cursor: default;
--webkit-transform: rotate(-6deg);
--moz-transform: rotate(-6deg);
--ms-transform: rotate(-6deg);
--o-transform: rotate(-6deg);
-transform: rotate(-3deg);
-font-size: 400px;
-text-shadow: none;
-color: rgba(99, 167, 240, 0.7);
-position: absolute;
-left: 100px;
-top: 20%;
-width: 500px;
+	font-family: 'SYSLAB_icon_Fonts';
+	display: inline-block;
+	cursor: default;
+	-webkit-transform: rotate(-6deg);
+	-moz-transform: rotate(-6deg);
+	-ms-transform: rotate(-6deg);
+	-o-transform: rotate(-6deg);
+	transform: rotate(-3deg);
+	font-size: 400px;
+	text-shadow: none;
+	color: rgba(99, 167, 240, 0.7);
+	position: absolute;
+	left: 100px;
+	top: 20%;
+	width: 500px;
 }
 [type="SYS_hire_gen"]:hover{
 	text-shadow: 0px 0px 50px #63A7F0;
@@ -314,19 +314,19 @@ width: 500px;
 	margin-top:-260px;
 }
 .SYS_hire_bar_l{
-position: relative;
-top: -7px;
-left: -10px;
-display: inline-block;
-font-size: 24px;
+	position: relative;
+	top: -7px;
+	left: -10px;
+	display: inline-block;
+	font-size: 24px;
 }
 
 .SYS_hire_bar_r{
-position: relative;
-top: -7px;
-left: 15px;
-display: inline-block;
-font-size: 24px;
+	position: relative;
+	top: -7px;
+	left: 15px;
+	display: inline-block;
+	font-size: 24px;
 }
 .SYS_hire_bar_t{
 	font-size:24px;
@@ -407,21 +407,17 @@ font-size: 24px;
 <div id="SYS_hire_main">
 	<div id="SYS_hire_main_fp" onselectstart="return false;">
     	<center id="SYS_hire_main_fp_main">
-        	<div id="SYS_hire_main_fp_logo" class="ani">欢迎参加</br>囚徒困境游戏！</div>
-            <div id="SYS_hire_main_fp_us">每一次游戏正式开始前，您会被随机匹配到一个对手，</br>与对方进行囚徒困境的博弈游戏。系统将通过每一轮中您们各自</br>的策略选择，来决定您们获得的分数。请点击游戏规则!~</div>
-            <div id="CHOOSE_LANGUAGE">
-            	<a href="selectChinese">中文版&nbsp;&nbsp;</a>
-            	<a href="selectEnglish">English Version</a>
-            </div>
+        	<div id="SYS_hire_main_fp_logo" class="ani">Welcome to</br>Prinsoner's Dilemma Game！</div>
+
             <div id="SYS_hire_main_fp_about">
-            	<a href="rule"  >游戏规则</a><br/>
+            	<a href="/rule" target="_blank" >Game rules</a><br/>
                
             </div>
         </center>
-        <div style="display:none" id="SYS_hire_main_fp_next" type="SYS_hire_next" class="loading_rotate">&#xe096;</div>
+        <div id="SYS_hire_main_fp_next" type="SYS_hire_next" class="loading_rotate">&#xe096;</div>
     </div>
     <div id="SYS_hire_main_you">
-    	<div id="SYS_hire_main_you_title"  onselectstart="return false;">您正在与 </div>
+    	<div id="SYS_hire_main_you_title"  onselectstart="return false;">You are playing with </div>
     	<div id="SYS_Button" > </div>
     	<div id="SYS_Choice" > </div>
     	<div id="SYS_LeftTop"> </div>
@@ -431,17 +427,17 @@ font-size: 24px;
     				<thead>
     					<tr>			
     						<th></th>			
-    						<th>&nbsp;&nbsp;合作</th>			
-    						<th>&nbsp;&nbsp;背叛</th>		
+    						<th>&nbsp;&nbsp;Cooperate</th>			
+    						<th>&nbsp;&nbsp;Defect</th>		
     					</tr>	
     				</thead></br>	        
     					<tr>				
-    						<td>合作</td>				
+    						<td>Cooperate</td>				
     						<td>&nbsp;&nbsp;({{matrix.R}})</td>				
     						<td>&nbsp;&nbsp;({{matrix.S}})</td>			
     					</tr>			
     					<tr>			
-    						<td>背叛</td>				
+    						<td>Defect</td>				
     						<td>&nbsp;&nbsp;({{matrix.T}})</td>				
     						<td>&nbsp;&nbsp;({{matrix.P}})</td>			
     					</tr>
@@ -449,8 +445,8 @@ font-size: 24px;
     			</table>
     	</div>
         <div id="SYS_hire_main_you_choose"  onselectstart="return false;">
-        	<div id="SYS_hire_main_you_choose_male"  class="ani" type="SYS_hire_gen">合作</div>
-            <div id="SYS_hire_main_you_choose_female"  class="ani" type="SYS_hire_gen">背叛</div>
+        	<div id="SYS_hire_main_you_choose_male"  class="ani" type="SYS_hire_gen">Cooperate</div>
+            <div id="SYS_hire_main_you_choose_female"  class="ani" type="SYS_hire_gen">Defect</div>
         </div>
         <div id="SYS_hire_main_you_infos" class="ani">
         	<div type="SYS_hire_form">
@@ -529,7 +525,7 @@ font-size: 24px;
 	<center id="SYS_hire_main_con_sending">
 		{% csrf_token %} 
     	<div id="SYS_hire_main_con_sending_icon" class="loading_rotate">&#xe096;</div>
-        <div id="SYS_hire_main_con_sending_words">正在通信...</div>
+        <div id="SYS_hire_main_con_sending_words">Connecting...</div>
     </center>
 </div>
 </body>
@@ -541,15 +537,52 @@ font-size: 24px;
 <script src="{% static 'game/js/microjs.min.js' %}"></script>
 <script src="{% static 'game/js/base.full.js' %}"></script>
 <script type="text/javascript">
+
+	//listen to the exit button
+	var UnloadConfirm = {};
+	UnloadConfirm.MSG_UNLOAD = "Data hasn't been saved yet,\n\n are you sure to leave?";
+	UnloadConfirm.set = function(a) {
+	    window.onbeforeunload = function(b) {
+	    	QUIT_FLAG={
+				'quit': 1,
+			}
+	    	$.ajax({
+				url: "/quitGame",
+				type: "GET",
+				dataType: 'json',
+				data: QUIT_FLAG,
+				success:function (result) {
+						isFull = result['isFull'];
+				},
+				error:function(result){
+				}
+			});
+	        //b = b || window.event;
+	        //b.returnValue = a;
+	        //return a
+	    }
+	};
+	UnloadConfirm.clear = function() {
+	    fckDraft.delDraftById();
+	    window.onbeforeunload = function() {
+
+	    }
+	};
+	UnloadConfirm.set(UnloadConfirm.MSG_UNLOAD);
+	//end set listen function 
+
 	var money = 0
 	var times = 1
 	var isFirst = 1
+	var isFull = 0
 	var exitFlag = false
 	var coMethod = 1
 	var robotMoney = 0;
 	var checkedType = 0;
 	var robotName = 0;
-	var isRead = 0;
+	var timeoutObject = 0;
+	var getRivalInfo = 1;
+	var getRivalObject = 0;
 	function getP(coMethod){
 		switch(coMethod){
 			case 0:
@@ -568,26 +601,28 @@ font-size: 24px;
 		var choiceArr = new Array(2)
 		switch(coMethod){
 			case 0:
-				choiceArr[0] = '合作';
-				choiceArr[1] = '合作';
+				choiceArr[0] = 'Cooperate';
+				choiceArr[1] = 'Cooperate';
 				break;
 			case 1:
-				choiceArr[0] = '背叛';
-				choiceArr[1] = '合作';
+				choiceArr[0] = 'Defect';
+				choiceArr[1] = 'Cooperate';
 				break;
 			case 2:
-				choiceArr[0] = '合作';
-				choiceArr[1] = '背叛';
+				choiceArr[0] = 'Cooperate';
+				choiceArr[1] = 'Defect';
 				break;
 			case 3:
-				choiceArr[0] = '背叛';
-				choiceArr[1] = '背叛';
+				choiceArr[0] = 'Defect';
+				choiceArr[1] = 'Defect';
 				break;
 		}
-		choiceValue = "您选择了 "+choiceArr[0]+ "</br>对手选择了 "+ choiceArr[1];
+		choiceValue = "You chose "+choiceArr[0]+ "</br>Your opponent chose "+ choiceArr[1];
 		choice.innerHTML = choiceValue;
 	}
 	function restoreData(humanChoose,times,coMethod,money,robotMoney){
+		var choice = document.getElementById("SYS_Choice")
+		choice.innerHTML = "Your rival is thinking"
 		SUBMIT_FORM['times'] = times;
 		SUBMIT_FORM['lastCoMethod'] = coMethod;
 		SUBMIT_FORM['money'] = money;
@@ -599,8 +634,40 @@ font-size: 24px;
 		var elem = document.createElement('canvas');
   		return !!(elem.getContext && elem.getContext('2d'));
 	}
+	function findingRival(){
+		if (isFull== 1){
+			_f("#SYS_hire_main_fp").style.marginLeft="-100px";
+			_f("#SYS_hire_main_fp").style.opacity=0;
+			_f("#SYS_hire_main_you").style.display="block";
+			setTimeout(function(){
+				_f("#SYS_hire_main_fp").style.display="none";
+				_f("#SYS_hire_main_you").style.marginLeft="0px";
+				_f("#SYS_hire_main_you").style.opacity=1;
+				_f("#SYS_hire_main_you_next").style.opacity=0;
+			},600);
+			clearInterval(timeoutObject)
+		}
+		
+		var csf = document.getElementsByName("csrfmiddlewaretoken")[0].value
+		SUBMIT_CHOICE["csrfmiddlewaretoken"] = csf;
+		$.ajax({
+		   url: "/getOnlineUser",
+		   type: "POST",
+		   dataType: 'json',
+		   data: SUBMIT_CHOICE,
+		   success:function (result) {
+		   		isFull = result['isFull'];
+
+		   },
+		   error:function(result){
+
+		   }
+		});
+
+		 
+	}
 	if(!check_canvas()){
-		alert("请使用现代浏览器!  例如Chrome,Firefox等");
+		alert("Please use other browsers,such as Chrome and irefox");
 		window.open('', '_self', '');
 		window.close();
 	}	
@@ -615,7 +682,6 @@ font-size: 24px;
 		isFirst:0,
 	}
 	SUBMIT_CHOICE={
-		type:0,
 		csrfmiddlewaretoken: 0,
 	}
 	HIRE_FORM={
@@ -683,6 +749,10 @@ font-size: 24px;
 	hookbar("SYS_hire_bar_1");
 	hookbar("SYS_hire_bar_2");
 	_f("#SYS_hire_main_fp_next").addEventListener("click",function(){
+		//When you enter the game, first hidden the infomation 
+		//show you are finding the rival
+		//set timeout
+		//if getConnection, got to next sence
 		$.ajax({
 				url: "/checkRule",
 				type: "GET",
@@ -690,60 +760,28 @@ font-size: 24px;
 				data: 1,
 				success:function (result) {
 						isRead = result['isRead'];
-						isRead = 1
 						if (isRead == 0){
 							alert("Please read the rule and complete the info!");
 							return;
 						}else{
-							var checkBox = document.getElementById("checkType");
-							list = checkBox.children[0].children;
-							var flag = false;
+							var main_fp = document.getElementById("SYS_hire_main_fp_us");
+							main_fp.style.display = "none";
+							var main_next = document.getElementById("SYS_hire_main_fp_next");
+							main_next.style.display = "none";
+							var main_title = document.getElementById("SYS_hire_main_fp_logo");
+							main_title.innerHTML = "Seaching your rival!!!"
 
-							for (var i=0; i < list.length ; i++){
-								if (list[i].checked == true){
-									flag = true;
-									checkedType = list[i].value;
-								}
-							}
-							if (flag == false){
-								alert("Please Choose a room");
-								return
-							}
-							SUBMIT_CHOICE['type'] = checkedType
-							var csf = document.getElementsByName("csrfmiddlewaretoken")[0].value
-							SUBMIT_CHOICE["csrfmiddlewaretoken"] = csf;
-							$.ajax({
-							   url: "getUser",
-							   type: "POST",
-							   dataType: 'json',
-							   data: SUBMIT_CHOICE,
-							   success:function (result) {
-							   		robotName = result['name'];
-							   		var nameField = document.getElementById("SYS_hire_main_you_title")
-							   		var ouputValue = nameField.innerHTML;
-							   		outputValue = ouputValue + robotName +" 博弈！"
-							   		nameField.innerHTML = outputValue;
-							   },
-							   error:function(result){
-
-							   }
-							});
-							_f("#SYS_hire_main_fp").style.marginLeft="-100px";
-							_f("#SYS_hire_main_fp").style.opacity=0;
-							_f("#SYS_hire_main_you").style.display="block";
-							setTimeout(function(){
-								_f("#SYS_hire_main_fp").style.display="none";
-								_f("#SYS_hire_main_you").style.marginLeft="0px";
-								_f("#SYS_hire_main_you").style.opacity=1;
-								_f("#SYS_hire_main_you_next").style.opacity=0;
-							},600);
+							//set timeout to give a ajax
+							findingRival()
+							timeoutObject = setInterval("findingRival()",3000); 
 						}
 				},
 				error:function(result){
 				}
 		});
+
 		
-		
+		//send the data every 3second
 	},false);
 	_f("#SYS_hire_main_you_next").addEventListener("click",function(){
 		if(!_f("#SYS_hire_form_name").value){
@@ -820,11 +858,21 @@ font-size: 24px;
 
 	_f("#SYS_hire_main_you_choose_male").addEventListener("click",function(){
 		//if(HIRE_FORM.gender){return;}
-		HIRE_FORM.gender=-1;
-		humanChoose = 1
-		restoreData(humanChoose,times,coMethod,money,robotMoney)
-		start_send();
-
+		//if (getRivalInfo == 0){
+		//	return 
+		//}
+		if (getRivalInfo == 1){
+			getRivalInfo = 0;
+			HIRE_FORM.gender=-1;
+			humanChoose = 1;
+			restoreData(humanChoose,times,coMethod,money,robotMoney);
+			start_send();
+			getRivalObject = setInterval("start_send()",3000); 
+		}else{
+			alert("Please Wait a moment!!!");
+			return;
+		}
+		
 		
 		setTimeout(function(){
 			_f("#SYS_hire_main_you_infos").style.marginLeft="0px";
@@ -834,11 +882,21 @@ font-size: 24px;
 	},false);
 	_f("#SYS_hire_main_you_choose_female").addEventListener("click",function(){
 		//if(HIRE_FORM.gender){return;}
-		HIRE_FORM.gender=1;
-		humanChoose = 0
-		restoreData(humanChoose,times,coMethod,money,robotMoney)
-		start_send();
-
+		///if (getRivalInfo == 0){
+		///	return 
+		///}
+		if (getRivalInfo ==1){
+			getRivalInfo = 0;
+			HIRE_FORM.gender=1;
+			humanChoose = 0
+			restoreData(humanChoose,times,coMethod,money,robotMoney)
+			start_send()
+			getRivalObject = setInterval("start_send()",3000); 
+		}else{
+			alert("Please wati a moment!!!");
+			return;
+		}
+		
 		setTimeout(function(){
 			_f("#SYS_hire_main_you_infos").style.marginRight="0px";
 			_f("#SYS_hire_main_you_infos").style.opacity=1;
@@ -851,49 +909,70 @@ font-size: 24px;
 		_f("#SYS_hire_main_con_sending_words").innerHTML="正在发送...";
 		_f("#SYS_hire_main_con_sending_icon").innerHTML="&#xe096;";
 		_c(_f("#SYS_hire_main_con_sending_icon")).add("loading_rotate");
-
+		if (getRivalInfo == 1){
+			changeCurrentInfo();
+			clearInterval(getRivalObject);
+			return;
+		}
 		$.ajax({
-		   url: "getData",
+		   url: "/getOnlionData",
 		   type: "POST",
 		   dataType: 'json',
 		   data: SUBMIT_FORM,
 		   success: function (msg) {
 		   		console.log(msg)
-		   		robotChoose = msg['robotChoose']
-		   		addMoney = msg['addMoney']
-		   		addRobotMoney = msg['addRobotMoney']
-		   		coMethod = msg['coMethod']
-		   		exitFlag = msg['exitFlag']
-		   		money = msg['money']
-		   		robotMoney = msg['robotMoney']
-		   		if (exitFlag ==1){
-		   			alert("Game Over");
-		   			window.location.href = "sInfo";
+		   		getRivalInfo = msg['getRivalInfo']
+		   		offLineState = msg['offLineState']
+		   		if (offLineState != 0){
+		   			alert("Your rival is offline, go and see the result");
+		   			window.location.href = "/sInfo";
 					return;
 		   		}
-		   		console.log(money)
-		   		console.log(robotMoney)
-				
-		   		var r = document.getElementById("SYS_LeftTop");
-				roundValue = "";
-				r.innerHTML = roundValue;
-				var title = document.getElementById("SYS_Button");
-
-				titleValue  = '<table><tbody style="margin: 0 auto" align="center" >	<thead>		<tr>			<th></th>			<th><a title="Team ame" >上一轮</a></th>			<th><span title="Games Played">&nbsp;&nbsp;&nbsp;平均</span></th>		</tr>	</thead></br>	        <tr>				<td>您的收益</td>				<td>&nbsp;&nbsp;'+(addMoney).toFixed(2)+'</td>				<td>&nbsp;&nbsp;&nbsp;'+(money/times).toFixed(2)+'</td>			</tr>			<tr>			<td>对手的收益</td>				<td>&nbsp;&nbsp;'+(addRobotMoney).toFixed(2)+'</td>				<td>&nbsp;&nbsp;&nbsp;'+(robotMoney/times).toFixed(2)+'</td>			</tr></tbody></table>';
-				title.innerHTML = titleValue;
-				showTheLastChoice(coMethod);
-				isFirst = 0;
-				times = times + 1;
+		   		if (getRivalInfo == 1){
+			   		robotChoose = msg['robotChoose']
+			   		addMoney = msg['addMoney']
+			   		addRobotMoney = msg['addRobotMoney']
+			   		coMethod = msg['coMethod']
+			   		exitFlag = msg['exitFlag']
+			   		money = msg['money']
+			   		robotMoney = msg['robotMoney']
+			   		times = msg['times'] +1;
+			   	}
+		   		if (exitFlag ==1){
+		   			alert("Game Over");
+		   			window.location.href = "/sInfo";
+					return;
+		   		}
+		   		
+		   		
 		   },
 		   error:function(){
 		   		
 		   }
 		});
+		if (getRivalInfo == 1){
+			changeCurrentInfo();
+			clearInterval(getRivalObject);
+			return;
+		}
 
 	}
+	function changeCurrentInfo(){
+		console.log(money)
+		console.log(robotMoney)
+   		var r = document.getElementById("SYS_LeftTop");
+		roundValue = "";
+		r.innerHTML = roundValue;
+		var title = document.getElementById("SYS_Button");
+
+		titleValue  = '<table><tbody style="margin: 0 auto" align="center" >	<thead>		<tr>			<th></th>			<th><a title="Team ame" >Last round</a></th>			<th><span title="Games Played">&nbsp;&nbsp;&nbsp;average</span></th>		</tr>	</thead></br>	        <tr>				<td>Your score</td>				<td>&nbsp;&nbsp;'+(addMoney).toFixed(2)+'</td>				<td>&nbsp;&nbsp;&nbsp;'+(money/(times-1)).toFixed(2)+'</td>			</tr>			<tr>			<td>Your opponent\'s score</td>				<td>&nbsp;&nbsp;'+(addRobotMoney).toFixed(2)+'</td>				<td>&nbsp;&nbsp;&nbsp;'+(robotMoney/(times-1)).toFixed(2)+'</td>			</tr></tbody></table>';
+		title.innerHTML = titleValue;
+		showTheLastChoice(coMethod);
+		isFirst = 0
+
+	}
+
 	var err=function(){
-			_f("#SYS_hire_main_con_sending_words").innerHTML="报名出错了,请<b onclick='start_send()'>点击重试</b>";
-			_f("#SYS_hire_main_con_sending_icon").innerHTML="&#xe047;";
 			_c(_f("#SYS_hire_main_con_sending_icon")).remove("loading_rotate");
 	}
 	
