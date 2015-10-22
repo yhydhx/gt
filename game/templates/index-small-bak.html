@@ -150,24 +150,18 @@ margin-top: 30px;
 }
 [type="SYS_hire_next"] {
 	position: absolute;
-	bottom: 40px;
-	left: 50%;
-	margin-left: -0.5em;
+	right: 20px;
+	top: 45%;
 	font-family: 'SYSLAB_icon_Fonts';
 	font-size: 48px;
 	cursor:pointer;
-	-webkit-transform: rotate(90deg);
-	-moz-transform: rotate(90deg);
-	-ms-transform: rotate(90deg);
-	-o-transform: rotate(90deg);
-	transform: rotate(90deg);
 }
 [type="SYS_hire_next"]:hover{
 	color:#ddd;
 }
 #SYS_hire_main_you,#SYS_hire_main_skill,#SYS_hire_main_more,#SYS_hire_main_con{
 	display:none;
-	margin-left:0;
+	margin-left:100px;
 	opacity:0;
 }
 [type="SYS_hire_gen"]{
@@ -200,7 +194,7 @@ width: 500px;
 	position: absolute;
 	top: 10%;
 	left: 5%;
-	font-size: 2.5em;
+	font-size: 27px;
 }
 
 
@@ -208,33 +202,33 @@ width: 500px;
 	position: absolute;
 	top: 65%;
 	left: 33%;
-	font-size: 2em;
+	font-size: 25px;
 }
 
 #SYS_Matrix {
 	position: absolute;
 	top: 0%;
 	right:100px;
-	font-size: 2.2em;
+	font-size: 25px;
 }
 #SYS_Choice {
 	position: absolute;
 	top: 17%;
 	text-align: center;
 	width: 100%;
-	font-size: 2em;
+	font-size: 25px;
 }
 #SYS_LeftTop {
 	position: absolute;
 	top: 20px;
 	left: 81%;
-	font-size: 2.2em;
+	font-size: 48px;
 }
 
 #SYS_hire_main_you_choose {
 	position: absolute;
-	top: 48%;
-	font-size: 4em;
+	top: 38%;
+	font-size: 75px;
 	text-align: center;
 	width: 100%;
 }
@@ -403,12 +397,6 @@ font-size: 24px;
 	font-size: 1.8em;
 	color:#00F
 }
-
-@media screen and (max-width:800px){
-	*{
-		font-size: 0.6em;
-	}
-}
   </style>
 </head>
 <body>
@@ -418,14 +406,14 @@ font-size: 24px;
 <div id="SYS_hire_main">
 	<div id="SYS_hire_main_fp" onselectstart="return false;">
     	<center id="SYS_hire_main_fp_main">
-        	<div style="font-size:5em">欢迎参加</br>囚徒困境游戏</div>
+        	<div id="SYS_hire_main_fp_logo" class="ani">欢迎参加</br>囚徒困境游戏！</div>
             <div id="SYS_hire_main_fp_us">每一次游戏正式开始前，您会被随机匹配到一个对手，</br>与对方进行囚徒困境的博弈游戏。系统将通过每一轮中您们各自</br>的策略选择，来决定您们获得的分数。</div>
             <div id='checkType'>
-				 <h>在不同的房间中，您将遇到不同类型的对手!</h2></br>
+            	<h>在不同的房间中，您将遇到不同类型的对手!</h2></br>
 				 请选择一个房间：
 				 	{% block content %}
 				        {% for publisher in rules %}
-							<label><input type="radio" id='{{publisher.algorithm}}' name="radiobutton" value="{{publisher.id}}"> {{publisher.name}}</label>
+							<input type="radio" id='{{publisher.algorithm}}' name="radiobutton" value="{{publisher.id}}" > {{publisher.name}}  
 				        {% endfor %}
 					{% endblock %}
 				
@@ -603,7 +591,7 @@ font-size: 24px;
 				choiceArr[1] = '背叛';
 				break;
 		}
-		choiceValue = "上一轮您选择了 "+choiceArr[0]+ "</br>上一轮对手选择了 "+ choiceArr[1] + "</br>本轮是第"+times.toString()+"轮, 您的选择是:";
+		choiceValue = "本轮是第"+times.toString()+"轮</br>上一轮您选择了 "+choiceArr[0]+ "</br>上一轮对手选择了 "+ choiceArr[1];
 		choice.innerHTML = choiceValue;
 	}
 	function restoreData(humanChoose,times,coMethod,money,robotMoney){
@@ -717,7 +705,7 @@ font-size: 24px;
 							return;
 						}else{
 							var checkBox = document.getElementById("checkType");
-							list = checkBox.getElementsByTagName('input');
+							list = checkBox.children[0].children;
 							var flag = false;
 
 							for (var i=0; i < list.length ; i++){
@@ -749,14 +737,12 @@ font-size: 24px;
 
 							   }
 							});
-							_f("#SYS_hire_main_fp").style.marginTop="-100px";
-							// _f("#SYS_hire_main_fp").style.marginLeft="-100px";
+							_f("#SYS_hire_main_fp").style.marginLeft="-100px";
 							_f("#SYS_hire_main_fp").style.opacity=0;
 							_f("#SYS_hire_main_you").style.display="block";
 							setTimeout(function(){
 								_f("#SYS_hire_main_fp").style.display="none";
-								// _f("#SYS_hire_main_you").style.marginLeft="0px";
-								_f("#SYS_hire_main_you").style.marginTop="0px";
+								_f("#SYS_hire_main_you").style.marginLeft="0px";
 								_f("#SYS_hire_main_you").style.opacity=1;
 								_f("#SYS_hire_main_you_next").style.opacity=0;
 							},600);
