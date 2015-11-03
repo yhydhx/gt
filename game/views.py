@@ -72,14 +72,10 @@ def begin(request):
 	payoff = PayoffMatrix.objects.get(name='Default')
 	MONEY_CHANGE = {}
 	matrix = {}
-	if int(payoff.R) == payoff.R:
-		payoff.R = int(payoff.R)
-	if int(payoff.S) == payoff.S:
-		payoff.S = int(payoff.S)
-	if int(payoff.T) == payoff.T:
-		payoff.T = int(payoff.T)
-	if int(payoff.P) == payoff.P:
-		payoff.P = int(payoff.P)
+	payoff.R = round(payoff.R,1)
+	payoff.S = round(payoff.S,1)
+	payoff.T = round(payoff.T,1)
+	payoff.P = round(payoff.P,1)
 
 	MONEY_CHANGE['0'] = [payoff.R, payoff.R]
 	MONEY_CHANGE['1'] = [payoff.T, payoff.S]
@@ -130,14 +126,12 @@ def begin_smaller(request):
 	payoff = PayoffMatrix.objects.get(name='Default')
 	MONEY_CHANGE = {}
 	matrix = {}
-	if int(payoff.R) == payoff.R:
-		payoff.R = int(payoff.R)
-	if int(payoff.S) == payoff.S:
-		payoff.S = int(payoff.S)
-	if int(payoff.T) == payoff.T:
-		payoff.T = int(payoff.T)
-	if int(payoff.P) == payoff.P:
-		payoff.P = int(payoff.P)
+
+	
+	payoff.R = round(payoff.R,1)
+	payoff.S = round(payoff.S,1)
+	payoff.T = round(payoff.T,1)
+	payoff.P = round(payoff.P,1)
 
 	MONEY_CHANGE['0'] = [payoff.R, payoff.R]
 	MONEY_CHANGE['1'] = [payoff.T, payoff.S]
