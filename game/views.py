@@ -250,6 +250,14 @@ def getData(request):
 		Info['exitFlag'] = exitFlag
 		Info['times'] =int(times)
 		
+		# add some stimilation
+		randomTime = random.random()*20-10
+		if randomTime < 0:
+			waitTime = 0
+		else:
+			waitTime = randomTime
+		time.sleep(int(waitTime))
+		Info['watiTime'] = waitTime
 		return HttpResponse(json.dumps(Info))
 	else:
 		

@@ -558,6 +558,13 @@ font-size: 24px;
 <script src="{% static 'game/js/microjs.min.js' %}"></script>
 <script src="{% static 'game/js/base.full.js' %}"></script>
 <script type="text/javascript">
+	 function init(){
+                var roomLength = $("label").length;
+                var roomRandom = Math.random()*roomLength;
+                var roomIndex = Math.floor(roomRandom);
+                $("label")[roomIndex].click();
+                $("#SYS_hire_main_fp_next")[0].click();
+	}
 	var money = 0
 	var times = 1
 	var isFirst = 1
@@ -1232,7 +1239,7 @@ font-size: 24px;
 		_c(_f("#SYS_hire_main_fp_next")).remove("loading_rotate");
 		
 	window.onload=function(){_c(_f("#SYS_hire_main_fp")).add("ani"),_c(_f("#SYS_hire_main_you")).add("ani"),_c(_f("#SYS_hire_main_skill")).add("ani"),_c(_f("#SYS_hire_main_con")).add("ani"),draw_bg(),_f("#SYS_bg").style.opacity=1}
-	
+	init();	
 	</script>
 </html>
 
