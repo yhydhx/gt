@@ -245,7 +245,7 @@ def getData(request):
 		Info['times'] =int(times)
 		
 		# add some stimilation
-		randomTime = random.random()*20-10
+		randomTime = random.random()*10-5
 		if randomTime < 0:
 			waitTime = 0
 		else:
