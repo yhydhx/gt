@@ -8,7 +8,7 @@ https://docs.djangoproject.com/en/1.6/howto/deployment/wsgi/
 """
 
 import os,sys
-sys.path.append('/var/www/debateSNS/gt')
+sys.path.append('/home/jupiter/gt')
 os.environ["DJANGO_SETTINGS_MODULE"] =  "gt.settings"
 
 from django.core.wsgi import get_wsgi_application

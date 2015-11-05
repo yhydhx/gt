@@ -206,6 +206,15 @@ def getData(request):
 		money += addMoney
 		robotMoney += addRobotMoney
 		clientIP = request.session['clientIP']
+		humanTime = time.time()
+		# add some stimilation
+		randomTime = random.random()*10-5
+		if randomTime < 0:
+			waitTime = 0
+		else:
+			waitTime = randomTime
+		time.sleep(int(waitTime))
+		rivalClickTime = time.time()
 		process = Process(
 			Uid = Uid,
 			times = times,
@@ -216,8 +225,8 @@ def getData(request):
 			robotMoney = robotMoney,
 			humanChoose = humanChoose,
 			robotChoose = robotChoose,
-			processTime = time.time(),
-			rivalSelectTime = time.time(),
+			processTime = humanTime,
+			rivalSelectTime = rivalClickTime,
 			clientIP = clientIP,
 
 		)
@@ -243,14 +252,6 @@ def getData(request):
 		Info['coMethod'] = coMethod
 		Info['exitFlag'] = exitFlag
 		Info['times'] =int(times)
-		
-		# add some stimilation
-		randomTime = random.random()*10-5
-		if randomTime < 0:
-			waitTime = 0
-		else:
-			waitTime = randomTime
-		time.sleep(int(waitTime))
 		Info['watiTime'] = waitTime
 		return HttpResponse(json.dumps(Info))
 	else:
