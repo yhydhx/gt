@@ -13,7 +13,7 @@ import hashlib, time, random,re,json
 
 
 def index(request):
-	Uid = time.time()
+	Uid = md5(str(time.time())+str(random.random()))
 	request.session['Uid'] = Uid
 	#get the user IP
 	try:
@@ -34,6 +34,11 @@ def index(request):
 		return render(request, 'default-eng.html')	
 	else:
 		return render(request, 'default.html')
+#md5 
+def md5(s):
+	m = hashlib.md5()   
+	m.update(s)
+	return m.hexdigest()
 
 #language choose
 def selectEnglish(request):
