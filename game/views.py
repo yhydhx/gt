@@ -213,7 +213,7 @@ def getData(request):
 		clientIP = request.session['clientIP']
 		humanTime = time.time()
 		# add some stimilation
-		randomTime = random.random()*10-5
+		randomTime = random.random()*20-10
 		if randomTime < 0:
 			waitTime = 0
 		else:
